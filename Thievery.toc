@@ -1,0 +1,13 @@
+## Interface: 110105
+## Title: Thievery
+## Notes: Pickpocketing overhaul for Rogues in World of Warcraft
+## Version: 0.1
+## Author: LegolandoBloom
+## SavedVariables: 
+## SavedVariablesPerCharacter: 
+## IconTexture:
+## X-Curse-Project-ID: 1284634
+
+translations\translations.xml
+Thievery.lua
+Thievery.xml
