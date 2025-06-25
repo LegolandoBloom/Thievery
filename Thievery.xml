@@ -1,5 +1,50 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-    
+
+ 
+   
+
+    <Frame name="Thievery">
+        <Scripts>
+            <OnLoad function="Thievery_OnLoad"/>
+        </Scripts>
+        <Frames>
+            <Button name="Thievery_PickpocketButton" parentKey="pickpocketButton" inherits="SecureActionButtonTemplate" hidden="false">
+
+            </Button>
+            <Frame name="Thievery_Visual" parentKey="visual" hidden="true">
+                <Size x="1" y="1"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="250" y="100"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="Thievery_TestImage" parentKey="testImage" file="Interface/AddOns/Thievery/Images/curseicon1.png" hidden="false">
+                            <Size x="64" y="64"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame name="Thievery_Visual2" parentKey="visual" hidden="true">
+                <Size x="1" y="1"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="300" y="100"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="Thievery_TestImage2" parentKey="testImage2" file="Interface/AddOns/Thievery/Images/legothanks.png" hidden="false">
+                            <Size x="64" y="64"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+    </Frame>
    
 </Ui>

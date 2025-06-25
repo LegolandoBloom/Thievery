@@ -1,4 +1,4 @@
-## Interface: 110105
+## Interface: 110107
 ## Title: Thievery
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft
 ## Version: 0.1
@@ -9,5 +9,6 @@
 ## X-Curse-Project-ID: 1284634
 
 translations\translations.xml
+pocketTables.lua
 Thievery.lua
 Thievery.xml

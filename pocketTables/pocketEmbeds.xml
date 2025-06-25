@@ -1,0 +1,15 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="aberrations.lua"/>
+    <Script file="beasts.lua"/>
+    <Script file="demons.lua"/>
+    <Script file="dragonkin.lua"/>
+    <Script file="elementals.lua"/>
+    <Script file="giants.lua"/>
+    <Script file="humanoids.lua"/>
+    <Script file="mechanicals.lua"/>
+    <Script file="uncategorized.lua"/>
+    <Script file="undead.lua"/>
+
+</Ui>
