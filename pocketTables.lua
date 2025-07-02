@@ -52,6 +52,10 @@ local PP_Undead_Hostile_ALL ={
 --------------------------------------------------------------------------------------------
 -------------------------------------HUMANOIDS----------------------------------------------
 --------------------------------------------------------------------------------------------
+
+-----------
+--NEUTRAL--
+-----------
 -- Horde Friend/Hostile/Non-
 local PP_Humanoids_ALLIANCE_Neutral = {
     [946] = true, [82112] = true, [82111] = true, [136565] = true, [808] = true, [227641] = true, [44163] = true, [133021] = true, [136294] = true, [136639] = true, [136474] = true, [227677] = true, [133024] = true, [176270] = true, [124022] = true, [136236] = true, [71055] = true, [40062] = true, [17799] = true, [38301] = true, [160010] = true, [159884] = true, [138426] = true, [159967] = true, [159982] = true, [159978] = true, [160008] = true, [159973] = true
@@ -73,6 +77,10 @@ local PP_Humanoids_BOTH_Neutral_Rare = {
 local PP_Humanoids_BOTH_Neutral_RareElite = {
     [162819] = true, [209893] = true, [216050] = true
 }
+
+-----------
+--HOSTILE--
+-----------
 -- Horde Friend/Neutral/Non-
 local PP_Humanoids_ALLIANCE_Hostile = {
     [1271] = true, [80181] = true, [118511] = true, [1993] = true, [44816] = true, [80162] = true, [334] = true, [36488] = true, [436] = true, [42230] = true, [711] = true, [61760] = true, [135325] = true, [71006] = true, [71002] = true, [113738] = true, [71141] = true, [11946] = true, [33980] = true, [3736] = true, [37706] = true, [118512] = true, [135981] = true, [42115] = true, [39153] = true, [51079] = true, [32863] = true, [159251] = true, [42359] = true, [46493] = true, [45175] = true, [2714] = true, [42536] = true, [17304] = true, [40905] = true, [38648] = true, [48269] = true, [41360] = true, [39280] = true, [3734] = true, [41408] = true, [48102] = true, [34353] = true, [32862] = true, [46756] = true, [39097] = true, [41291] = true, [46770] = true, [118510] = true, [44447] = true, [27118] = true, [16845] = true, [41311] = true, [3735] = true, [42231] = true, [66271] = true, [34592] = true, [58850] = true, [45015] = true, [47610] = true, [38997] = true, [16847] = true, [5472] = true, [5471] = true, [35158] = true, [61562] = true, [143678] = true, [104290] = true, [48453] = true, [16846] = true, [44449] = true, [38659] = true, [37170] = true, [42228] = true, [48331] = true, [27493] = true, [34248] = true, [11681] = true, [143677] = true, [92633] = true, [49009] = true, [67871] = true, [32859] = true, [67929] = true, [27424] = true, [92631] = true, [92626] = true, [46310] = true, [92224] = true, [3733] = true, [40906] = true, [16912] = true, [46772] = true, [42555] = true, [46870] = true, [66269] = true, [27470] = true, [5473] = true, [41407] = true, [68308] = true, [37925] = true, [13448] = true, [37922] = true, [12053] = true, [2618] = true, [38384] = true, [35161] = true, [32970] = true, [46765] = true, [68051] = true, [93987] = true, [104289] = true, [94347] = true, [5475] = true, [103215] = true, [34046] = true, [18192] = true, [38658] = true, [68126] = true, [32861] = true, [46166] = true, [46945] = true, [11683] = true, [103729] = true, [12052] = true, [6651] = true, [41138] = true, [38661] = true, [34366] = true, [66275] = true, [11947] = true, [66274] = true, [67346] = true, [103307] = true, [66267] = true, [47607] = true, [47608] = true, [863] = true, [66272] = true, [12051] = true, [48535] = true, [46486] = true, [34518] = true, [66273] = true, [114717] = true, [40904] = true, [13088] = true, [67637] = true, [67435] = true, [92634] = true, [49008] = true, [67869] = true, [67826] = true, [45987] = true, [16911] = true, [13176] = true, [67357] = true, [67520] = true, [5474] = true, [103218] = true, [41437] = true, [67399] = true, [50575] = true, [68114] = true, [67429] = true, [54627] = true, [13428] = true, [67330] = true, [46851] = true, [66270] = true, [138135] = true, [103457] = true, [23760] = true, [13359] = true, [47609] = true, [121930] = true, [67861] = true, [67598] = true, [67602] = true, [103449] = true, [103453] = true, [66276] = true, [66268] = true, [41368] = true, [51166] = true, [67563] = true, [32860] = true, [61557] = true, [137489] = true, [67334] = true, [36353] = true, [67362] = true, [43376] = true, [42609] = true, [55193] = true, [68647] = true, [36618] = true, [136015] = true, [11682] = true, [67873] = true, [34591] = true, [103210] = true, [103446] = true, [39282] = true, [13079] = true, [145443] = true, [67870] = true, [47214] = true, [39279] = true, [67281] = true, [47428] = true, [46749] = true, [103745] = true, [45989] = true, [34590] = true, [103757] = true, [39096] = true, [92591] = true, [68050] = true, [23865] = true, [67625] = true, [68613] = true, [67284] = true, [103222] = true, [145013] = true, [67638] = true, [67283] = true, [3297] = true, [46874] = true, [103245] = true, [23982] = true, [2619] = true, [56240] = true, [67564] = true, [49006] = true, [2398] = true, [135865] = true, [67427] = true, [130815] = true, [41370] = true, [35160] = true, [45178] = true, [90899] = true, [49007] = true, [13140] = true, [11898] = true, [41367] = true, [135156] = true, [41062] = true, [67646] = true, [33356] = true, [45187] = true, [68639] = true, [67814] = true, [41526] = true, [144724] = true, [38826] = true, [141891] = true, [130120] = true, [91693] = true, [149959] = true, [118627] = true, [118624] = true, [145017] = true, [136196] = true, [136950] = true, [90902] = true, [118629] = true, [135159] = true
@@ -88,7 +96,7 @@ local PP_Humanoids_HORDE_Hostile = {
 -- - Wrath
 -- - Cata
 -- and so on
-local PP_Humanoids_BOTH_Hostile_Normal = {
+PP_Humanoids_BOTH_Hostile_Normal = {
     [9451] = true, [9448] = true, [2242] = true, [5840] = true, [10738] = true, [7037] = true, [2595] = true, [11881] = true, [9046] = true, [4802] = true, [9450] = true, [2783] = true, [670] = true, [8551] = true, [7441] = true, [116] = true, [7034] = true, [437] = true, [2372] = true, [7855] = true, [3383] = true, [8920] = true, [7438] = true, [285] = true, [920] = true, [5861] = true, [11880] = true, [1565] = true, [11882] = true, [3711] = true, [7025] = true, [2369] = true, [3987] = true, [10916] = true, [2718] = true, [40] = true, [1907] = true, [3268] = true, [429] = true, [7858] = true, [2417] = true, [3111] = true, [2646] = true, [5839] = true, [880] = true, [327] = true, [8561] = true, [2570] = true, [1259] = true, [4656] = true, [3266] = true, [1935] = true, [94] = true, [4723] = true, [11443] = true, [518] = true, [1653] = true, [2371] = true, [4461] = true, [446] = true, [2597] = true, [1117] = true, [2740] = true, [7156] = true, [473] = true, [2556] = true, [7155] = true, [449] = true, [589] = true, [6846] = true, [674] = true, [2640] = true, [7440] = true, [580] = true, [1115] = true, [9447] = true, [9517] = true, [3278] = true, [4463] = true, [2562] = true, [7012] = true, [4846] = true, [10399] = true, [4467] = true, [391] = true, [2950] = true, [3925] = true, [7442] = true, [1664] = true, [2254] = true, [6123] = true, [1035] = true, [1718] = true, [11883] = true, [2979] = true, [1564] = true, [5846] = true, [7114] = true, [1144] = true, [3113] = true, [9449] = true, [4845] = true, [433] = true, [7154] = true, [431] = true, [780] = true, [7036] = true, [2643] = true, [4064] = true, [1038] = true, [5974] = true, [1539] = true, [4844] = true, [4713] = true, [2377] = true, [2644] = true, [8408] = true, [3115] = true, [7035] = true, [1061] = true, [735] = true, [2951] = true, [423] = true, [7175] = true, [2039] = true, [1057] = true, [1034] = true, [7011] = true, [478] = true, [1162] = true, [2962] = true, [702] = true, [2370] = true, [476] = true, [709] = true, [1535] = true, [9956] = true, [3384] = true, [8419] = true, [7439] = true, [697] = true, [95] = true, [1538] = true, [8896] = true, [7856] = true, [1197] = true, [8548] = true, [4462] = true, [699] = true, [587] = true, [2596] = true, [1062] = true, [3271] = true, [474] = true, [5646] = true, [8902] = true, [675] = true, [2648] = true, [2647] = true, [3276] = true, [2552] = true, [2318] = true, [1562] = true, [1662] = true, [7157] = true, [6370] = true, [4460] = true, [712] = true, [432] = true, [784] = true, [3116] = true, [5240] = true, [533] = true, [3267] = true, [452] = true, [3713] = true, [6093] = true, [7158] = true, [978] = true, [4457] = true, [456] = true, [98] = true, [1537] = true, [4856] = true, [4851] = true, [2589] = true, [1096] = true, [1490] = true, [7028] = true, [2573] = true, [680] = true, [422] = true, [3265] = true, [6004] = true, [696] = true, [889] = true, [1161] = true, [3926] = true, [1176] = true, [2978] = true, [2642] = true, [701] = true, [3232] = true, [5844] = true, [5977] = true, [703] = true, [5236] = true, [7115] = true, [678] = true, [679] = true, [14621] = true, [15408] = true, [212] = true, [2591] = true, [921] = true, [1094] = true, [2645] = true, [8916] = true, [8338] = true, [6927] = true, [2641] = true, [2207] = true, [4638] = true, [545] = true, [60] = true, [5647] = true, [1251] = true, [1174] = true, [1543] = true, [5618] = true, [2571] = true, [3261] = true, [8637] = true, [7153] = true, [3117] = true, [5355] = true, [3942] = true, [732] = true, [513] = true, [127] = true, [426] = true, [8550] = true, [781] = true, [4711] = true, [4719] = true, [6195] = true, [2587] = true, [2588] = true, [3471] = true, [1934] = true, [1173] = true, [15213] = true, [5258] = true, [7027] = true, [7026] = true, [2564] = true, [11562] = true, [2010] = true, [2373] = true, [171] = true, [205] = true, [783] = true, [1172] = true, [15201] = true, [2977] = true, [677] = true, [5617] = true, [2965] = true, [1563] = true, [3198] = true, [2572] = true, [5261] = true, [2152] = true, [2011] = true, [2008] = true, [7725] = true, [7118] = true, [3273] = true, [8562] = true, [206] = true, [434] = true, [6190] = true, [676] = true, [5616] = true, [3717] = true, [694] = true, [4666] = true, [3195] = true, [12918] = true, [7397] = true, [1410] = true, [5234] = true, [11910] = true, [4657] = true, [2599] = true, [3112] = true, [3924] = true, [2374] = true, [2553] = true, [5251] = true, [7033] = true, [2422] = true, [7235] = true, [7120] = true, [1236] = true, [938] = true, [6222] = true, [4640] = true, [3114] = true, [9452] = true, [1540] = true, [1165] = true, [2590] = true, [3992] = true, [5615] = true, [671] = true, [4663] = true, [3196] = true, [2252] = true, [1036] = true, [2009] = true, [7112] = true, [475] = true, [942] = true, [7603] = true, [1142] = true, [4401] = true, [4404] = true, [517] = true, [5366] = true, [3943] = true, [11677] = true, [2375] = true, [11804] = true, [1544] = true, [2569] = true, [4664] = true, [594] = true, [2574] = true, [2717] = true, [548] = true, [515] = true, [881] = true, [1177] = true, [15200] = true, [3993] = true, [4465] = true, [3944] = true, [5089] = true, [3394] = true, [2567] = true, [8546] = true, [7369] = true, [8900] = true, [8897] = true, [3743] = true, [759] = true, [11685] = true, [4655] = true, [2257] = true, [4459] = true, [445] = true, [568] = true, [2893] = true, [2586] = true, [7038] = true, [1097] = true, [2554] = true, [597] = true, [11917] = true, [3197] = true, [4668] = true, [1665] = true, [6207] = true, [8547] = true, [4651] = true, [11440] = true, [2793] = true, [760] = true, [4361] = true, [898] = true, [5362] = true, [123] = true, [453] = true, [4712] = true, [4716] = true, [2241] = true, [8915] = true, [3283] = true, [1059] = true, [615] = true, [595] = true, [3932] = true, [6866] = true, [9462] = true, [2368] = true, [590] = true, [5975] = true, [4202] = true, [11913] = true, [7874] = true, [1536] = true, [6008] = true, [1388] = true, [3284] = true, [2558] = true, [2557] = true, [588] = true, [2256] = true, [11563] = true, [4362] = true, [3269] = true, [501] = true, [669] = true, [672] = true, [3445] = true, [11803] = true, [4665] = true, [3199] = true, [7372] = true, [504] = true, [818] = true, [4363] = true, [2949] = true, [2743] = true, [5860] = true, [4070] = true, [4466] = true, [2287] = true, [7396] = true, [7726] = true, [4659] = true, [4654] = true, [126] = true, [578] = true, [2773] = true, [1831] = true, [4714] = true, [7857] = true, [3921] = true, [3286] = true, [5243] = true, [8566] = true, [7379] = true, [3745] = true, [940] = true, [11657] = true, [710] = true, [500] = true, [8904] = true, [6006] = true, [2319] = true, [3922] = true, [3750] = true, [2006] = true, [939] = true, [937] = true, [761] = true, [8560] = true, [4403] = true, [46] = true, [1083] = true, [124] = true, [97] = true, [1660] = true, [9044] = true, [3285] = true, [1545] = true, [15202] = true, [5269] = true, [2015] = true, [1561] = true, [3379] = true, [11914] = true, [218] = true, [3272] = true, [979] = true, [3696] = true, [10475] = true, [6009] = true, [1167] = true, [2240] = true, [5862] = true, [3941] = true, [3282] = true, [2964] = true, [2963] = true, [3277] = true, [5249] = true, [5255] = true, [11915] = true, [3118] = true, [11442] = true, [11600] = true, [7113] = true, [943] = true, [4641] = true, [11559] = true, [1065] = true, [6007] = true, [6005] = true, [10982] = true, [2017] = true, [2018] = true, [3380] = true, [2255] = true, [6224] = true, [4281] = true, [1095] = true, [11603] = true, [10991] = true, [300] = true, [2253] = true, [8075] = true, [4646] = true, [4359] = true, [8553] = true, [117] = true, [1835] = true, [667] = true, [5057] = true, [5978] = true, [2007] = true, [7727] = true, [3274] = true, [4458] = true, [9043] = true, [2742] = true, [3940] = true, [2420] = true, [5253] = true, [5976] = true, [4648] = true, [4645] = true, [458] = true, [430] = true, [5645] = true, [4283] = true, [2976] = true, [8564] = true, [3397] = true, [4642] = true, [6909] = true, [782] = true, [11840] = true, [2555] = true, [5254] = true, [8565] = true, [8563] = true, [660] = true, [11918] = true, [11602] = true, [2739] = true, [4718] = true, [941] = true, [6132] = true, [8877] = true, [11839] = true, [2566] = true, [4653] = true, [3275] = true, [8876] = true, [11604] = true, [11838] = true, [10987] = true, [7788] = true, [11605] = true, [11837] = true, [4667] = true,
     [22082] = true, [19762] = true, [17136] = true, [21302] = true, [20727] = true, [20753] = true, [18340] = true, [18391] = true, [19768] = true, [20452] = true, [23154] = true, [21296] = true, [20770] = true, [26223] = true, [18238] = true, [23592] = true, [20397] = true, [21661] = true, [26222] = true, [23188] = true, [18853] = true, [19174] = true, [18064] = true, [20115] = true, [17150] = true, [18118] = true, [17134] = true, [21196] = true, [18089] = true, [20878] = true, [22099] = true, [20136] = true, [21454] = true, [21662] = true, [18583] = true, [18262] = true, [20207] = true, [20723] = true, [21644] = true, [18077] = true, [18117] = true, [20474] = true, [18203] = true, [18088] = true, [23595] = true, [18080] = true, [16867] = true, [18540] = true, [18116] = true, [21370] = true, [22144] = true, [21057] = true, [18065] = true, [21254] = true, [17148] = true, [18202] = true, [16929] = true, [16927] = true, [18554] = true, [17057] = true, [21718] = true, [20731] = true, [20459] = true, [21650] = true, [18121] = true, [22017] = true, [19989] = true, [16870] = true, [19779] = true, [17138] = true, [16162] = true, [17135] = true, [18423] = true, [19952] = true, [21180] = true, [17083] = true, [18204] = true, [21478] = true, [22822] = true, [18351] = true, [18875] = true, [17084] = true, [19996] = true, [21902] = true, [16878] = true, [18855] = true, [19982] = true, [19641] = true, [16337] = true, [25073] = true, [20872] = true, [16315] = true, [19795] = true, [22148] = true, [22084] = true, [15643] = true, [22242] = true, [18952] = true, [19312] = true, [20456] = true, [16769] = true, [18658] = true, [18449] = true, [20139] = true, [18595] = true, [21238] = true, [18352] = true, [20795] = true, [19705] = true, [18720] = true, [19415] = true, [18541] = true, [20444] = true, [21907] = true, [19806] = true, [21300] = true, [19410] = true, [21911] = true, [20135] = true, [24819] = true, [24818] = true, [16772] = true, [19947] = true, [22018] = true, [19990] = true, [19985] = true, [20221] = true, [19984] = true, [21284] = true, [19998] = true, [21720] = true, [19796] = true, [16519] = true, [19413] = true, [18451] = true, [21742] = true, [20248] = true, [18120] = true, [19422] = true, [19948] = true, [22016] = true, [19264] = true, [20095] = true, [16967] = true, [19593] = true, [21089] = true, [17607] = true, [16925] = true, [21046] = true, [21660] = true, [19767] = true, [18086] = true, [21179] = true, [18122] = true, [21503] = true, [23586] = true, [22243] = true, [21047] = true, [24978] = true, [18211] = true, [18160] = true, [19411] = true, [18453] = true, [20134] = true, [20140] = true, [19830] = true, [18115] = true, [19792] = true, [22143] = true, [18046] = true, [21649] = true, [18452] = true, [18154] = true, [18857] = true, [16964] = true, [18037] = true, [18413] = true, [21242] = true, [19997] = true, [16810] = true, [20458] = true, [20757] = true, [20732] = true, [23593] = true, [17664] = true, [23841] = true, [21477] = true, [24966] = true, [21810] = true, [19642] = true, [21455] = true, [16334] = true, [19995] = true, [22341] = true, [17146] = true, [16344] = true, [16469] = true, [17149] = true, [18539] = true, [19993] = true, [17137] = true, [23589] = true, [18298] = true, [23594] = true, [19986] = true, [17088] = true, [19414] = true, [17462] = true, [18450] = true, [18852] = true, [17141] = true, [17336] = true, [17142] = true, [19991] = true, [21368] = true, [16966] = true, [16343] = true, [18455] = true, [19983] = true, [21285] = true, [19701] = true, [22378] = true, [22342] = true, [18207] = true, [15685] = true, [19707] = true, [18456] = true, [18440] = true, [16335] = true, [20334] = true, [16871] = true, [19992] = true, [16876] = true, [18260] = true, [21189] = true, [24979] = true, [22343] = true, [23311] = true, [19457] = true, [23714] = true, [19945] = true, [19987] = true, [18850] = true, [17604] = true, [19442] = true, [15644] = true, [15641] = true, [15668] = true, [15669] = true, [20726] = true, [16345] = true, [17192] = true, [18123] = true, [20089] = true, [23637] = true, [22252] = true, [20453] = true, [15645] = true, [22175] = true, [19424] = true, [24976] = true, [21717] = true, [18113] = true, [19988] = true, [26166] = true, [15937] = true, [18454] = true, [18457] = true, [18079] = true, [17334] = true, [20766] = true, [22363] = true, [21405] = true, [17610] = true, [17609] = true, [21637] = true, [19831] = true, [16318] = true, [23590] = true, [15670] = true, [16346] = true, [20210] = true, [21803] = true, [21453] = true, [16907] = true, [19994] = true, [18159] = true, [19635] = true, [22821] = true, [20270] = true, [15950] = true, [17147] = true, [17331] = true, [21809] = true, [17325] = true, [19957] = true, [18992] = true, [19789] = true, [18087] = true, [19946] = true, [23679] = true, [19943] = true, [18044] = true, [22081] = true, [21505] = true, [15642] = true, [16873] = true, [17320] = true, [23591] = true, [20614] = true, [17608] = true, [17606] = true, [17333] = true, [24960] = true, [25060] = true, [22388] = true, [20609] = true, [16341] = true, [19643] = true, [17139] = true, [20443] = true, [19733] = true, [15692] = true, [25087] = true, [16938] = true, [20435] = true, [20161] = true, [22254] = true, [17330] = true, [17185] = true, [19944] = true, [17329] = true, [17321] = true, [22387] = true, [22241] = true, [16317] = true, [16340] = true, [19453] = true, [17143] = true, [21383] = true, [17328] = true, [17327] = true, [20088] = true, [16937] = true, [18114] = true, [21382] = true, [18119] = true, [22160] = true, [20601] = true, [21640] = true, [20756] = true, [23620] = true, [17190] = true, [17191] = true, [19263] = true, [19788] = true, [19765] = true, [18548] = true, [20765] = true,
     [30037] = true, [29569] = true, [26544] = true, [38023] = true, [27333] = true, [34728] = true, [27546] = true, [24016] = true, [34838] = true, [27367] = true, [29793] = true, [25217] = true, [32285] = true, [34734] = true, [26836] = true, [32250] = true, [37984] = true, [28373] = true, [29235] = true, [27008] = true, [38030] = true, [31738] = true, [31145] = true, [28036] = true, [27357] = true, [32263] = true, [28123] = true, [23991] = true, [27246] = true, [25801] = true, [29413] = true, [25719] = true, [27206] = true, [24213] = true, [26357] = true, [27830] = true, [37214] = true, [32290] = true, [32349] = true, [24162] = true, [24018] = true, [32291] = true, [27279] = true, [32276] = true, [26280] = true, [26926] = true, [27207] = true, [24161] = true, [28112] = true, [28111] = true, [25216] = true, [27006] = true, [32297] = true, [29792] = true, [26348] = true, [25215] = true, [25378] = true, [29843] = true, [32289] = true, [29490] = true, [26577] = true, [26270] = true, [27330] = true, [27202] = true, [26268] = true, [27358] = true, [29376] = true, [29370] = true, [28124] = true, [31258] = true, [24461] = true, [27860] = true, [29338] = true, [29695] = true, [38006] = true, [26795] = true, [28080] = true, [26786] = true, [32262] = true, [29323] = true, [26705] = true, [28079] = true, [28081] = true, [26449] = true, [23990] = true, [25479] = true, [27859] = true, [27237] = true, [24957] = true, [25430] = true, [28110] = true, [27203] = true, [29374] = true, [26493] = true, [31267] = true, [25800] = true, [24676] = true, [30003] = true, [25803] = true, [34839] = true, [26815] = true, [25979] = true, [28109] = true, [26920] = true, [26922] = true, [29518] = true, [27236] = true, [29626] = true, [27547] = true, [24015] = true, [38016] = true, [28538] = true, [25609] = true, [26434] = true, [25392] = true, [23711] = true, [26408] = true, [25522] = true, [30860] = true, [27570] = true, [31731] = true, [24334] = true, [25468] = true, [26575] = true, [27210] = true, [23676] = true, [24030] = true, [27334] = true, [27615] = true, [30868] = true, [23666] = true, [26762] = true, [27232] = true, [37917] = true, [24567] = true, [29874] = true, [25804] = true, [27004] = true, [27554] = true, [23673] = true, [27235] = true, [27211] = true, [23669] = true, [25353] = true, [32236] = true, [29553] = true, [25701] = true, [26655] = true, [29333] = true, [29717] = true, [23653] = true, [27024] = true, [27927] = true, [24644] = true, [23674] = true, [25433] = true, [26708] = true, [23940] = true, [26198] = true, [27926] = true, [27234] = true, [23654] = true, [26816] = true, [28078] = true, [25685] = true, [25836] = true, [26480] = true, [28188] = true, [29331] = true, [28105] = true, [27342] = true, [38032] = true, [27260] = true, [23989] = true, [26199] = true, [27278] = true, [23662] = true, [24460] = true, [32268] = true, [26797] = true, [25687] = true, [26820] = true, [25427] = true, [25432] = true, [28575] = true, [25521] = true, [32259] = true, [27356] = true, [27009] = true, [27555] = true, [29875] = true, [23796] = true, [25026] = true, [25520] = true, [26389] = true, [32279] = true, [24954] = true, [25470] = true, [29489] = true, [28034] = true, [30725] = true, [24638] = true, [27332] = true, [25615] = true, [28035] = true, [26410] = true, [27209] = true, [23657] = true, [25209] = true, [25699] = true, [28494] = true, [26828] = true, [25434] = true, [26295] = true, [25880] = true, [29330] = true, [25523] = true, [26496] = true, [26319] = true, [26943] = true, [25316] = true, [25467] = true, [25726] = true, [33537] = true, [23658] = true, [23656] = true, [27539] = true, [26681] = true, [28403] = true, [29426] = true, [27233] = true, [27355] = true, [29554] = true, [26201] = true, [23655] = true, [24116] = true, [23660] = true, [28303] = true, [27701] = true, [25720] = true, [26923] = true, [24576] = true, [30222] = true, [24214] = true, [31262] = true, [24635] = true, [25700] = true, [29880] = true, [25210] = true, [23665] = true, [23667] = true, [23932] = true, [32238] = true, [25725] = true, [28496] = true, [27259] = true, [26334] = true, [26823] = true, [30751] = true, [24014] = true, [24540] = true, [23931] = true, [26409] = true, [29369] = true, [23661] = true, [24459] = true, [28402] = true, [26942] = true, [26411] = true, [24216] = true, [23652] = true, [26919] = true, [26425] = true, [29237] = true, [25806] = true, [30243] = true, [25839] = true, [29623] = true, [29407] = true, [27627] = true, [30046] = true, [24249] = true, [28418] = true, [25501] = true, [25584] = true, [27177] = true, [25429] = true, [28916] = true, [23875] = true, [25651] = true, [30632] = true, [26451] = true, [29404] = true, [26257] = true, [23664] = true, [31401] = true, [27343] = true, [28495] = true, [25686] = true, [23672] = true, [25843] = true, [23670] = true, [23663] = true, [28917] = true, [31746] = true, [27340] = true, [23871] = true, [28918] = true, [24212] = true, [24215] = true, [26196] = true, [28861] = true, [29329] = true, [28417] = true, [26414] = true, [29622] = true, [26965] = true, [26416] = true, [27731] = true, [23678] = true, [23967] = true, [28442] = true, [26356] = true, [25613] = true, [29652] = true, [25449] = true, [24250] = true, [23651] = true, [26704] = true, [29211] = true, [26447] = true, [27699] = true, [28465] = true, [23675] = true, [23668] = true, [28602] = true, [29236] = true, [26827] = true, [25496] = true, [26197] = true, [26428] = true, [26825] = true, [25428] = true, [26436] = true,
@@ -121,37 +129,140 @@ local PP_Humanoids_BOTH_Hostile_RareElite = {
     [159496] = true, [234499] = true, [230137] = true, [230800] = true, [203621] = true, [193198] = true, [9736] = true, [168147] = true, [193227] = true, [203627] = true, [206203] = true, [203646] = true, [10081] = true, [9596] = true, [197344] = true, [6228] = true, [9219] = true, [109317] = true, [104524] = true, [193680] = true, [186783] = true, [216048] = true, [10080] = true, [200885] = true, [216052] = true, [9718] = true, [10082] = true, [220771] = true, [109163] = true, [201540] = true, [9218] = true, [222624] = true, [109195] = true, [109015] = true, [104513] = true, [111651] = true, [109281] = true, [112757] = true, [216051] = true, [9217] = true, [201538] = true, [109318] = true, [104523] = true, [159156] = true, [111653] = true, [105728] = true, [121134] = true, [201539] = true, [110367] = true, [116395] = true, [109575] = true, [104521] = true, [109677] = true, [109125] = true, [109648] = true, [104522] = true, [138279] = true, [112758] = true, [155838] = true, [104519] = true, [108822] = true, [116159] = true, [201552] = true, [201558] = true, [116158] = true,
 }
 
--- [1] = trueBeast
--- [2] = trueDragonkin
--- [3] = trueDemon
--- [4] = truelemental
--- [5] = trueGiant
--- [6] = truendead
--- [7] = trueHumanoid
--- [9] = trueMechanical
--- [10] = truencategorized
--- [15] = trueAberration
-function Thievery_CheckTargetForPP(unitID, creatureType, playerIsAlliance, Classification)
-    if not unitID then return end
-    if creatureType == [15] = truehen
-        PP_Aberrations_ALL
-    elseif creatureType == [1] = truehen
-        PP_Beasts_ALL
-    elseif creatureType == [3] = truehen
-        PP_Demons_ALL
-    elseif creatureType == [2] = truehen
-        PP_Dragonkin_ALL
-    elseif creatureType == [4] = truehen
-        PP_Elementals_ALL
-    elseif creatureType == [5] = truehen
-        PP_Giants_ALL
-    elseif creatureType == [9] = truehen
-        PP_Mechanicals_ALL
-    elseif creatureType == [6] = truehen
-        PP_Uncategorized_ALL
-    elseif creatureType == [10] = truehen
-
-    elseif creatureType == [7] = truehen
-
+-- 1 Beast
+-- 2 Dragonkin
+-- 3 Demon
+-- 4 Elemental
+-- 5 Giant
+-- 6 ndead
+-- 7 Humanoid
+-- 9 Mechanical
+-- 10 ncategorized
+-- 15 Aberration
+function Thievery_CheckTargetForPP(targetTable, isAlliance)
+    if not targetTable.npcID then return end
+    print(targetTable.npcID, targetTable.creatureType, targetTable.classification, targetTable.reaction)
+    if targetTable.creatureType == 15 then
+        if PP_Aberrations_ALL[targetTable.npcID] then
+            print("Aberration Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 1 then
+        if PP_Beasts_ALL[targetTable.npcID] then
+            print("Beast Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 3 then
+        if PP_Demons_ALL[targetTable.npcID] then
+            print("Demon Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 2 then
+        if PP_Dragonkin_ALL[targetTable.npcID] then
+            print("Dragonkin Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 4 then
+        if PP_Elementals_ALL[targetTable.npcID] then
+            print("Elemental Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 5 then
+        if PP_Giants_ALL[targetTable.npcID] then
+            print("Giant Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 9 then
+        if PP_Mechanicals_ALL[targetTable.npcID] then
+            print("Mechanical Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 6 then
+        if PP_Undead_Neutral_ALL[targetTable.npcID] then
+            print("Neutral Undead Unit: ", targetTable.npcID, "is pickable")
+            return true
+        elseif PP_Undead_Hostile_ALL[targetTable.npcID] then
+            print("Hostile Undead Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 10 then
+        if PP_Uncategorized_ALL[targetTable.npcID] then
+            print("Uncategorized Unit: ", targetTable.npcID, "is pickable")
+            return true
+        end
+    elseif targetTable.creatureType == 7 then
+        --print("this be humanoid")
+        -- 2:Hostile, 4:Neutral
+        if targetTable.reaction == 2 then
+            if isAlliance then
+                if PP_Humanoids_ALLIANCE_Hostile[targetTable.npcID] then
+                    print("Hostile Humanoid Unit(Hostile only to Alliance): ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            else
+                if PP_Humanoids_HORDE_Hostile[targetTable.npcID] then
+                    print("Hostile Humanoid Unit(Hostile only to Horde): ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            end
+            if targetTable.classification == "rareelite" then
+                if PP_Humanoids_BOTH_Hostile_RareElite[targetTable.npcID] then
+                    print("Hostile Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "rare" then
+                if PP_Humanoids_BOTH_Hostile_Rare[targetTable.npcID] then
+                    print("Hostile Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "elite" then
+                if PP_Humanoids_BOTH_Hostile_Elite[targetTable.npcID] then
+                    print("Hostile Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "normal" or targetTable.classification == "trivial" or targetTable.classification == "minus" then
+                print("tis normal, and hostile", PP_Humanoids_BOTH_Hostile_Normal[targetTable.npcID])
+                if PP_Humanoids_BOTH_Hostile_Normal[targetTable.npcID] == true then
+                    print("Hostile Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            end
+        elseif targetTable.reaction == 4 then
+            if isAlliance then
+                if PP_Humanoids_ALLIANCE_Neutral[targetTable.npcID] then
+                    print("Neutral Humanoid Unit(Neutral only to Alliance): ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            else
+                if PP_Humanoids_HORDE_Neutral[targetTable.npcID] then
+                    print("Neutral Humanoid Unit(Neutral only to Horde): ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            end
+            if targetTable.classification == "rareelite" then
+                if PP_Humanoids_BOTH_Neutral_RareElite[targetTable.npcID] then
+                    print("Neutral Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "rare" then
+                if PP_Humanoids_BOTH_Neutral_Rare[targetTable.npcID] then
+                    print("Neutral Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "elite" then
+                if PP_Humanoids_BOTH_Neutral_Elite[targetTable.npcID] then
+                    print("Neutral Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            elseif targetTable.classification == "normal" or targetTable.classification == "trivial" or targetTable.classification == "minus" then
+                if PP_Humanoids_BOTH_Neutral_Normal[targetTable.npcID] then
+                    print("Neutral Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
+                    return true
+                end
+            end
+        else
+            print("Thievery ERROR: friendly unit checked as enemy, please contact the addon author")
+        end
     end
+    return false
 end

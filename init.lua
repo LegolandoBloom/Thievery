@@ -1,4 +1,9 @@
 
+SLASH_ANGLEURUNDERLIGHTSHOW1 = "/thief"
+SLASH_ANGLEURUNDERLIGHTSHOW2 = "/thievery"
+SlashCmdList["ANGLEURUNDERLIGHTSHOW"] = function() 
+    Thievery_ConfigPanel:Show()
+end
 
 
 function Thievery_SingleDelayer(delay, timeElapsed, elapsedThreshhold, delayFrame, cycleFunk, endFunk)

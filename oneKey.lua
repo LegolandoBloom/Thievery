@@ -1,37 +1,8 @@
+
 local colorDebug = CreateColor(0.65, 1, 0) -- grass green
 local colorYello = CreateColor(1.0, 0.82, 0.0)
 local colorGrae = CreateColor(0.85, 0.85, 0.85)
 local colorBlu = CreateColor(0.61, 0.85, 0.92)
-
-
-Legolando_MoveFrameMixin = {}
-
-
-
-Legolando_MoveAndPlaceMixin = {}
-
-function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting)
-    local parent = self:GetParent()
-    if parent.savedVarTable and parent.savedVarKey then
-        if not resetting then
-            local point = {self:GetPoint()}
-            parent.savedVarTable[parent.savedVarKey] = point
-        end
-    else
-        print("No saved var table or key attached")
-    end
-    if parent.callFunction then
-        parent.callFunction()
-    end
-end
-
-function Legolando_MoveAndPlaceMixin:ResetPosition()
-    local parent = self:GetParent()
-    self:ClearAllPoints()
-    self:SetPoint("TOPLEFT", parent, "TOPRIGHT")
-    parent.savedVarTable[parent.savedVarKey] = {}
-    self:UpdatePosition(true)
-end
 
 Legolando_KeybindFrameMixin = {}
 
@@ -47,12 +18,6 @@ Legolando_KeybindFrameMixin.Modifiers = {
     }
 }
 
-function Legolando_KeybindFrameMixin:CallOnBindFunction()
-    if self.onBindFunction then
-        self.onBindFunction()
-    end
-end
-
 function Legolando_KeybindFrameMixin:checkTableAndReference()
     local teeburu = self.savedVarTable
     if not teeburu then
@@ -62,6 +27,10 @@ function Legolando_KeybindFrameMixin:checkTableAndReference()
     local key = self.savedVarKey
     if not self.savedVarKey then
         print("no reference key for the saved var table")
+        return false
+    end
+    if teeburu[key] == nil then
+        print("key is not initialized at the table")
         return false
     end
     return true
@@ -76,10 +45,10 @@ function Legolando_KeybindFrameMixin.OnClick(self, button, down)
         else
             self.selected = true
             self:SetSelected(true)
-            self:SetScript("OnKeyDown", Legolando_KeybindFrame_Modified)
-            self:SetScript("OnMouseWheel", Legolando_KeybindFrame_MouseWheel)
-            self:SetScript("OnMouseDown", Legolando_KeybindFrame_Mouse)
-            self:SetScript("OnGamePadButtonDown", Legolando_KeybindFrame_GamePad)
+            self:SetScript("OnKeyDown", self:Modified)
+            self:SetScript("OnMouseWheel", self:MouseWheel)
+            self:SetScript("OnMouseDown", self:Mouse)
+            self:SetScript("OnGamePadButtonDown", self:GamePad)
             self:SetPropagateKeyboardInput(false)
             if self.disclaimerText then 
                 self.disclaimer:Show()
@@ -92,7 +61,7 @@ function Legolando_KeybindFrameMixin.OnClick(self, button, down)
     end
 end
 
-function Legolando_KeybindFrame_OnUp(self, key)
+function Legolando_KeybindFrameMixin:OnUp(self, key)
     if self.Modifiers.modifiedListening == key then
         self.Modifiers.modifiedListening = nil
         if self.disclaimerText then 
@@ -100,10 +69,10 @@ function Legolando_KeybindFrame_OnUp(self, key)
         end
         self:SetText(self.savedVarTable[self.savedVarKey])
         self:SetScript("OnKeyUp", nil)
-        self:SetScript("OnKeyDown", Legolando_KeybindFrame_Modified)
-        self:SetScript("OnMouseWheel", Legolando_KeybindFrame_MouseWheel)
-        self:SetScript("OnMouseDown", Legolando_KeybindFrame_Mouse)
-        self:SetScript("OnGamePadButtonDown", Legolando_KeybindFrame_GamePad)
+        self:SetScript("OnKeyDown", self:Modified)
+        self:SetScript("OnMouseWheel", self:MouseWheel)
+        self:SetScript("OnMouseDown", self:Mouse)
+        self:SetScript("OnGamePadButtonDown", self:GamePad)
     end
 end
 
@@ -112,7 +81,7 @@ local mouseButtons = {
     ["Button4"] = "BUTTON4",
     ["Button5"] = "BUTTON5",
 }
-function Legolando_KeybindFrame_Mouse(self, button)
+function Legolando_KeybindFrameMixin:Mouse(self, button)
     if button == "LeftButton" or button =="RightButton" then
         --nothing
     else
@@ -139,11 +108,10 @@ function Legolando_KeybindFrame_Mouse(self, button)
         self:SetScript("OnMouseDown", nil)
         self:SetScript("OnGamePadButtonDown", nil)
         self:SetText(teeburu[refKey])
-        self:CallOnBindFunction()
     end
 end
 
-function Legolando_KeybindFrame_GamePad(self, button)
+function Legolando_KeybindFrameMixin:GamePad(self, button)
     local teeburu = self.savedVarTable
     local refKey = self.savedVarKey
     self:SetScript("OnKeyUp", nil)
@@ -157,10 +125,9 @@ function Legolando_KeybindFrame_GamePad(self, button)
     teeburu[refKey] = button
     self:SetText(teeburu[refKey])
     print("Key set to: " .. teeburu[refKey])
-    self:CallOnBindFunction()
 end
 
-function Legolando_KeybindFrame_MouseWheel(self, delta)
+function Legolando_KeybindFrameMixin:MouseWheel(self, delta)
     local scroll
     if delta == 1 then
         scroll = "MOUSEWHEELUP"
@@ -193,10 +160,9 @@ function Legolando_KeybindFrame_MouseWheel(self, delta)
     self:SetScript("OnMouseDown", nil)
     self:SetScript("OnGamePadButtonDown", nil)
     self:SetText(teeburu[refKey])
-    self:CallOnBindFunction()
 end
 
-function Legolando_KeybindFrame_Modified(self, key)
+function Legolando_KeybindFrameMixin:Modified(self, key)
     local teeburu = self.savedVarTable
     local refKey = self.savedVarKey
     if key == "ENTER" then
@@ -207,12 +173,12 @@ function Legolando_KeybindFrame_Modified(self, key)
         self:SetText(key .. "-" .. "?")
         self.Modifiers.modifiedListening = key
         if self.disclaimerTextModified then
-            self.disclaimer:SetText(self.disclaimerTextModified .. key)
+            self.disclaimer:SetText(self.disclaimerTextModified, self.Modifiers.modifiedListening)
         end
-        self:SetScript("OnKeyUp", Legolando_KeybindFrame_OnUp)
-        self:SetScript("OnKeyDown", Legolando_KeybindFrame_Modified)
-        self:SetScript("OnMouseWheel", Legolando_KeybindFrame_MouseWheel)
-        self:SetScript("OnMouseDown", Legolando_KeybindFrame_Mouse)
+        self:SetScript("OnKeyUp", self:OnUp)
+        self:SetScript("OnKeyDown", self:Modified)
+        self:SetScript("OnMouseWheel", self:MouseWheel)
+        self:SetScript("OnMouseDown", self:Mouse)
     elseif self.Modifiers.modifiedListening then
         self:SetScript("OnKeyUp", nil)
         self:SetScript("OnKeyDown", nil)
@@ -226,7 +192,6 @@ function Legolando_KeybindFrame_Modified(self, key)
         self:SetText(teeburu[refKey])
         print("Key set to: " .. key .. ", with modifier " .. self.Modifiers.modifiedListening)
         self.Modifiers.modifiedListening = nil
-        self:CallOnBindFunction()
     else
         self:SetScript("OnKeyUp", nil)
         self:SetScript("OnKeyDown", nil)
@@ -239,7 +204,6 @@ function Legolando_KeybindFrame_Modified(self, key)
         teeburu[refKey] = key
         self:SetText(teeburu[refKey])
         print("Key set to: " .. teeburu[refKey])
-        self:CallOnBindFunction()
     end 
 end
 
@@ -265,114 +229,4 @@ function Legolando_KeybindFrameMixin:Unbind(self)
     teeburu[refKey] = nil
     self:SetText(self.savedVarTable[self.savedVarKey])
     print("Keybind removed")
-end
-
-
-
-Legolando_CheckboxesFrameMixin = {}
-
-function Legolando_CheckboxesFrameMixin:UpdateCheckboxes()
-    local teeburu = self.savedVarTable
-    if not teeburu then
-        print("checkbox parent doesn't have a saved variable table attached")
-        return
-    end
-    local children = {self:GetChildren()}
-    for i, child in pairs(children) do
-        if child:GetObjectType() == "CheckButton" and child.reference then
-            local savedVar = teeburu[child.reference]
-            if savedVar then
-                if savedVar == true then
-                    child:SetChecked(true)
-                elseif savedVar == false then
-                    child:SetChecked(false)
-                end
-            end
-        end
-    end
-end
-
-Legolando_CheckboxMixin = {};
-
-function Legolando_CheckboxMixin:greyOut()
-    self:SetChecked(false)
-    self:Disable()
-    self.text:SetTextColor(0.9, 0.9, 0.9)
-    self.disabledText:Show()
-    if self.dropDown then
-        self.dropDown:Hide()
-    end
-end
-
-function Legolando_CheckboxMixin:reposition()
-    local width, height = self.text:GetSize()
-    self.text:ClearAllPoints()
-    self.text:SetPoint("RIGHT", self, "LEFT")
-    self.disabledText:SetPoint("LEFT", self, "RIGHT")
-    local _, _, _, offsetX, offsetY = self:GetPoint()
-    self:AdjustPointsOffset(width, 0)
-end
-
-function Legolando_CheckboxMixin:OnClick()
-    local parent = self:GetParent()
-    local teeburu = parent.savedVarTable
-    if not self.reference then
-        print("no checkbox reference string")
-        return
-    end
-    if not teeburu then
-        print("no saved variable table attached")
-        return
-    end
-    if teeburu[self.reference] == nil then
-        print("checkbox reference not found in saved variable table")
-        return
-    end
-    if self:GetChecked() then
-        teeburu[self.reference] = true
-    elseif self:GetChecked() == false then
-        teeburu[self.reference] = false
-    end
-end
-
-
-Thievery_TutorialTooltipMixin = {}
-
-function Thievery_TutorialTooltipMixin:OnShow()
-    self:SetPadding(self.paddingL, self.paddingB, self.paddingR, self.paddingT)
-end
-
-function Thievery_TutorialTooltipMixin:PlaceTexture(texturePath, width, height, anchor, padOffsetX, padOffsetY)
-    if not texturePath then return end
-    self.texture:ClearAllPoints()
-    self.texture:SetTexture(texturePath)
-    self.texture:SetSize(width, height)
-    self.texture:SetPoint(anchor, self, anchor)
-    self:ResetPadding()
-    if anchor == "TOPLEFT" then
-        self.paddingL = width + padOffsetX
-        self.paddingT = height + padOffsetY
-    elseif anchor == "TOPRIGHT" then
-        self.paddingR = width + padOffsetX
-        self.paddingT = height + padOffsetY
-    elseif anchor == "BOTTOMLEFT" then
-        self.paddingL = width + padOffsetX
-        self.paddingB = height + padOffsetY
-    elseif anchor == "BOTTOMRIGHT" then
-        self.paddingR = width + padOffsetX
-        self.paddingB = height + padOffsetY
-    end
-end
-
-function Thievery_TutorialTooltipMixin:ResetPadding()
-    self.paddingL = 0
-    self.paddingB = 0
-    self.paddingR = 0
-    self.paddingT = 0
-end
-
-function Thievery_TutorialTooltipMixin:OnHide()
-    self.texture:SetTexture(nil)
-    self.texture:ClearAllPoints()
-    self:ResetPadding()    
 end

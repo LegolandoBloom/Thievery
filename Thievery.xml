@@ -2,49 +2,127 @@
 ..\FrameXML\UI.xsd">
 
  
-   
 
     <Frame name="Thievery">
         <Scripts>
             <OnLoad function="Thievery_OnLoad"/>
         </Scripts>
         <Frames>
-            <Button name="Thievery_PickpocketButton" parentKey="pickpocketButton" inherits="SecureActionButtonTemplate" hidden="false">
-
+            <Button parent="Thievery" name="Thievery_PickpocketButton" parentKey="pickpocketButton" inherits="SecureActionButtonTemplate" hidden="false">
+                <Scripts>
+                    <PreClick>
+                        if Thievery_Config.Checkboxes.playSound == true then
+                            PlaySound(835)
+                        end
+                    </PreClick>
+                </Scripts>
             </Button>
             <Frame name="Thievery_Visual" parentKey="visual" hidden="true">
                 <Size x="1" y="1"/>
                 <Anchors>
-                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="250" y="100"/>
+                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="50" y="30"/>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <Texture name="Thievery_TestImage" parentKey="testImage" file="Interface/AddOns/Thievery/Images/curseicon1.png" hidden="false">
-                            <Size x="64" y="64"/>
+                        <Texture name="Thievery_keybindFrameTexture" parentKey="keybindFrameTexture" file="Interface/AddOns/Thievery/Images/thinframe.png" hidden="false">
+                            <Size x="20" y="20"/>
                             <Anchors>
                                 <Anchor point="CENTER"/>
                             </Anchors>
                         </Texture>
+                        <Texture name="Thievery_keybindFrameBG" parentKey="keybindFrameBG" file="Interface/AddOns/Thievery/Images/thinframebg.png" alpha="0.5" hidden="false">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="Thievery_keybindFrameBG" relativePoint="CENTER" x="0" y="0"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <FontString name="$Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="GameFontNormalMed2Outline">
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="RIGHT" x="5" y="0"/>
+                            </Anchors>
+                            <Color r="1" g="0" b="0"/>
+                        </FontString>
+                        <FontString name="$Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="GameFontNormalMed2Outline">
+                            <Anchors>
+                                <Anchor point="TOPLEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
-            <Frame name="Thievery_Visual2" parentKey="visual" hidden="true">
-                <Size x="1" y="1"/>
+            <Frame name="Thievery_ConfigPanel" parentKey="configPanel" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" scale="0.8" hidden="true">
+                <Size x="300" y="200"/>
                 <Anchors>
-                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="300" y="100"/>
+                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <Texture name="Thievery_TestImage2" parentKey="testImage2" file="Interface/AddOns/Thievery/Images/legothanks.png" hidden="false">
-                            <Size x="64" y="64"/>
-                            <Anchors>
-                                <Anchor point="CENTER"/>
-                            </Anchors>
-                        </Texture>
-                    </Layer>
-                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        tinsert(UISpecialFrames, self:GetName())
+                        self.TitleText:SetText("Thievery Config (Alpha)")
+                        self:SetMovable(true)
+                        self:RegisterForDrag("LeftButton")
+                    </OnLoad>
+                    <OnMouseDown>
+                        self:Raise()
+                    </OnMouseDown>
+                    <OnDragStart>
+                        self:StartMoving()
+                    </OnDragStart>
+                    <OnDragStop>
+                        self:StopMovingOrSizing()
+                    </OnDragStop>
+                </Scripts>
+                <Frames>
+                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="25" y="-55"/>
+                        </Anchors>
+                    </Button>
+                    <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-5" y="-55"/>
+                        </Anchors>
+                    </Button>
+                    <Frame name="$parent_CheckboxesFrame" inherits="Legolando_CheckboxesFrameTemplate" parentKey="checkboxes">
+                        <Size x="200" y="180"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-105"/>
+                        </Anchors>
+                        <Frames>
+                            <CheckButton parentKey="playSound" inherits="Legolando_CheckboxTemplate">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
+                                </Anchors>
+                                <Scripts>
+                                    <PostClick>
+                                        if Thievery_Config.Checkboxes.playSound == true then
+                                            PlaySound(835)
+                                        end
+                                    </PostClick>
+                                </Scripts>
+                            </CheckButton>
+                            <CheckButton parentKey="enableSap" inherits="Legolando_CheckboxTemplate">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
+                                </Anchors>
+                            </CheckButton>
+                        </Frames>
+                    </Frame>
+                </Frames>
             </Frame>
         </Frames>
     </Frame>
+
+
+
    
 </Ui>

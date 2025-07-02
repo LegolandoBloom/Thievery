@@ -1,5 +1,196 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
+    
+    <Button name="Legolando_MoveFrameTemplate" mixin="Legolando_MoveFrameMixin" inherits="UIPanelSquareButton" virtual="true">
+        <Scripts>
+            <OnClick>
+                if not self.savedVarTable then
+                    print("no saved variable table linked to keybind frame")
+                    return
+                end
+                if not self.savedVarKey then
+                    print("no reference key for the saved var table")
+                    return
+                end
+                self.moveAndPlaceFrame:ResetPosition()
+                self.moveAndPlaceFrame:Show()
+            </OnClick>
+        </Scripts>
+        <Frames>
+            <Frame name="$parent_MoveAndPlaceFrame" mixin="Legolando_MoveAndPlaceMixin" parentKey="moveAndPlaceFrame" hidden="true">
+                <Size x="192" y="96"/>
+                <Scripts>
+                    <OnLoad>
+                        self:SetMovable(true)
+                        self:RegisterForDrag("LeftButton")
+                    </OnLoad>
+                    <OnMouseDown>
+                        self:Raise()
+                    </OnMouseDown>
+                    <OnDragStart>
+                        self:StartMoving()
+                    </OnDragStart>
+                    <OnDragStop>
+                        self:StopMovingOrSizing()
+                        DevTools_Dump({self:GetPoint()})
+                        self:UpdatePosition(false)
+                    </OnDragStop>
+                </Scripts>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="$parent_PlaceholderTexture" parentKey="placeholderTexture">
+                            <Size x="192" y="96"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <Button name="$parent_OkayButton" parentKey="okayButton" text="Okay" inherits="UIPanelButtonTemplate">
+                        <Size x="72" y="24"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-15" y="5"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                self:GetParent():Hide()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="$parent_ResetButton" parentKey="resetButton" text="Reset" inherits=" ">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                self:GetParent():ResetPosition()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                </Frames>
+            </Frame>
+        </Frames>
+    </Button>
+
+    <Button name="Legolando_KeybindFrameTemplate" mixin="Legolando_KeybindFrameMixin" inherits="KeyBindingFrameBindingButtonTemplate" virtual="true">
+        <Size x="100" y="22"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_MenuTitle" parentKey="menuTitle" inherits= "GameFontNormalMed2Outline">
+                    <Color r="1" g="1" b="1"/>
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeTo="$parent" relativePoint="TOP" y="5"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_Disclaimer" parentKey="disclaimer" justifyH="LEFT" inherits= "SystemFont_Outline" hidden="true">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="0" y="0"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_Warning" parentKey="warning" inherits="SystemFont_Outline" hidden="true">
+                    <Color r="1"/>
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                self.SelectedHighlight:SetWidth(self:GetWidth())
+                self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+                self:RegisterEvent("PLAYER_ENTERING_WORLD")
+                self:RegisterEvent("PLAYER_REGEN_DISABLED")
+                self:RegisterEvent("PLAYER_REGEN_ENABLED")
+                self:SetPropagateKeyboardInput(true)
+                
+            </OnLoad>
+            <OnClick method="OnClick"/>
+            <OnEvent>
+                    if event == "PLAYER_ENTERING_WORLD" then
+                        local isInitialLogin, isReloadingUi = ...
+                        print(isInitialLogin, isReloadingUi)
+                        if isInitialLogin or isReloadingUi then
+                            if self:checkTableAndReference() then
+                                if self.savedVarTable[self.savedVarKey] then
+                                    self:SetText(self.savedVarTable[self.savedVarKey])
+                                end
+                            end
+                        end
+                    elseif event == "PLAYER_REGEN_DISABLED" then
+                        self:StopWatching()
+                        self:Disable()
+                    elseif event =="PLAYER_REGEN_ENABLED" then
+                        self:Enable()
+                    end
+            </OnEvent>
+            <OnHide>
+                self:StopWatching()
+            </OnHide>
+        </Scripts>
+    </Button>
+
+    <!-- Make sure to Give a saved variable table to it before "PLAYER_ENTERING_WORLD", preferably at "ADDON_LOADED" -->
+    <!-- Like so: CheckboxesFrame.savedVarTable = SomeSavedVariableTable -->
+    <Frame name="Legolando_CheckboxesFrameTemplate" mixin="Legolando_CheckboxesFrameMixin" virtual="true">
+        <Scripts>
+            <OnLoad>
+                self:RegisterEvent("PLAYER_ENTERING_WORLD")
+            </OnLoad>
+            <OnEvent>
+                local isInitialLogin, isReloadingUi = ...
+                if event == "PLAYER_ENTERING_WORLD" and (isInitialLogin or isReloadingUi) then
+                    self:UpdateCheckboxes()
+                end
+            </OnEvent>
+        </Scripts>
+    </Frame>
+    
+    <CheckButton name="Legolando_CheckboxTemplate" mixin="Legolando_CheckboxMixin" virtual="true">
+		<Size x="24" y="24"/>
+		<HitRectInsets>
+			<AbsInset left="0" right="0" top="0" bottom="8"/>
+		</HitRectInsets>
+        <Scripts>
+            <OnClick method="OnClick"/>
+        </Scripts>
+		<Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Text" parentKey="text" hidden="false" inherits="GameFontNormal">
+                    <Anchors>
+                        <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT"/>
+                    </Anchors>
+                    <Scripts>
+                        <OnEnter>
+                            if not self.tooltip then return end
+                            if not self:GetParent():IsEnabled() then return end
+                            GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", 0)
+                            local colorYello = CreateColor(1.0, 0.82, 0.0)
+                            GameTooltip:AddLine(colorYello:WrapTextInColorCode(self:GetText()))
+                            GameTooltip:AddLine(self.tooltip, 1, 1, 1, 0)
+                            GameTooltip:Show()
+                        </OnEnter>
+                        <OnLeave>
+                            if not self.tooltip then return end
+                            GameTooltip:Hide()
+                        </OnLeave>
+                    </Scripts>
+                </FontString>
+                <FontString name="$parent_DisabledText" parentKey="disabledText" justifyH="LEFT" hidden="true" inherits="SystemFont_Shadow_Small">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+		<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+		<CheckedTexture name="$parentCheckedTexture" file="Interface\Buttons\UI-CheckBox-Check"/>
+		<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+    </CheckButton>
+
     <GameTooltip name= "Thievery_TutorialTooltipTemplate" mixin="Thievery_TutorialTooltipMixin" inherits="GameTooltipTemplate" virtual="true">
         <KeyValues>
             <KeyValue key="anchorTexture" value="TOPLEFT" type="string"/>
