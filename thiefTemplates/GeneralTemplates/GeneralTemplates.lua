@@ -14,8 +14,10 @@ function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting)
     local parent = self:GetParent()
     if parent.savedVarTable and parent.savedVarKey then
         if not resetting then
-            local point = {self:GetPoint()}
-            parent.savedVarTable[parent.savedVarKey] = point
+            local left, bottom, _, height = self:GetScaledRect()
+            local top = bottom + height
+            parent.savedVarTable[parent.savedVarKey].left = left
+            parent.savedVarTable[parent.savedVarKey].top = top
         end
     else
         print("No saved var table or key attached")
@@ -264,6 +266,7 @@ function Legolando_KeybindFrameMixin:Unbind(self)
     local refKey = self.savedVarKey
     teeburu[refKey] = nil
     self:SetText(self.savedVarTable[self.savedVarKey])
+    self:CallOnBindFunction()
     print("Keybind removed")
 end
 

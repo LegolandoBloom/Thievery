@@ -1,15 +1,17 @@
 local T = Thievery_Translate
 
-function Thievery_FitVisualToKeybind()
+function Thievery_KeybindFrame_OnBind()
     local ppKey = Thievery_Config.ppKey 
-    if ppKey then
-        local visual = Thievery_Visual
-        visual.keybind:SetText(ppKey)
-        local width, height = visual.keybind:GetSize()
-        print("Size: ", width, height)
-        visual.keybindFrameBG:SetSize((width * 1.1) + 6, height + (width*0.05))
-        visual.keybindFrameTexture:SetSize((width * 1.1) + 6, height + (width*0.05))
+    local visual = Thievery_Visual
+    if not ppKey then
+        ppKey = "E"
     end
+    visual.keybind:SetText(ppKey)
+    local width, height = visual.keybind:GetSize()
+    visual.keybindFrameBG:SetSize((width * 1.1) + 6, height + (width*0.05))
+    visual.keybindFrameTexture:SetSize((width * 1.1) + 6, height + (width*0.05))
+
+    Thievery_UpdateState(Thievery.pickpocketButton, true)
 end
 
 function Thievery_UpdateVisualPosition()
@@ -17,9 +19,9 @@ function Thievery_UpdateVisualPosition()
     visual:ClearAllPoints()
     local location = Thievery_UI.VisualLocation
     if next(Thievery_UI.VisualLocation) ~= nil then
-        visual:SetPoint(location[1], location[2], location[3], location[4], location[5])
+        visual:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", location.left + 12, location.top - 10)
     else
-        visual:SetPoint("CENTER", UIParent, "CENTER", 50, 30)
+        visual:SetPoint("TOPLEFT", UIParent, "CENTER", 50, 30)
     end
 end
 
@@ -29,11 +31,16 @@ function Thievery_SetupConfigPanel(parent)
     local keybindFrame = configPanel.keybindFrame
     local moveFrame = configPanel.moveFrame
 
-    moveFrame.moveAndPlaceFrame.placeholderTexture:SetTexture("Interface/AddOns/Thievery/images/placeholder.png")
+    moveFrame.title:SetText(T["Change Visual Location"] .. ":")
+    moveFrame.tooltipTitle = T["Change Visual Location"]
+    moveFrame.tooltipBody = T["After pressing the button, drag the blue highlighted frame anywhere on your screen and click \'Okay\'."
+    .. "\n\nClicking the button again, or clicking the reset icon " .. "to the top-right of the highlighted frame will reset the visual to its default position."]
     moveFrame.callFunction = Thievery_UpdateVisualPosition
+    moveFrame.moveAndPlaceFrame.placeholderTexture:SetTexture("Interface/AddOns/Thievery/images/placeholder.png")
+    moveFrame.moveAndPlaceFrame.resetButton.tooltip = T["Reset"]
 
     keybindFrame.menuTitle:SetText(T["Thievery Keybind"])
-    keybindFrame.onBindFunction = Thievery_FitVisualToKeybind
+    keybindFrame.onBindFunction = Thievery_KeybindFrame_OnBind
     keybindFrame.disclaimerText = T["The next key you press will be set as the Thievery key"]
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
@@ -47,6 +54,10 @@ function Thievery_SetupConfigPanel(parent)
     checkboxes.enableSap.text.tooltip = T["Cast sap before pick pocket, with the same keybind."]
     checkboxes.enableSap:reposition()
     checkboxes.enableSap.reference = "enableSap"
+
+    checkboxes.debugMode.text:SetText(T["Debug Mode"])
+    checkboxes.debugMode:reposition()
+    checkboxes.debugMode.reference = "debugMode"
 
 end
 

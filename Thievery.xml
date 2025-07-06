@@ -18,7 +18,7 @@
                 </Scripts>
             </Button>
             <Frame name="Thievery_Visual" parentKey="visual" hidden="true">
-                <Size x="1" y="1"/>
+                <Size x="192" y="48"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="50" y="30"/>
                 </Anchors>
@@ -27,13 +27,13 @@
                         <Texture name="Thievery_keybindFrameTexture" parentKey="keybindFrameTexture" file="Interface/AddOns/Thievery/Images/thinframe.png" hidden="false">
                             <Size x="20" y="20"/>
                             <Anchors>
-                                <Anchor point="CENTER"/>
+                                <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
                             </Anchors>
                         </Texture>
                         <Texture name="Thievery_keybindFrameBG" parentKey="keybindFrameBG" file="Interface/AddOns/Thievery/Images/thinframebg.png" alpha="0.5" hidden="false">
                             <Size x="20" y="20"/>
                             <Anchors>
-                                <Anchor point="CENTER"/>
+                                <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
                             </Anchors>
                         </Texture>
                         <FontString name="$Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
@@ -58,7 +58,7 @@
                 </Layers>
             </Frame>
             <Frame name="Thievery_ConfigPanel" parentKey="configPanel" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" scale="0.8" hidden="true">
-                <Size x="300" y="200"/>
+                <Size x="300" y="270"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
@@ -87,7 +87,7 @@
                     </Button>
                     <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate">
                         <Anchors>
-                            <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-5" y="-55"/>
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-8" y="5"/>
                         </Anchors>
                     </Button>
                     <Frame name="$parent_CheckboxesFrame" inherits="Legolando_CheckboxesFrameTemplate" parentKey="checkboxes">
@@ -113,6 +113,12 @@
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
+                                </Anchors>
+                            </CheckButton>
+                            <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-85"/>
                                 </Anchors>
                             </CheckButton>
                         </Frames>

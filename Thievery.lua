@@ -7,42 +7,16 @@ if faction == "Alliance" then
 elseif faction == "Horde" then
     isAlliance = false
 end
-print("Player is Alliance?", isAlliance)
+Thievery_BetaPrint("Player is Alliance?", isAlliance)
 
-Thievery_UI = {
-    VisualLocation = {},
-}
 
-Thievery_Config ={
-    ppKey = nil,
-    Checkboxes = {},
-}
+
 
 
 local PPModeActive = false
 local sapModeActive = false
 
-function Thievery_SavedVariables()
-    if not Thievery_UI then
-        Thievery_UI = {}
-    end
-    if not Thievery_UI.VisualLocation then
-        Thievery_UI.VisualLocation = {}
-    end
 
-    if not Thievery_Config then
-        Thievery_Config = {}
-    end
-    if not Thievery_Config.Checkboxes then
-        Thievery_Config.Checkboxes = {}
-    end
-    if Thievery_Config.Checkboxes.playSound == nil then
-        Thievery_Config.Checkboxes.playSound = true
-    end
-    if Thievery_Config.Checkboxes.enableSap == nil then
-        Thievery_Config.Checkboxes.enableSap = false
-    end
-end
 
 function Thievery_OnLoad(self)
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -67,7 +41,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_ConfigPanel.checkboxes.savedVarTable = Thievery_Config.Checkboxes
         Thievery_KeybindFrame.savedVarTable = Thievery_Config
         Thievery_KeybindFrame.savedVarKey = "ppKey"
-        Thievery_FitVisualToKeybind()
+        Thievery_KeybindFrame_OnBind()
         Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
         -- Thievery_MoveFrame.savedVarTable = Thievery_UI.VisualLocation
@@ -97,13 +71,14 @@ local function getIDFromGUID(guid)
 end
 
 local function printTargetInfo()
-    print("Creature Family: ", UnitCreatureFamily("target"))
-    print("Creature Type: ", UnitCreatureType("target"))
-    print("Classification: ", UnitClassification("target"))
-    print(UnitGUID("target"))
-    print(getIDFromGUID(UnitGUID("target")))
+    Thievery_BetaPrint("Creature Family: ", UnitCreatureFamily("target"))
+    Thievery_BetaPrint("Creature Type: ", UnitCreatureType("target"))
+    Thievery_BetaPrint("Classification: ", UnitClassification("target"))
+    Thievery_BetaPrint(UnitGUID("target"))
+    Thievery_BetaPrint(getIDFromGUID(UnitGUID("target")))
 end
-
+SLASH_THIEVERYTARGETINFO1 = "/teeftarget"
+SlashCmdList["THIEVERYTARGETINFO"] = printTargetInfo
 
 local target = {}
 local function setPPMode(self)
@@ -180,15 +155,22 @@ function Thievery_CheckTargetLocal(target)
     local npcID = target.npcID
     if not npcID then return false end
     if Session_EnemyIDTable[npcID] then
-        --print("session match found!")
+        if not PPModeActive and not sapModeActive then
+            Thievery_BetaPrint("session match found!")
+        end
         return true
     end
 end
 
 local stealthed = false
 local validTarget = false
-function Thievery_UpdateState(self)
+function Thievery_UpdateState(self, resetMode)
     if InCombatLockdown() then return end
+    if resetMode then
+        PPModeActive = false
+        sapModeActive = false
+        ClearOverrideBindings(self)
+    end
     local inRange = C_Spell.IsSpellInRange(921)
     if stealthed and validTarget and inRange then
         target.guid = UnitGUID("target")
@@ -212,7 +194,7 @@ function Thievery_UpdateState(self)
     end
 end
 --   if not C_Spell.IsSpellInRange(921) then
---             --print("pickpocket out of range")
+--             --Thievery_BetaPrint("pickpocket out of range")
 --             validTarget = false
 --             return
 --         end
@@ -221,7 +203,7 @@ end
 --CheckInteractDistance("target", 3)
 local function checkTargetValidity()
     if not UnitExists("target") then 
-            --print("No eligible target")
+            --Thievery_BetaPrint("No eligible target")
             return false
     end
     if UnitIsDead("target") or UnitIsCorpse("target") then
@@ -269,8 +251,8 @@ function Thievery_Events(self, event, unit)
             target = {}
         end
         
-        if not IsTargetLoose()  then
-            -- printTargetInfo()
+        if not IsTargetLoose() then
+            --printTargetInfo()
         end
         checkAndHandleStealth(self)
         Thievery_UpdateState(self)

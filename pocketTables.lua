@@ -141,122 +141,121 @@ local PP_Humanoids_BOTH_Hostile_RareElite = {
 -- 15 Aberration
 function Thievery_CheckTargetForPP(targetTable, isAlliance)
     if not targetTable.npcID then return end
-    print(targetTable.npcID, targetTable.creatureType, targetTable.classification, targetTable.reaction)
+    Thievery_BetaPrint(targetTable.npcID, targetTable.creatureType, targetTable.classification, targetTable.reaction)
     if targetTable.creatureType == 15 then
         if PP_Aberrations_ALL[targetTable.npcID] then
-            print("Aberration Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Aberration Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 1 then
         if PP_Beasts_ALL[targetTable.npcID] then
-            print("Beast Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Beast Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 3 then
         if PP_Demons_ALL[targetTable.npcID] then
-            print("Demon Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Demon Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 2 then
         if PP_Dragonkin_ALL[targetTable.npcID] then
-            print("Dragonkin Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Dragonkin Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 4 then
         if PP_Elementals_ALL[targetTable.npcID] then
-            print("Elemental Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Elemental Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 5 then
         if PP_Giants_ALL[targetTable.npcID] then
-            print("Giant Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Giant Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 9 then
         if PP_Mechanicals_ALL[targetTable.npcID] then
-            print("Mechanical Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Mechanical Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 6 then
         if PP_Undead_Neutral_ALL[targetTable.npcID] then
-            print("Neutral Undead Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Neutral Undead Unit: ", targetTable.npcID, "is pickable")
             return true
         elseif PP_Undead_Hostile_ALL[targetTable.npcID] then
-            print("Hostile Undead Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Hostile Undead Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 10 then
         if PP_Uncategorized_ALL[targetTable.npcID] then
-            print("Uncategorized Unit: ", targetTable.npcID, "is pickable")
+            Thievery_BetaPrint("Uncategorized Unit: ", targetTable.npcID, "is pickable")
             return true
         end
     elseif targetTable.creatureType == 7 then
-        --print("this be humanoid")
+        Thievery_BetaPrint("HUMANOID!")
         -- 2:Hostile, 4:Neutral
         if targetTable.reaction == 2 then
             if isAlliance then
                 if PP_Humanoids_ALLIANCE_Hostile[targetTable.npcID] then
-                    print("Hostile Humanoid Unit(Hostile only to Alliance): ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Unit(Hostile only to Alliance): ", targetTable.npcID, "is pickable")
                     return true
                 end
             else
                 if PP_Humanoids_HORDE_Hostile[targetTable.npcID] then
-                    print("Hostile Humanoid Unit(Hostile only to Horde): ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Unit(Hostile only to Horde): ", targetTable.npcID, "is pickable")
                     return true
                 end
             end
             if targetTable.classification == "rareelite" then
                 if PP_Humanoids_BOTH_Hostile_RareElite[targetTable.npcID] then
-                    print("Hostile Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "rare" then
                 if PP_Humanoids_BOTH_Hostile_Rare[targetTable.npcID] then
-                    print("Hostile Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "elite" then
                 if PP_Humanoids_BOTH_Hostile_Elite[targetTable.npcID] then
-                    print("Hostile Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "normal" or targetTable.classification == "trivial" or targetTable.classification == "minus" then
-                print("tis normal, and hostile", PP_Humanoids_BOTH_Hostile_Normal[targetTable.npcID])
                 if PP_Humanoids_BOTH_Hostile_Normal[targetTable.npcID] == true then
-                    print("Hostile Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Hostile Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             end
         elseif targetTable.reaction == 4 then
             if isAlliance then
                 if PP_Humanoids_ALLIANCE_Neutral[targetTable.npcID] then
-                    print("Neutral Humanoid Unit(Neutral only to Alliance): ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Unit(Neutral only to Alliance): ", targetTable.npcID, "is pickable")
                     return true
                 end
             else
                 if PP_Humanoids_HORDE_Neutral[targetTable.npcID] then
-                    print("Neutral Humanoid Unit(Neutral only to Horde): ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Unit(Neutral only to Horde): ", targetTable.npcID, "is pickable")
                     return true
                 end
             end
             if targetTable.classification == "rareelite" then
                 if PP_Humanoids_BOTH_Neutral_RareElite[targetTable.npcID] then
-                    print("Neutral Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Rare-Elite Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "rare" then
                 if PP_Humanoids_BOTH_Neutral_Rare[targetTable.npcID] then
-                    print("Neutral Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Rare Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "elite" then
                 if PP_Humanoids_BOTH_Neutral_Elite[targetTable.npcID] then
-                    print("Neutral Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Elite Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             elseif targetTable.classification == "normal" or targetTable.classification == "trivial" or targetTable.classification == "minus" then
                 if PP_Humanoids_BOTH_Neutral_Normal[targetTable.npcID] then
-                    print("Neutral Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
+                    Thievery_BetaPrint("Neutral Humanoid Normal Unit: ", targetTable.npcID, "is pickable")
                     return true
                 end
             end

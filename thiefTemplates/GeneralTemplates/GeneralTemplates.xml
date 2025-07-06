@@ -1,7 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
     
-    <Button name="Legolando_MoveFrameTemplate" mixin="Legolando_MoveFrameMixin" inherits="UIPanelSquareButton" virtual="true">
+    <Button name="Legolando_MoveFrameTemplate" mixin="Legolando_MoveFrameMixin" inherits="SquareIconButtonTemplate" virtual="true">
+        <KeyValues>
+            <KeyValue key="icon" value="Interface\CURSOR\UI-Cursor-Move"/>
+        </KeyValues>
         <Scripts>
             <OnClick>
                 if not self.savedVarTable then
@@ -15,7 +18,40 @@
                 self.moveAndPlaceFrame:ResetPosition()
                 self.moveAndPlaceFrame:Show()
             </OnClick>
+            <OnEnter>
+                if not self.tooltipTitle or not self.tooltipBody then return end
+                GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", -35, 0)
+                GameTooltip:AddLine(self.tooltipBody, 1, 1, 1, true)
+                GameTooltip:Show()
+            </OnEnter>
+            <OnLeave>
+                if not self.tooltipTitle or not self.tooltipBody then return end
+                GameTooltip:Hide()
+            </OnLeave>
         </Scripts>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Title" parentKey="title" text="Title Text" inherits= "GameFontNormalMed2Outline">
+                    <Anchors>
+                        <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT" y="0"/>
+                    </Anchors>
+                    <Scripts>
+                        <OnEnter>
+                            local parent = self:GetParent()
+                            if not parent.tooltipTitle or not parent.tooltipBody then return end
+                            GameTooltip:SetOwner(parent, "ANCHOR_BOTTOMRIGHT", -35, 0)
+                            GameTooltip:AddLine(parent.tooltipBody, 1, 1, 1, true)
+                            GameTooltip:Show()
+                        </OnEnter>
+                        <OnLeave>
+                            local parent = self:GetParent()
+                            if not parent.tooltipTitle or not parent.tooltipBody then return end
+                            GameTooltip:Hide()
+                        </OnLeave>
+                    </Scripts>
+                </FontString>
+            </Layer>
+        </Layers>
         <Frames>
             <Frame name="$parent_MoveAndPlaceFrame" mixin="Legolando_MoveAndPlaceMixin" parentKey="moveAndPlaceFrame" hidden="true">
                 <Size x="192" y="96"/>
@@ -32,7 +68,6 @@
                     </OnDragStart>
                     <OnDragStop>
                         self:StopMovingOrSizing()
-                        DevTools_Dump({self:GetPoint()})
                         self:UpdatePosition(false)
                     </OnDragStop>
                 </Scripts>
@@ -58,7 +93,7 @@
                             </OnClick>
                         </Scripts>
                     </Button>
-                    <Button name="$parent_ResetButton" parentKey="resetButton" text="Reset" inherits=" ">
+                    <Button name="$parent_ResetButton" parentKey="resetButton" text="Reset" inherits="RefreshButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
                         </Anchors>
@@ -66,6 +101,16 @@
                             <OnClick>
                                 self:GetParent():ResetPosition()
                             </OnClick>
+                            <OnEnter>
+                                if not self.tooltip then return end
+                                GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", 0)
+                                GameTooltip:AddLine(self.tooltip)
+                                GameTooltip:Show()
+                            </OnEnter>
+                            <OnLeave>
+                                if not self.tooltip then return end
+                                GameTooltip:Hide()
+                            </OnLeave>
                         </Scripts>
                     </Button>
                 </Frames>
@@ -110,7 +155,6 @@
             <OnEvent>
                     if event == "PLAYER_ENTERING_WORLD" then
                         local isInitialLogin, isReloadingUi = ...
-                        print(isInitialLogin, isReloadingUi)
                         if isInitialLogin or isReloadingUi then
                             if self:checkTableAndReference() then
                                 if self.savedVarTable[self.savedVarKey] then
