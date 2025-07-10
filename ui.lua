@@ -25,6 +25,13 @@ function Thievery_UpdateVisualPosition()
     end
 end
 
+
+local function speedyOnClick()
+    if Thievery_Config.Checkboxes.speedyMode == false then
+        Thievery_ToggleSpeedy(false)
+    end
+end
+
 function Thievery_SetupConfigPanel(parent)
     local configPanel = parent.configPanel
     local checkboxes = configPanel.checkboxes
@@ -44,6 +51,12 @@ function Thievery_SetupConfigPanel(parent)
     keybindFrame.disclaimerText = T["The next key you press will be set as the Thievery key"]
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
+
+    checkboxes.speedyMode.text:SetText(T["Speedy Mode"])
+    checkboxes.speedyMode.onClickFunction = speedyOnClick
+    checkboxes.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
+    checkboxes.speedyMode:reposition()
+    checkboxes.speedyMode.reference = "speedyMode"
 
     checkboxes.playSound.text:SetText(T["Play Sound Effect"])
     checkboxes.playSound.text.tooltip = T["When checked, plays a sound effect when the pickpocket key is pressed"]

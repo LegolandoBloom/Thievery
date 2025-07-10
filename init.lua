@@ -15,6 +15,10 @@ Thievery_Config ={
     Checkboxes = {},
 }
 
+Thievery_SavedCVars = {
+    SpeedyMode = {},
+}
+
 function Thievery_SavedVariables()
     if not Thievery_UI then
         Thievery_UI = {}
@@ -29,6 +33,9 @@ function Thievery_SavedVariables()
     if not Thievery_Config.Checkboxes then
         Thievery_Config.Checkboxes = {}
     end
+    if Thievery_Config.Checkboxes.speedyMode == nil then
+        Thievery_Config.Checkboxes.speedyMode = false
+    end
     if Thievery_Config.Checkboxes.playSound == nil then
         Thievery_Config.Checkboxes.playSound = true
     end
@@ -38,7 +45,17 @@ function Thievery_SavedVariables()
     if Thievery_Config.Checkboxes.debugMode == nil then
         Thievery_Config.Checkboxes.debugMode = false
     end
+
+    if not Thievery_SavedCVars then
+        Thievery_SavedCVars = {}
+    end
+    if not Thievery_SavedCVars.SpeedyMode then
+        Thievery_SavedCVars.SpeedyMode = {}
+    end
 end
+
+-- not a saved variable
+Thievery_Target = {}
 
 function Thievery_SingleDelayer(delay, timeElapsed, elapsedThreshhold, delayFrame, cycleFunk, endFunk)
     delayFrame:SetScript("OnUpdate", function(self, elapsed)

@@ -36,36 +36,71 @@
                                 <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
                             </Anchors>
                         </Texture>
-                        <FontString name="$Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
+                        <FontString name="Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
                             <Anchors>
                                 <Anchor point="CENTER" relativeTo="Thievery_keybindFrameBG" relativePoint="CENTER" x="0" y="0"/>
                             </Anchors>
                             <Color r="1" g="1" b="1"/>
                         </FontString>
-                        <FontString name="$Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="GameFontNormalMed2Outline">
+                        <FontString name="Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="GameFontNormalMed2Outline">
                             <Anchors>
                                 <Anchor point="LEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="RIGHT" x="5" y="0"/>
                             </Anchors>
                             <Color r="1" g="0" b="0"/>
                         </FontString>
-                        <FontString name="$Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="GameFontNormalMed2Outline">
+                        
+                        <FontString name="Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="GameFontNormalMed2Outline">
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
                             </Anchors>
                             <Color r="1" g="1" b="1"/>
                         </FontString>
                     </Layer>
+                    <Layer level="OVERLAY">
+                        <Texture name="Thievery_ThroughLine" parentKey="throughLine" setAllPoints="true">
+                            <Size x="5" y="1"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="Thievery_PromptText" relativePoint="LEFT" x="0" y="0"/>
+                            </Anchors>
+                            <Color r="0.8" g="0.8" b="0.8"/>
+                            <Scripts>
+                                <OnShow>
+                                    local prompt = self:GetParent().promptText
+                                    local width, height = prompt:GetSize()
+                                    self:SetSize(width, 1)
+                                </OnShow>
+                            </Scripts>
+                        </Texture>
+                    </Layer>
                 </Layers>
+                <Frames>
+                    <Cooldown name="Thievery_PPCooldownFrame" parentKey="cooldown" hidden="false" setAllPoints="true">
+                        <Size x="45" y="20"/>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="Thievery_PromptText" relativePoint="RIGHT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>
+                                self:SetCountdownAbbrevThreshold(650)
+                                self:SetCountdownFont("GameFontHighlightMed2Outline")
+                            </OnLoad>
+                            <OnCooldownDone>
+                                Thievery_UpdateState(Thievery_PickpocketButton, true)
+                                print("cooldown done")
+                            </OnCooldownDone>
+                        </Scripts>
+                    </Cooldown>
+                </Frames>
             </Frame>
             <Frame name="Thievery_ConfigPanel" parentKey="configPanel" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" scale="0.8" hidden="true">
-                <Size x="300" y="270"/>
+                <Size x="300" y="250"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
                 <Scripts>
                     <OnLoad>
                         tinsert(UISpecialFrames, self:GetName())
-                        self.TitleText:SetText("Thievery Config (Alpha)")
+                        self.TitleText:SetText("Thievery Config (Beta)")
                         self:SetMovable(true)
                         self:RegisterForDrag("LeftButton")
                     </OnLoad>
@@ -96,10 +131,16 @@
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-105"/>
                         </Anchors>
                         <Frames>
+                            <CheckButton parentKey="speedyMode" inherits="Legolando_CheckboxTemplate">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
+                                </Anchors>
+                            </CheckButton>
                             <CheckButton parentKey="playSound" inherits="Legolando_CheckboxTemplate">
                                 <Size x="26" y="26"/>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
                                 </Anchors>
                                 <Scripts>
                                     <PostClick>
@@ -112,13 +153,13 @@
                             <CheckButton parentKey="enableSap" inherits="Legolando_CheckboxTemplate">
                                 <Size x="26" y="26"/>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-50"/>
                                 </Anchors>
                             </CheckButton>
                             <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate">
                                 <Size x="26" y="26"/>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-85"/>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-90"/>
                                 </Anchors>
                             </CheckButton>
                         </Frames>

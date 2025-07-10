@@ -3,15 +3,17 @@
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft
 ## Version: 0.1
 ## Author: LegolandoBloom
-## SavedVariables: Thievery_UI, Thievery_Config, 
-## SavedVariablesPerCharacter: 
+## SavedVariables: Thievery_UI, Thievery_Config,  Thievery_SavedCVars
+## SavedVariablesPerCharacter:
 ## IconTexture: Interface\AddOns\Thievery\images\icontexture.png
 ## X-Curse-Project-ID: 1284634
 
 translations\translations.xml
 thiefTemplates\embeds.xml
 init.lua
-configpanel.lua
+ui.lua
 pocketTables.lua
+speedy.lua
+sessionGUID.lua
 Thievery.lua
 Thievery.xml

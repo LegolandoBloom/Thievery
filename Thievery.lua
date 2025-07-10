@@ -1,5 +1,11 @@
 local T = Thievery_Translate
 
+local function clearTable(teeburu)
+    for i, v in pairs(teeburu) do
+        teeburu[i] = nil
+    end
+end
+
 local isAlliance
 local faction = UnitFactionGroup("player")
 if faction == "Alliance" then
@@ -7,15 +13,13 @@ if faction == "Alliance" then
 elseif faction == "Horde" then
     isAlliance = false
 end
-Thievery_BetaPrint("Player is Alliance?", isAlliance)
+
+local target = Thievery_Target
 
 
-
-
-
-local PPModeActive = false
-local sapModeActive = false
-
+local UIActive = false
+local PPMode = false
+local sapMode = false
 
 
 function Thievery_OnLoad(self)
@@ -36,6 +40,7 @@ function Thievery_OnLoad(self)
 end
 
 function Thievery_EventLoader(self, event, unit, ...)
+    local arg4, arg5 = ...
     if event == "ADDON_LOADED" and unit == "Thievery" then
         Thievery_SavedVariables()
         Thievery_ConfigPanel.checkboxes.savedVarTable = Thievery_Config.Checkboxes
@@ -46,14 +51,18 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
         -- Thievery_MoveFrame.savedVarTable = Thievery_UI.VisualLocation
         Thievery_UpdateVisualPosition()
+        Thievery_BetaPrint("Player is Alliance?", isAlliance)
     elseif event == "PLAYER_ENTERING_WORLD" then
-
+        if unit == false and arg4 == false then return end
+        Thievery_ToggleSpeedy(false) 
     end
 end
 
 local Session_EnemyIDTable = {
 
 }
+
+
 
 local function getIDFromGUID(guid)
     if not guid then return end
@@ -80,9 +89,17 @@ end
 SLASH_THIEVERYTARGETINFO1 = "/teeftarget"
 SlashCmdList["THIEVERYTARGETINFO"] = printTargetInfo
 
-local target = {}
+local lastPrint
 local function setPPMode(self)
-    if not PPModeActive then
+    local remaining = Thievery_UpdatePPTimers(target.guid)
+    if remaining then
+        remaining = string.format("%.0f", remaining)
+        if remaining ~= lastPrint then
+            lastPrint = remaining
+            Thievery_BetaPrint("Can pickpocket again in: " .. remaining)
+        end
+    end
+    if not PPMode then
         local parent = self:GetParent()
         local assignKey = "E"
         if Thievery_Config.ppKey then
@@ -90,15 +107,25 @@ local function setPPMode(self)
         end
         self:SetAttribute("spell", 921)
         SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+        PPMode = true
+        sapMode = false
         parent.visual:Show()
-        parent.visual.promptText:SetText("Pickpocket")
         parent.visual.npcName:SetText(target.name)
-        PPModeActive = true
-        sapModeActive = false
+        parent.visual.promptText:SetText("Pickpocket")
+        if remaining then
+            parent.visual.promptText:SetTextColor(0.8, 0.8, 0.8)
+            parent.visual.throughLine:Show()
+            Thievery_PPCooldownFrame:SetCooldown(GetTime(), remaining)
+        else
+            parent.visual.promptText:SetText("Pickpocket")
+            parent.visual.promptText:SetTextColor(1, 0, 0)
+            parent.visual.throughLine:Hide()
+        end
     end
+
 end
 local function setSapMode(self)
-    if not sapModeActive then 
+    if not sapMode then 
         local parent = self:GetParent()
         local assignKey = "E"
         if Thievery_Config.ppKey then
@@ -106,12 +133,14 @@ local function setSapMode(self)
         end
         self:SetAttribute("spell", 6770)
         SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
-        PPModeActive = true
+        PPMode = true
         parent.visual:Show()
         parent.visual.promptText:SetText("Sap")
+        parent.visual.promptText:SetTextColor(1, 0, 0)
+        parent.visual.throughLine:Hide()
         parent.visual.npcName:SetText(target.name)
-        sapModeActive = true
-        PPModeActive = false
+        sapMode = true
+        PPMode = false
     end
 end
 function Thievery_Activate(self)
@@ -119,6 +148,7 @@ function Thievery_Activate(self)
         print("Thievery: State change occured during combat. Please contact author.")
         return 
     end
+    UIActive = true
     local sapped = false
     AuraUtil.ForEachAura("target", "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
         if spellID == 6770 then
@@ -140,13 +170,14 @@ function Thievery_Deactivate(self)
         print("Thievery: State change occured during combat. Please contact author.")
         return 
     end
-    if PPModeActive or sapModeActive then
+    if UIActive == true then
         local parent = self:GetParent()
         ClearOverrideBindings(self)
         parent.visual:Hide()
         parent.visual.npcName:SetText(nil)
-        PPModeActive = false
-        sapModeActive = false
+        UIActive = false
+        PPMode = false
+        sapMode = false
     end
 end
 
@@ -155,7 +186,7 @@ function Thievery_CheckTargetLocal(target)
     local npcID = target.npcID
     if not npcID then return false end
     if Session_EnemyIDTable[npcID] then
-        if not PPModeActive and not sapModeActive then
+        if not PPMode and not sapMode then
             Thievery_BetaPrint("session match found!")
         end
         return true
@@ -167,24 +198,16 @@ local validTarget = false
 function Thievery_UpdateState(self, resetMode)
     if InCombatLockdown() then return end
     if resetMode then
-        PPModeActive = false
-        sapModeActive = false
+        PPMode = false
+        sapMode = false
         ClearOverrideBindings(self)
     end
     local inRange = C_Spell.IsSpellInRange(921)
     if stealthed and validTarget and inRange then
-        target.guid = UnitGUID("target")
-        target.npcID = tonumber(getIDFromGUID(target.guid))
-        target.name = UnitName("target")
-        local _
-        _, target.creatureType = UnitCreatureType("target")
-        target.classification = UnitClassification("target")
-        -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
-        target.reaction = UnitReaction("player", "target")
         if Thievery_CheckTargetLocal(target) then
             Thievery_Activate(self)
         elseif Thievery_CheckTargetForPP(target, isAlliance) then
-            Session_EnemyIDTable[target.npcID] = true 
+            Session_EnemyIDTable[target.npcID] = true
             Thievery_Activate(self)
         else
             Thievery_Deactivate(self)
@@ -193,13 +216,7 @@ function Thievery_UpdateState(self, resetMode)
         Thievery_Deactivate(self)
     end
 end
---   if not C_Spell.IsSpellInRange(921) then
---             --Thievery_BetaPrint("pickpocket out of range")
---             validTarget = false
---             return
---         end
 
--- /dump WorldLootObjectExists("target")
 --CheckInteractDistance("target", 3)
 local function checkTargetValidity()
     if not UnitExists("target") then 
@@ -243,14 +260,24 @@ local function checkAndHandleStealth(self)
 end
 function Thievery_Events(self, event, unit)
     if event == "PLAYER_SOFT_INTERACT_CHANGED" or event == "PLAYER_SOFT_ENEMY_CHANGED" or event == "PLAYER_TARGET_CHANGED" then
+        PPMode = false
+        sapMode = false
+        clearTable(target)
+        Thievery_PPCooldownFrame:Clear()
         if InCombatLockdown() then return end
         if checkTargetValidity() == true then
             validTarget = true
+            target.guid = UnitGUID("target")
+            target.npcID = tonumber(getIDFromGUID(target.guid))
+            target.name = UnitName("target")
+            local _
+            _, target.creatureType = UnitCreatureType("target")
+            target.classification = UnitClassification("target")
+            -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
+            target.reaction = UnitReaction("player", "target")
         else
             validTarget = false
-            target = {}
         end
-        
         if not IsTargetLoose() then
             --printTargetInfo()
         end
@@ -264,10 +291,11 @@ function Thievery_Events(self, event, unit)
     elseif event == "PLAYER_REGEN_ENABLED" then
         Thievery_UpdateState(self)
     end
-
 end
 
 -- /dump C_Spell.IsSpellUsable(921)
 -- /dump SpellCanTargetUnit()
 
 -- /dump SpellCanTargetUnit("target")
+
+
