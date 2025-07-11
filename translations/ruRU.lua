@@ -23,7 +23,7 @@ T["Cast sap before pick pocket, with the same keybind."] = "Применить �
 T["Debug Mode"] = "Режим отладки"
 T["The next key you press will be set as the Thievery key"] = "Следующая нажатая вами клавиша будет\nустановлена как клавиша Thievery"
 T["Awaiting additional key press. Modifier key down: "] = "Ожидается дополнительное нажатие клавиши.\nМодификатор нажат: "
-T["Thievery Keybind"] = "Привязка клавиши Thievery"
+T["Thievery Keybind"] = "Привязка клавиши\nThievery"
 
 T["Reset"] = "Сброс"
 T["Change Visual Location"] = "Изменить визуальное расположение"
@@ -43,3 +43,6 @@ T["Speedy Mode"] = colorPurple:WrapTextInColorCode("С") .. colorPink:WrapTextIn
 T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"] = "Включает:\n" 
 .. colorYello:WrapTextInColorCode("Включает мягкое наведение на врагов") .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "и\n" .. colorYello:WrapTextInColorCode("Автосбор лута") 
 .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "при первом обшаривании карманов,\nзатем оставляет включённым, пока вы находитесь в " .. colorGrae:WrapTextInColorCode("[режиме скрытности] ") .. ".\n\nМолниеносно перемещайтесь от кармана к карману!"
+
+T["Pickpocket"] = "Pickpocket"
+T["Sap"] = "Sap"

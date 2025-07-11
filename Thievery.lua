@@ -111,13 +111,13 @@ local function setPPMode(self)
         sapMode = false
         parent.visual:Show()
         parent.visual.npcName:SetText(target.name)
-        parent.visual.promptText:SetText("Pickpocket")
+        parent.visual.promptText:SetText(T["Pickpocket"])
         if remaining then
             parent.visual.promptText:SetTextColor(0.8, 0.8, 0.8)
             parent.visual.throughLine:Show()
             Thievery_PPCooldownFrame:SetCooldown(GetTime(), remaining)
         else
-            parent.visual.promptText:SetText("Pickpocket")
+            parent.visual.promptText:SetText(T["Pickpocket"])
             parent.visual.promptText:SetTextColor(1, 0, 0)
             parent.visual.throughLine:Hide()
         end
@@ -135,7 +135,7 @@ local function setSapMode(self)
         SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
         PPMode = true
         parent.visual:Show()
-        parent.visual.promptText:SetText("Sap")
+        parent.visual.promptText:SetText(T["Sap"])
         parent.visual.promptText:SetTextColor(1, 0, 0)
         parent.visual.throughLine:Hide()
         parent.visual.npcName:SetText(target.name)

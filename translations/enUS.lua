@@ -29,7 +29,7 @@ T["After pressing the button, drag the blue highlighted frame anywhere on your s
 .. "\n\nClicking the button again, or clicking the reset icon " 
 .. "to the top-right of the highlighted frame will reset the visual to its default position."] = "After pressing the button, drag the " 
 .. colorBlu:WrapTextInColorCode("blue highlighted frame ") .. "anywhere on your screen and click " 
-.. colorYello:WrapTextInColorCode("\'Okay\'") .. ".\n\nClicking the button again, or clicking the " 
+.. colorYello:WrapTextInColorCode("\'Okay\'") .. ".\n\nClicking the button again, or clicking the "
 .. colorYello:WrapTextInColorCode("reset icon ") 
 .. "to the top-right of the highlighted frame will reset the visual to its default position."
 
@@ -41,3 +41,6 @@ T["Speedy Mode"] = colorPurple:WrapTextInColorCode("S") .. colorPink:WrapTextInC
 T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"] = "Turns on:\n" 
 .. colorYello:WrapTextInColorCode("Soft Targetting for enemies") .. colorGrae:WrapTextInColorCode("(if off)\n") .. "and\n" .. colorYello:WrapTextInColorCode("Auto-Loot") 
 .. colorGrae:WrapTextInColorCode("(if off)\n") .. "upon first pick-pocket,\nthen keeps it on as long as you are " .. colorGrae:WrapTextInColorCode("[stealthed] ") .. ".\n\nZip from pocket to pocket!"
+
+T["Pickpocket"] = "Pickpocket"
+T["Sap"] = "Sap"

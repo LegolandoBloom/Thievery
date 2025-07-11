@@ -93,7 +93,7 @@
                 </Frames>
             </Frame>
             <Frame name="Thievery_ConfigPanel" parentKey="configPanel" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" scale="0.8" hidden="true">
-                <Size x="300" y="250"/>
+                <Size x="310" y="250"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
