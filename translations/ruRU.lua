@@ -4,7 +4,7 @@ if (GAME_LOCALE or GetLocale()) ~= "ruRU" then
 end
 
 local T = Thievery_Translate
--- Translator ZamestoTV
+
 local colorYello = CreateColor(1.0, 0.82, 0.0)
 local colorGrae = CreateColor(0.85, 0.85, 0.85)
 local colorBlu = CreateColor(0.61, 0.85, 0.92)
