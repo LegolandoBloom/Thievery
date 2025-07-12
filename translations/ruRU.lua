@@ -44,5 +44,5 @@ T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first
 .. colorYello:WrapTextInColorCode("Включает мягкое наведение на врагов") .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "и\n" .. colorYello:WrapTextInColorCode("Автосбор лута") 
 .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "при первом обшаривании карманов,\nзатем оставляет включённым, пока вы находитесь в " .. colorGrae:WrapTextInColorCode("[режиме скрытности] ") .. ".\n\nМолниеносно перемещайтесь от кармана к карману!"
 
-T["Pickpocket"] = "Pickpocket"
-T["Sap"] = "Sap"
+T["Pickpocket"] = "Кража"
+T["Sap"] = "Ошеломление"
