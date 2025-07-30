@@ -227,6 +227,9 @@ local function checkTargetValidity()
     if UnitIsDead("target") or UnitIsCorpse("target") then
         return false
     end
+    if UnitIsPlayer("target") then
+        return false
+    end
     -- 1)player 2)target ORDER ON PURPOSE. To avoid checking reputations
     local reaction = UnitReaction("player", "target")
     if reaction ~= 2 and reaction ~= 4 then
@@ -261,6 +264,7 @@ local function checkAndHandleStealth(self)
 end
 function Thievery_Events(self, event, unit)
     if event == "PLAYER_SOFT_INTERACT_CHANGED" or event == "PLAYER_SOFT_ENEMY_CHANGED" or event == "PLAYER_TARGET_CHANGED" then
+        
         PPMode = false
         sapMode = false
         clearTable(target)
