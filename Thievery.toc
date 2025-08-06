@@ -1,7 +1,7 @@
-## Interface: 110107
+## Interface: 110200
 ## Title: Thievery
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft
-## Version: 0.1
+## Version: 0.2
 ## Author: LegolandoBloom
 ## SavedVariables: Thievery_UI, Thievery_Config,  Thievery_SavedCVars
 ## SavedVariablesPerCharacter:
