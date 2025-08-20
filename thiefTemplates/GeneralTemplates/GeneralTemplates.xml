@@ -59,7 +59,26 @@
                     <OnLoad>
                         self:SetMovable(true)
                         self:RegisterForDrag("LeftButton")
+                        self:RegisterEvent("PLAYER_ENTERING_WORLD")
                     </OnLoad>
+                    <OnEvent>
+                        if event == "PLAYER_ENTERING_WORLD" then
+                            local parent = self:GetParent()
+                            local teeburu = parent.savedVarTable
+                            local key = parent.savedVarKey
+                            if not teeburu or not key then 
+                                print("no saved var table or key") 
+                                return 
+                            end
+                            if not teeburu[key].scale then teeburu[key].scale = 1 end
+                            self.scaleSlider.ValueBox:SetNumericFullRange()
+                            local colorYello = CreateColor(1.0, 0.82, 0)
+                            self.scaleSlider:SetupSlider(1, 20, teeburu[key].scale*10, 1, colorYello:WrapTextInColorCode(Thievery_Translate["Visual Scale"]))
+                            self.scaleSlider:SetCallback(function(value, isUserInput)
+                                self:UpdateScale(false, value)
+                            end)
+                        end
+                    </OnEvent>
                     <OnMouseDown>
                         self:Raise()
                     </OnMouseDown>
@@ -71,16 +90,7 @@
                         self:UpdatePosition(false)
                     </OnDragStop>
                 </Scripts>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <Texture name="$parent_PlaceholderTexture" parentKey="placeholderTexture">
-                            <Size x="192" y="96"/>
-                            <Anchors>
-                                <Anchor point="CENTER"/>
-                            </Anchors>
-                        </Texture>
-                    </Layer>
-                </Layers>
+                
                 <Frames>
                     <Button name="$parent_OkayButton" parentKey="okayButton" text="Okay" inherits="UIPanelButtonTemplate">
                         <Size x="72" y="24"/>
@@ -93,6 +103,11 @@
                             </OnClick>
                         </Scripts>
                     </Button>
+                    <Frame name= "$parent_ScaleSlider" parentKey="scaleSlider" inherits="SliderAndEditControlTemplate">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                        </Anchors>
+                    </Frame>
                     <Button name="$parent_ResetButton" parentKey="resetButton" text="Reset" inherits="RefreshButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
@@ -114,11 +129,21 @@
                         </Scripts>
                     </Button>
                 </Frames>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="$parent_PlaceholderTexture" parentKey="placeholderTexture">
+                            <Size x="192" y="96"/>
+                            <Anchors>
+                                <Anchor point="BOTTOM" relativeKey="$parent.scaleSlider" relativePoint="TOP"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
             </Frame>
         </Frames>
     </Button>
 
-    <Button name="Legolando_KeybindFrameTemplate" mixin="Legolando_KeybindFrameMixin" inherits="KeyBindingFrameBindingButtonTemplate" virtual="true">
+    <Button name="Thievery_LegolandoKeybindFrameTemplate" mixin="Thievery_LegolandoKeybindFrameMixin" inherits="KeyBindingFrameBindingButtonTemplate" virtual="true">
         <Size x="100" y="22"/>
         <Layers>
             <Layer level="ARTWORK">
@@ -149,7 +174,6 @@
                 self:RegisterEvent("PLAYER_REGEN_DISABLED")
                 self:RegisterEvent("PLAYER_REGEN_ENABLED")
                 self:SetPropagateKeyboardInput(true)
-                
             </OnLoad>
             <OnClick method="OnClick"/>
             <OnEvent>

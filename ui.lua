@@ -6,11 +6,35 @@ function Thievery_KeybindFrame_OnBind()
     if not ppKey then
         ppKey = "E"
     end
+    -- ppKey = "SHIFT-SPACE"
+    -- ppKey = "SHIFT-E"
+    -- ppKey = "SPACE"
     visual.keybind:SetText(ppKey)
     local width, height = visual.keybind:GetSize()
-    visual.keybindFrameBG:SetSize((width * 1.1) + 6, height + (width*0.05))
-    visual.keybindFrameTexture:SetSize((width * 1.1) + 6, height + (width*0.05))
 
+    local sizeX, sizeY = visual.keybindFrameLeft:GetSize()
+    visual.keybindFrameLeft:SetSize(sizeX, height + (width*0.05))
+    
+    sizeX, sizeY = visual.keybindFrameMid:GetSize()
+    visual.keybindFrameMid:SetSize((width * 1.1) + 2, height + (width*0.05))
+    
+    sizeX, sizeY = visual.keybindFrameRight:GetSize()
+    visual.keybindFrameRight:SetSize(sizeX, height + (width*0.05))
+
+    sizeX, sizeY = visual.keybindFrameBGLeft:GetSize()
+    visual.keybindFrameBGLeft:SetSize(sizeX, height + (width*0.05))
+    
+    sizeX, sizeY = visual.keybindFrameBGMid:GetSize()
+    visual.keybindFrameBGMid:SetSize((width * 1.1) + 2, height + (width*0.05))
+    
+    sizeX, sizeY = visual.keybindFrameBGRight:GetSize()
+    visual.keybindFrameBGRight:SetSize(sizeX, height + (width*0.05))
+
+
+
+
+
+    -- visual.keybindFrameBG:SetSize((width * 1.25) + 8, height + (width*0.05))
     Thievery_UpdateState(Thievery.pickpocketButton, true)
 end
 
@@ -21,8 +45,18 @@ function Thievery_UpdateVisualPosition()
     if next(Thievery_UI.VisualLocation) ~= nil then
         visual:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", location.left + 12, location.top - 10)
     else
-        visual:SetPoint("TOPLEFT", UIParent, "CENTER", 50, 30)
+        visual:SetPoint("TOPLEFT", UIParent, "CENTER", -100, 30)
     end
+end
+function Thievery_UpdateVisualScale(placeholderTexture)
+    local visual = Thievery_Visual
+    visual:ClearAllPoints()
+    if next(Thievery_UI.VisualLocation) ~= nil and Thievery_UI.VisualLocation.scale then
+        visual:SetScale(Thievery_UI.VisualLocation.scale)
+    else
+        visual:SetScale(1)
+    end
+    -- Thievery_UpdateVisualPosition()
 end
 
 
@@ -42,7 +76,8 @@ function Thievery_SetupConfigPanel(parent)
     moveFrame.tooltipTitle = T["Change Visual Location"]
     moveFrame.tooltipBody = T["After pressing the button, drag the blue highlighted frame anywhere on your screen and click \'Okay\'."
     .. "\n\nClicking the button again, or clicking the reset icon " .. "to the top-right of the highlighted frame will reset the visual to its default position."]
-    moveFrame.callFunction = Thievery_UpdateVisualPosition
+    moveFrame.moveCallback = Thievery_UpdateVisualPosition
+    moveFrame.scaleCallback = Thievery_UpdateVisualScale
     moveFrame.moveAndPlaceFrame.placeholderTexture:SetTexture("Interface/AddOns/Thievery/images/placeholder.png")
     moveFrame.moveAndPlaceFrame.resetButton.tooltip = T["Reset"]
 

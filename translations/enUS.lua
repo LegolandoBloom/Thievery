@@ -44,3 +44,8 @@ T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first
 
 T["Pickpocket"] = "Pickpocket"
 T["Sap"] = "Sap"
+
+
+
+-- Full Release Additions
+T["Visual Scale"] = "Visual Scale"

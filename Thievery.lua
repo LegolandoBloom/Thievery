@@ -51,6 +51,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
         -- Thievery_MoveFrame.savedVarTable = Thievery_UI.VisualLocation
+        Thievery_UpdateVisualScale()
         Thievery_UpdateVisualPosition()
         Thievery_BetaPrint("Player is Alliance?", isAlliance)
     elseif event == "PLAYER_ENTERING_WORLD" then
@@ -304,3 +305,20 @@ end
 -- /dump SpellCanTargetUnit("target")
 
 
+local nameToID = {
+    ["ContainerFrame1"] = 1,
+    ["ContainerFrame2"] = 2,
+    ["ContainerFrame3"] = 3,
+    ["ContainerFrame4"] = 4,
+    ["ContainerFrame5"] = 5,
+    ["ContainerFrame6"] = 6,
+}
+
+SLASH_THIEVERYBITEM3 = "/bitem"
+SlashCmdList["THIEVERYBITEM"] = function() 
+    local itemButton = GetMouseFoci()[1]
+    print("Debug name", itemButton:GetDebugName())
+    local bagID = nameToID[itemButton:GetDebugName()]
+    print("bag ID is: ", bagID)
+    DevTools_Dump(C_Container.GetContainerItemInfo(itemButton:GetBagID(), itemButton:GetID()))
+end

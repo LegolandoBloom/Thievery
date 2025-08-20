@@ -17,41 +17,65 @@
                     </PreClick>
                 </Scripts>
             </Button>
-            <Frame name="Thievery_Visual" parentKey="visual" hidden="true">
+            <Frame name="Thievery_Visual" parentKey="visual" hidden="true" scale="1">
                 <Size x="192" y="48"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="50" y="30"/>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <Texture name="Thievery_keybindFrameTexture" parentKey="keybindFrameTexture" file="Interface/AddOns/Thievery/Images/thinframe.png" hidden="false">
-                            <Size x="20" y="20"/>
+                        <Texture parentKey="keybindFrameLeft" file="Interface/AddOns/Thievery/Images/thinframeleft.png" hidden="false">
+                            <Size x="4" y="20"/>
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
                             </Anchors>
                         </Texture>
-                        <Texture name="Thievery_keybindFrameBG" parentKey="keybindFrameBG" file="Interface/AddOns/Thievery/Images/thinframebg.png" alpha="0.5" hidden="false">
-                            <Size x="20" y="20"/>
+                        <Texture parentKey="keybindFrameMid" file="Interface/AddOns/Thievery/Images/thinframemid.png" hidden="false">
+                            <Size x="13" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeKey="$parent.keybindFrameLeft" relativePoint="RIGHT" x="0"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="keybindFrameRight" file="Interface/AddOns/Thievery/Images/thinframeright.png" hidden="false">
+                            <Size x="4" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeKey="$parent.keybindFrameMid" relativePoint="RIGHT"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="keybindFrameBGLeft" file="Interface/AddOns/Thievery/Images/thinframebgleft.png" alpha="0.5" hidden="false">
+                            <Size x="4" y="20"/>
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="keybindFrameBGMid" file="Interface/AddOns/Thievery/Images/thinframebgmid.png" alpha="0.5" hidden="false">
+                            <Size x="13" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeKey="$parent.keybindFrameBGLeft" relativePoint="RIGHT" x="0"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture parentKey="keybindFrameBGRight" file="Interface/AddOns/Thievery/Images/thinframebgright.png" alpha="0.5" hidden="false">
+                            <Size x="4" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeKey="$parent.keybindFrameBGMid" relativePoint="RIGHT"/>
                             </Anchors>
                         </Texture>
                         <FontString name="Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
                             <Anchors>
-                                <Anchor point="CENTER" relativeTo="Thievery_keybindFrameBG" relativePoint="CENTER" x="0" y="0"/>
+                                <Anchor point="CENTER" relativeKey="$parent.keybindFrameBGMid" relativePoint="CENTER" x="0" y="0"/>
                             </Anchors>
                             <Color r="1" g="1" b="1"/>
                         </FontString>
                         <FontString name="Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="GameFontNormalMed2Outline">
                             <Anchors>
-                                <Anchor point="LEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="RIGHT" x="5" y="0"/>
+                                <Anchor point="LEFT" relativeKey="$parent.keybindFrameRight" relativePoint="RIGHT" x="5" y="0"/>
                             </Anchors>
                             <Color r="1" g="0" b="0"/>
                         </FontString>
                         
                         <FontString name="Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="GameFontNormalMed2Outline">
                             <Anchors>
-                                <Anchor point="TOPLEFT" relativeTo="Thievery_keybindFrameTexture" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+                                <Anchor point="TOPLEFT" relativeKey="$parent.keybindFrameLeft" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
                             </Anchors>
                             <Color r="1" g="1" b="1"/>
                         </FontString>
@@ -115,7 +139,7 @@
                     </OnDragStop>
                 </Scripts>
                 <Frames>
-                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindFrameTemplate">
+                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Thievery_LegolandoKeybindFrameTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="25" y="-55"/>
                         </Anchors>

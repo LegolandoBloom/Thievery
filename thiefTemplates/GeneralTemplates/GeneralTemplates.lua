@@ -10,20 +10,57 @@ Legolando_MoveFrameMixin = {}
 
 Legolando_MoveAndPlaceMixin = {}
 
-function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting)
+
+
+
+function Legolando_MoveAndPlaceMixin:UpdateScale(resetting, value)
     local parent = self:GetParent()
-    if parent.savedVarTable and parent.savedVarKey then
-        if not resetting then
-            local left, bottom, _, height = self:GetScaledRect()
-            local top = bottom + height
-            parent.savedVarTable[parent.savedVarKey].left = left
-            parent.savedVarTable[parent.savedVarKey].top = top
+    local teeburu = parent.savedVarTable
+    local key = parent.savedVarKey
+    if teeburu and key then
+        if resetting then
+            self.placeholderTexture:SetScale(1)
+            self.scaleSlider:SetValue(10)
+        elseif value then
+            local scale = value/10
+            teeburu[key].scale = scale
+            teeburu[key].left = teeburu[key].leftRaw/scale
+            teeburu[key].top = teeburu[key].topRaw/scale
+            print("Scale is now: ", teeburu[key].scale)
+            print("Left&Top now: ", teeburu[key].left, teeburu[key].top)
+            self.placeholderTexture:SetScale(scale)
         end
     else
         print("No saved var table or key attached")
     end
-    if parent.callFunction then
-        parent.callFunction()
+    if parent.scaleCallback then 
+        parent.scaleCallback(self.placeholderTexture) 
+    end
+end
+function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting)
+    local parent = self:GetParent()
+    local teeburu = parent.savedVarTable
+    local key = parent.savedVarKey
+    print(key, teeburu)
+    if teeburu and key then
+        if not resetting then
+            local left, bottom, _, height = self:GetScaledRect()
+            local top = bottom + height
+            local scale = teeburu[key].scale
+            if not scale then scale = 1 end
+            teeburu[key].leftRaw = left
+            teeburu[key].topRaw = top
+            print("Raw: ", teeburu[key].leftRaw, teeburu[key].topRaw)
+            teeburu[key].left = left/scale
+            teeburu[key].top = top/scale
+            print("Scaled: ", teeburu[key].left, teeburu[key].top)
+            print("scale was ", scale)
+        end
+    else
+        print("No saved var table or key attached")
+    end
+    if parent.moveCallback then
+        parent.moveCallback()
     end
 end
 
@@ -33,11 +70,12 @@ function Legolando_MoveAndPlaceMixin:ResetPosition()
     self:SetPoint("TOPLEFT", parent, "TOPRIGHT")
     parent.savedVarTable[parent.savedVarKey] = {}
     self:UpdatePosition(true)
+    self:UpdateScale(true)
 end
 
-Legolando_KeybindFrameMixin = {}
+Thievery_LegolandoKeybindFrameMixin = {}
 
-Legolando_KeybindFrameMixin.Modifiers = {
+Thievery_LegolandoKeybindFrameMixin.Modifiers = {
     modifiedListening = nil,
     modifierKeys = {
         LSHIFT = {"LSHIFT"},
@@ -49,13 +87,13 @@ Legolando_KeybindFrameMixin.Modifiers = {
     }
 }
 
-function Legolando_KeybindFrameMixin:CallOnBindFunction()
+function Thievery_LegolandoKeybindFrameMixin:CallOnBindFunction()
     if self.onBindFunction then
         self.onBindFunction()
     end
 end
 
-function Legolando_KeybindFrameMixin:checkTableAndReference()
+function Thievery_LegolandoKeybindFrameMixin:checkTableAndReference()
     local teeburu = self.savedVarTable
     if not teeburu then
         print("no saved variable table linked to keybind frame")
@@ -69,7 +107,7 @@ function Legolando_KeybindFrameMixin:checkTableAndReference()
     return true
 end
 
-function Legolando_KeybindFrameMixin.OnClick(self, button, down)
+function Thievery_LegolandoKeybindFrameMixin.OnClick(self, button, down)
     if self:checkTableAndReference() == false then return end
     if InCombatLockdown() then return end
     if button == "LeftButton" then
@@ -245,7 +283,7 @@ function Legolando_KeybindFrame_Modified(self, key)
     end 
 end
 
-function Legolando_KeybindFrameMixin:StopWatching()
+function Thievery_LegolandoKeybindFrameMixin:StopWatching()
     local teeburu = self.savedVarTable
     local refKey = self.savedVarKey
     self.Modifiers.secondPressListening = false
@@ -261,7 +299,7 @@ function Legolando_KeybindFrameMixin:StopWatching()
     self:SetSelected(false)
 end
 
-function Legolando_KeybindFrameMixin:Unbind(self)
+function Thievery_LegolandoKeybindFrameMixin:Unbind(self)
     local teeburu = self.savedVarTable
     local refKey = self.savedVarKey
     teeburu[refKey] = nil
