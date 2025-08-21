@@ -41,24 +41,15 @@ end
 function Thievery_UpdateVisualPosition()
     local visual = Thievery_Visual
     visual:ClearAllPoints()
-    local location = Thievery_UI.VisualLocation
-    if next(Thievery_UI.VisualLocation) ~= nil then
-        visual:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", location.left + 12, location.top - 10)
+    local teeburu = Thievery_UI.VisualLocation
+    if next(teeburu) ~= nil then
+        visual:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", teeburu.left + 12, teeburu.top - 10)
+        visual:SetScale(teeburu.scale)
     else
         visual:SetPoint("TOPLEFT", UIParent, "CENTER", -100, 30)
-    end
-end
-function Thievery_UpdateVisualScale(placeholderTexture)
-    local visual = Thievery_Visual
-    visual:ClearAllPoints()
-    if next(Thievery_UI.VisualLocation) ~= nil and Thievery_UI.VisualLocation.scale then
-        visual:SetScale(Thievery_UI.VisualLocation.scale)
-    else
         visual:SetScale(1)
     end
-    -- Thievery_UpdateVisualPosition()
 end
-
 
 local function speedyOnClick()
     if Thievery_Config.Checkboxes.speedyMode == false then
@@ -76,8 +67,7 @@ function Thievery_SetupConfigPanel(parent)
     moveFrame.tooltipTitle = T["Change Visual Location"]
     moveFrame.tooltipBody = T["After pressing the button, drag the blue highlighted frame anywhere on your screen and click \'Okay\'."
     .. "\n\nClicking the button again, or clicking the reset icon " .. "to the top-right of the highlighted frame will reset the visual to its default position."]
-    moveFrame.moveCallback = Thievery_UpdateVisualPosition
-    moveFrame.scaleCallback = Thievery_UpdateVisualScale
+    moveFrame.callFunc = Thievery_UpdateVisualPosition
     moveFrame.moveAndPlaceFrame.placeholderTexture:SetTexture("Interface/AddOns/Thievery/images/placeholder.png")
     moveFrame.moveAndPlaceFrame.resetButton.tooltip = T["Reset"]
 

@@ -75,7 +75,7 @@
                             local colorYello = CreateColor(1.0, 0.82, 0)
                             self.scaleSlider:SetupSlider(1, 20, teeburu[key].scale*10, 1, colorYello:WrapTextInColorCode(Thievery_Translate["Visual Scale"]))
                             self.scaleSlider:SetCallback(function(value, isUserInput)
-                                self:UpdateScale(false, value)
+                                self:UpdatePosition(false, value/10)
                             end)
                         end
                     </OnEvent>
@@ -87,10 +87,12 @@
                     </OnDragStart>
                     <OnDragStop>
                         self:StopMovingOrSizing()
-                        self:UpdatePosition(false)
+                        self:UpdatePosition(false, nil)
                     </OnDragStop>
+                    <OnHide>
+                        self:Hide()
+                    </OnHide>
                 </Scripts>
-                
                 <Frames>
                     <Button name="$parent_OkayButton" parentKey="okayButton" text="Okay" inherits="UIPanelButtonTemplate">
                         <Size x="72" y="24"/>

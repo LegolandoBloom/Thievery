@@ -19,48 +19,49 @@ function Legolando_MoveAndPlaceMixin:UpdateScale(resetting, value)
     local key = parent.savedVarKey
     if teeburu and key then
         if resetting then
-            self.placeholderTexture:SetScale(1)
-            self.scaleSlider:SetValue(10)
+            
         elseif value then
             local scale = value/10
-            teeburu[key].scale = scale
-            teeburu[key].left = teeburu[key].leftRaw/scale
-            teeburu[key].top = teeburu[key].topRaw/scale
-            print("Scale is now: ", teeburu[key].scale)
-            print("Left&Top now: ", teeburu[key].left, teeburu[key].top)
-            self.placeholderTexture:SetScale(scale)
+            
         end
     else
         print("No saved var table or key attached")
     end
-    if parent.scaleCallback then 
+    if parent.scaleCallback then
         parent.scaleCallback(self.placeholderTexture) 
     end
 end
-function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting)
+function Legolando_MoveAndPlaceMixin:UpdatePosition(resetting, newScale)
     local parent = self:GetParent()
     local teeburu = parent.savedVarTable
     local key = parent.savedVarKey
-    print(key, teeburu)
     if teeburu and key then
-        if not resetting then
-            local left, bottom, _, height = self:GetScaledRect()
-            local top = bottom + height
+        if resetting then
+            self.placeholderTexture:SetScale(1)
+            self.scaleSlider:SetValue(10)
+        else
+            if newScale then 
+                teeburu[key].scale = newScale
+                self.placeholderTexture:SetScale(newScale)
+            end
             local scale = teeburu[key].scale
-            if not scale then scale = 1 end
-            teeburu[key].leftRaw = left
-            teeburu[key].topRaw = top
-            print("Raw: ", teeburu[key].leftRaw, teeburu[key].topRaw)
+            if not scale then 
+                scale = 1
+                teeburu[key].scale = 1
+            end
+            local left, bottom, _, height = self.placeholderTexture:GetScaledRect()
+            local top = bottom + height            
+            -- ____________________ BOTH :GetScaledRect() AND left/scale(+top/scale) ARE NECESSARY. ______________________
+            -- placeholderTexture is anchored to the 'MoveFrame', whereas the addon's frame will be anchored to 'UIParent'
+            -- ___________________________________________________________________________________________________________
             teeburu[key].left = left/scale
             teeburu[key].top = top/scale
-            print("Scaled: ", teeburu[key].left, teeburu[key].top)
-            print("scale was ", scale)
         end
     else
         print("No saved var table or key attached")
     end
-    if parent.moveCallback then
-        parent.moveCallback()
+    if parent.callFunc then
+        parent.callFunc()
     end
 end
 
@@ -69,8 +70,7 @@ function Legolando_MoveAndPlaceMixin:ResetPosition()
     self:ClearAllPoints()
     self:SetPoint("TOPLEFT", parent, "TOPRIGHT")
     parent.savedVarTable[parent.savedVarKey] = {}
-    self:UpdatePosition(true)
-    self:UpdateScale(true)
+    self:UpdatePosition(true, 1)
 end
 
 Thievery_LegolandoKeybindFrameMixin = {}

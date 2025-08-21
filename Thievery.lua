@@ -51,7 +51,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
         -- Thievery_MoveFrame.savedVarTable = Thievery_UI.VisualLocation
-        Thievery_UpdateVisualScale()
+        -- Thievery_UpdateVisualScale()
         Thievery_UpdateVisualPosition()
         Thievery_BetaPrint("Player is Alliance?", isAlliance)
     elseif event == "PLAYER_ENTERING_WORLD" then
@@ -124,7 +124,6 @@ local function setPPMode(self)
             parent.visual.throughLine:Hide()
         end
     end
-
 end
 local function setSapMode(self)
     if not sapMode then 
