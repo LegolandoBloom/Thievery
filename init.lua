@@ -1,4 +1,3 @@
-
 SLASH_THIEVERYCONFIGSHOW1 = "/thief"
 SLASH_THIEVERYCONFIGSHOW2 = "/thievery"
 SLASH_THIEVERYCONFIGSHOW3 = "/teef"
@@ -100,5 +99,42 @@ function Thievery_BetaTableToString(tbl)
             tableToString = tableToString .. "  " .. element
         end
         print(tableToString)
+    end
+end
+
+function Thievery_OnLoad(self)
+    self.callbacks = self.callbacks or LibStub("CallbackHandler-1.0"):New(self)
+
+    self:RegisterEvent("PLAYER_ENTERING_WORLD")
+    self:RegisterEvent("ADDON_LOADED")
+    self:SetScript("OnEvent", Thievery_EventLoader)
+    Thievery_SetupConfigPanel(self)
+    self.pickpocketButton:RegisterForClicks("AnyUp", "AnyDown")
+    self.pickpocketButton:RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED")
+    self.pickpocketButton:RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED")
+    self.pickpocketButton:RegisterEvent("PLAYER_TARGET_CHANGED")
+    self.pickpocketButton:RegisterEvent("UPDATE_STEALTH")
+    self.pickpocketButton:RegisterEvent("PLAYER_REGEN_DISABLED")
+    self.pickpocketButton:RegisterEvent("PLAYER_REGEN_ENABLED")
+    self.pickpocketButton:SetScript("OnEvent", Thievery_Events)
+    self.pickpocketButton:SetAttribute("type", "spell")
+    self.pickpocketButton:SetAttribute("unit", "target")
+    self.pickpocketButton:SetAttribute("spell", 921)
+end
+
+function Thievery_EventLoader(self, event, unit, ...)
+    local arg4, arg5 = ...
+    if event == "ADDON_LOADED" and unit == "Thievery" then
+        Thievery_SavedVariables()
+        Thievery_ConfigPanel.checkboxes.savedVarTable = Thievery_Config.Checkboxes
+        Thievery_KeybindFrame.savedVarTable = Thievery_Config
+        Thievery_KeybindFrame.savedVarKey = "ppKey"
+        Thievery_KeybindFrame_OnBind()
+        Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
+        Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
+        Thievery_UpdateVisualPosition()
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        if unit == false and arg4 == false then return end
+        Thievery_ToggleSpeedy(false)
     end
 end
