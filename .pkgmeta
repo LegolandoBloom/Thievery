@@ -1,0 +1,3 @@
+externals:
+  libraries/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  libraries/LibStub: https://repos.curseforge.com/wow/libstub/trunk

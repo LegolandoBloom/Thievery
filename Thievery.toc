@@ -8,10 +8,15 @@
 ## IconTexture: Interface\AddOns\Thievery\images\icontexture.png
 ## X-Curse-Project-ID: 1284634
 
+libraries\embeds.xml
+
 translations\translations.xml
+
 thiefTemplates\embeds.xml
+
 init.lua
 ui.lua
+lockpicking.lua
 pocketTables.lua
 speedy.lua
 sessionGUID.lua

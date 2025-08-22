@@ -51,7 +51,6 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
         -- Thievery_MoveFrame.savedVarTable = Thievery_UI.VisualLocation
-        -- Thievery_UpdateVisualScale()
         Thievery_UpdateVisualPosition()
         Thievery_BetaPrint("Player is Alliance?", isAlliance)
     elseif event == "PLAYER_ENTERING_WORLD" then
@@ -321,3 +320,18 @@ SlashCmdList["THIEVERYBITEM"] = function()
     print("bag ID is: ", bagID)
     DevTools_Dump(C_Container.GetContainerItemInfo(itemButton:GetBagID(), itemButton:GetID()))
 end
+
+local function Lockpick_OnEvent(self, event, unit, ...)
+    print(unit:GetDebugName())
+end
+
+local lockpickEvent = CreateFrame("Frame")
+-- lockpickEvent:RegisterEvent("ContainerFrame.OpenBag")
+lockpickEvent:SetScript("OnEvent", Lockpick_OnEvent)
+
+EventRegistry:RegisterCallback("BagSlot.OnEnter", function()
+    print("bag slot entered")
+end);
+EventRegistry:RegisterCallback("ContainerFrame.OnShowTokenWatcher", function()
+    print("ContainerFrame.OnShowTokenWatcher")
+end);

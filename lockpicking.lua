@@ -1,0 +1,1 @@
+local bagTrackingFrame = CreateFrame("Frame", nil, UIParent, "Thievery_LegolandoBagTrackerTemplate")
