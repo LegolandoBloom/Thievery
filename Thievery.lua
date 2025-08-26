@@ -276,27 +276,3 @@ local nameToID = {
     ["ContainerFrame5"] = 5,
     ["ContainerFrame6"] = 6,
 }
-
-SLASH_THIEVERYBITEM3 = "/bitem"
-SlashCmdList["THIEVERYBITEM"] = function() 
-    local itemButton = GetMouseFoci()[1]
-    print("Debug name", itemButton:GetDebugName())
-    local bagID = nameToID[itemButton:GetDebugName()]
-    print("bag ID is: ", bagID)
-    DevTools_Dump(C_Container.GetContainerItemInfo(itemButton:GetBagID(), itemButton:GetID()))
-end
-
-local function Lockpick_OnEvent(self, event, unit, ...)
-    print(unit:GetDebugName())
-end
-
-local lockpickEvent = CreateFrame("Frame")
--- lockpickEvent:RegisterEvent("ContainerFrame.OpenBag")
-lockpickEvent:SetScript("OnEvent", Lockpick_OnEvent)
-
-EventRegistry:RegisterCallback("BagSlot.OnEnter", function()
-    print("bag slot entered")
-end);
-EventRegistry:RegisterCallback("ContainerFrame.OnShowTokenWatcher", function()
-    print("ContainerFrame.OnShowTokenWatcher")
-end);

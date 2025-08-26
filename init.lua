@@ -103,8 +103,6 @@ function Thievery_BetaTableToString(tbl)
 end
 
 function Thievery_OnLoad(self)
-    self.callbacks = self.callbacks or LibStub("CallbackHandler-1.0"):New(self)
-
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("ADDON_LOADED")
     self:SetScript("OnEvent", Thievery_EventLoader)
