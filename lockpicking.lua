@@ -1,24 +1,24 @@
-local bagTrackingFrame = CreateFrame("Frame", nil, UIParent, "Thievery_LegolandoBagTrackerTemplate")
+local bagTrackingFrame = CreateFrame("Frame", "Thiever_BagTracker", UIParent, "Thievery_LegolandoBagTrackerTemplate")
 
 local link1= "what"
 local link2= "huh"
 local link3= "duh"
 	
 bagTrackingFrame.filters ={
-    stackCount = {operator = '<', number = 2},
-    isLocked = false,
-    quality = 3,
-	IsReadable = false,
-	hyperlink = {link1, link2, link3},
-	isFiltered = false,
-	hasNoValue = false,
-	itemID = {},
-	isBound = true,
+    stackCount = {operator = '>', number = 1},
+    --isLocked = false,
+    quality = 4,
+	--IsReadable = false,
+	-- hyperlink = {link1, link2, link3},
+	-- isFiltered = false,
+	-- hasNoValue = false,
+	-- itemID = {29569, 113575, 112995},
+	-- isBound = true,
 }
 
 
 SLASH_THIEVERYBITEM1 = "/bitem"
-SlashCmdList["THIEVERYBITEM"] = function() 
+SlashCmdList["THIEVERYBITEM"] = function()
     local itemButton = GetMouseFoci()[1]
     if not itemButton then return end
     if not itemButton:GetSlotAndBagID() then return end

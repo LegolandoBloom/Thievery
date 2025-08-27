@@ -1,19 +1,48 @@
 
+local function tableToString(tbl)
+	local colorTeal = CreateColor(0, 1, 0.76)
+	local toString = ""
+	for i, v in pairs(tbl) do
+		if type(v) == "table" then
+			if next(v) ~= nil then
+				local element = "[" .. colorTeal:WrapTextInColorCode("(Table)") .. tostring(i) .. ":" .. "\n" .. tableToString(v) .. " ]\n"
+				toString = toString .. "  " .. element
+			end
+		else
+			local element = "[" .. tostring(i) .. ":" .. tostring(v) .. "]"
+			toString = toString .. "  " .. element
+		end
+	end
+	return toString
+end
+
+
+
 Thievery_LegolandoBagTrackerMixin = {}
 
 local bagTable = {}
+bagTable[0] = {}
+bagTable[1] = {}
+bagTable[2] = {}
+bagTable[3] = {}
+bagTable[4] = {}
+bagTable[5] = {}
+bagTable[6] = {}
 
-local function resetTable()
-	bagTable = {}
-	bagTable[0] = {}
-	bagTable[1] = {}
-	bagTable[2] = {}
-	bagTable[3] = {}
-	bagTable[4] = {}
-	bagTable[5] = {}
-	bagTable[6] = {}
+
+function Thievery_LegolandoBagTrackerMixin:UpdateSavedSlots(bagID)
+	if not bagTable[bagID] then 
+		print("not a valid bag ID")
+		return
+	end 
+	for slotID, info in pairs(bagTable[bagID]) do
+		print(i, info.quality)
+		local slotInfo = C_Container.GetContainerItemInfo(bagID, slotID);
+		if not slotInfo then
+			print("Item moved, slot empty")
+			bagTable[bagID]
+	end
 end
-
 
 
 -- EACH VALID SLOT HAS A TABLE WITH THESE VALUES
@@ -37,14 +66,45 @@ end
 	-- 		   }
 -- isBound: false | true
 
--- used to turn tables in filters to singular values to cleanly compare with info later on
-local function handleTables(teeburu, info)
-	for i, tableInfo in pairs(teeburu) do
-		if tableInfo == info then 
-			return info
+
+
+local function checkStackCount(teeburu, count)
+	local operator = teeburu.operator
+	local number = teeburu.number
+	if operator == '=' then
+		if count == number then
+			return true
+		end
+	elseif operator == '<' then
+		if count < number then
+			return true
+		end
+	elseif operator == '>' then
+		if count > number then
+			return true
+		end
+	elseif operator == '<=' then
+		if count <= number then
+			return true
+		end
+	elseif operator == '>=' then
+		if count >= number then
+			return true
+		end
+	elseif operator == '~=' then
+		if count ~= number then
+			return true
 		end
 	end
-	return nil
+	return false
+end
+local function checkTables(teeburu, info)
+	for i, tableInfo in pairs(teeburu) do
+		if tableInfo == info then 
+			return true
+		end
+	end
+	return false
 end
 function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
 	local slotID, bagID = itemButton:GetSlotAndBagID()
@@ -59,43 +119,67 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
 	end
 	if self.filters and next(self.filters) ~= nil then
 		local filters = self.filters
-		if filters.hyperlink and next(filters.hyperlink) ~= nil then
-			filters.hyperlink = handleTables(filters.hyperlink, info.hyperlink)
+		-- print("Filters: ")
+		-- DevTools_Dump(filters)
+		local isValid = true
+		for i, v in pairs(filters) do
+			if not info[i] then 
+				print("Item:" , info.hyperlink, " doesn't have any info about the desired filter: ")
+				isValid = false
+			elseif i == "stackCount" then
+				if checkStackCount(v, info.stackCount) == false then
+					isValid = false
+				end
+			elseif i == "itemID" or i == "hyperlink" then
+				if checkTables(v, info.itemID) == false then
+					isValid = false
+				end
+			elseif info[i] == v then
+				-- print("item", info.hyperlink, "meets criteria:", i)
+			else
+				isValid = false
+			end
 		end
-		if filters.itemID and next(filters.itemID) ~= nil then
-			filters.itemID = handleTables(filters.itemID, info.itemID)
+		if isValid then
+			bagTable[bagID][slotID] = info
 		end
-		for i, v in pairs(self.filters) do
-			print(i, v)
-		end
-	else
+	elseif bagID then 
 		bagTable[bagID][slotID] = info
-		print(bagTable[bagID][slotID].quality)
 		-- no filters, add all items
 	end
 end
 
-function Thievery_LegolandoBagTrackerMixin:UpdateSavedSlots(bagID)
-	for i, info in pairs(bagTable[bagID]) do
-		print(i, info.quality)
-	end
-end
-
 function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
-	resetTable()
     local bagID = containerFrame:GetID()
+	bagTable[bagID] = {}
     for i, itemButton in containerFrame:EnumerateValidItems() do
 		self:InvestigateItemSlot(itemButton)
 	end
 end
 
+local bagsToUpdate = {}
+local function bagEventHandler(self, event, unit, ...)
+	if event == "BAG_UPDATE" then
+		if unit then
+			table.insert(bagsToUpdate, unit)
+			DevTools_Dump(bagsToUpdate)
+		end
+		self:SetScript("OnUpdate", function()
+			for i, v in pairs(bagsToUpdate) do
+				print("Updating bag ", v)
+				self:UpdateSavedSlots(v)
+			end
+			bagsToUpdate = {}
+			self:SetScript("OnUpdate", nil)
+		end)
+	end
+end
 function Thievery_LegolandoBagTrackerMixin:OnLoad()
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
 		self:InvestigateBag(containerFrame)
 	end)
-    EventRegistry:RegisterCallback("ItemButton.UpdateItemContextMatching", function(_, bagID)
-		self:UpdateSavedSlots(bagID)
-	end)
+	self:RegisterEvent("BAG_UPDATE")
+	self:SetScript("OnEvent", bagEventHandler)
 end
 
 -- local itemID = C_Container.GetContainerItemID(bagID, itemButton:GetID())
@@ -107,3 +191,10 @@ end
 --     print("Class: ", C_Item.GetItemClassInfo(classID))
 --     print("Class: ", C_Item.GetItemSubClassInfo(classID, subclassID))
 -- end
+
+
+SLASH_THIEVERYZZZ1 = "/zzz"
+SlashCmdList["THIEVERYZZZ"] = function() 
+	print("Filtered items: ")
+	DevTools_Dump(bagTable)
+end
