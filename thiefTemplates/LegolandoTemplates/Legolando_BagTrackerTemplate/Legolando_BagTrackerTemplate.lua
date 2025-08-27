@@ -1,11 +1,14 @@
 
-local function tableToString(tbl)
+local function tableToString(tbl, recursiveCall)
 	local colorTeal = CreateColor(0, 1, 0.76)
 	local toString = ""
+	if not recursiveCall then
+		toString = "\n"
+	end
 	for i, v in pairs(tbl) do
 		if type(v) == "table" then
 			if next(v) ~= nil then
-				local element = "[" .. colorTeal:WrapTextInColorCode("(Table)") .. tostring(i) .. ":" .. "\n" .. tableToString(v) .. " ]\n"
+				local element = "[" .. colorTeal:WrapTextInColorCode("(Table)") .. tostring(i) .. ":\n   "  .. tableToString(v, true) .. " ]\n"
 				toString = toString .. "  " .. element
 			end
 		else
@@ -29,21 +32,21 @@ bagTable[4] = {}
 bagTable[5] = {}
 bagTable[6] = {}
 
-
-function Thievery_LegolandoBagTrackerMixin:UpdateSavedSlots(bagID)
-	if not bagTable[bagID] then 
-		print("not a valid bag ID")
-		return
-	end 
-	for slotID, info in pairs(bagTable[bagID]) do
-		print(i, info.quality)
-		local slotInfo = C_Container.GetContainerItemInfo(bagID, slotID);
-		if not slotInfo then
-			print("Item moved, slot empty")
-			bagTable[bagID]
+function Thievery_LegolandoBagTrackerMixin:GetContainerFrame(bagID)
+	if bagID == 0 then
+		return ContainerFrame1
+	elseif bagID == 1 then
+		return ContainerFrame2
+	elseif bagID == 2 then
+		return ContainerFrame3
+	elseif bagID == 3 then
+		return ContainerFrame4
+	elseif bagID == 4 then
+		return ContainerFrame5
+	elseif bagID == 5 then
+		return ContainerFrame6
 	end
 end
-
 
 -- EACH VALID SLOT HAS A TABLE WITH THESE VALUES
 -- slot.iconFileID | slot.stackCount | slot.isLocked | slot.quality | slot.IsReadable
@@ -157,9 +160,11 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
 	end
 end
 
+local openedOnce = false
 local bagsToUpdate = {}
 local function bagEventHandler(self, event, unit, ...)
 	if event == "BAG_UPDATE" then
+		if not openedOnce then return end
 		if unit then
 			table.insert(bagsToUpdate, unit)
 			DevTools_Dump(bagsToUpdate)
@@ -167,16 +172,18 @@ local function bagEventHandler(self, event, unit, ...)
 		self:SetScript("OnUpdate", function()
 			for i, v in pairs(bagsToUpdate) do
 				print("Updating bag ", v)
-				self:UpdateSavedSlots(v)
+				self:InvestigateBag(self:GetContainerFrame(v))
 			end
 			bagsToUpdate = {}
 			self:SetScript("OnUpdate", nil)
 		end)
 	end
 end
+
 function Thievery_LegolandoBagTrackerMixin:OnLoad()
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
 		self:InvestigateBag(containerFrame)
+		openedOnce = true
 	end)
 	self:RegisterEvent("BAG_UPDATE")
 	self:SetScript("OnEvent", bagEventHandler)
@@ -196,5 +203,10 @@ end
 SLASH_THIEVERYZZZ1 = "/zzz"
 SlashCmdList["THIEVERYZZZ"] = function() 
 	print("Filtered items: ")
-	DevTools_Dump(bagTable)
+	for i, v in pairs(bagTable) do
+		for a, b in pairs(v) do
+			print(b.hyperlink, "in bag ", i, "slot ", a)
+		end
+	end
+	-- print(tableToString(bagTable))
 end
