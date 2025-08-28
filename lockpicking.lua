@@ -58,5 +58,11 @@ Thievery_LockpickOverlays = CreateFramePool("Frame", Thievery_LockpickOverlays, 
     frame:Hide()
 end)
 
-local delayFrame = delayFramePool:Acquire()
-delayFramePool:Release(self)
+-- local delayFrame = delayFramePool:Acquire()
+-- delayFramePool:Release(self)
+
+
+local function sayHi()
+    print("hi")
+end
+bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone", sayHi)

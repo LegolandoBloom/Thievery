@@ -32,6 +32,8 @@ bagTable[4] = {}
 bagTable[5] = {}
 bagTable[6] = {}
 
+Thievery_LegolandoBagTrackerMixin.callbacks = Thievery_LegolandoBagTrackerMixin.callbacks or LibStub("CallbackHandler-1.0"):New(Thievery_LegolandoBagTrackerMixin)
+
 function Thievery_LegolandoBagTrackerMixin:GetContainerFrame(bagID)
 	if bagID == 0 then
 		return ContainerFrame1
@@ -160,9 +162,9 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
     for i, itemButton in containerFrame:EnumerateValidItems() do
 		self:InvestigateItemSlot(itemButton)
 	end
+	self.callbacks:Fire("Lego-BagScanDone", bagTable[bagID])
 end
 
-local openedOnce = false
 local bagsToUpdate = {}
 local function bagEventHandler(self, event, unit, ...)
 	if event == "BAG_UPDATE" then
@@ -184,7 +186,6 @@ end
 function Thievery_LegolandoBagTrackerMixin:OnLoad()
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
 		self:InvestigateBag(containerFrame)
-		openedOnce = true
 	end)
 	self:RegisterEvent("BAG_UPDATE")
 	self:SetScript("OnEvent", bagEventHandler)
