@@ -110,6 +110,7 @@ local function checkTables(teeburu, info)
 	return false
 end
 function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
+	if not itemButton then return end
 	local slotID, bagID = itemButton:GetSlotAndBagID()
 	local info = C_Container.GetContainerItemInfo(bagID, slotID);
 	if not bagTable[bagID] then 
@@ -153,6 +154,7 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
 end
 
 function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
+	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	bagTable[bagID] = {}
     for i, itemButton in containerFrame:EnumerateValidItems() do
@@ -164,7 +166,6 @@ local openedOnce = false
 local bagsToUpdate = {}
 local function bagEventHandler(self, event, unit, ...)
 	if event == "BAG_UPDATE" then
-		if not openedOnce then return end
 		if unit then
 			table.insert(bagsToUpdate, unit)
 			DevTools_Dump(bagsToUpdate)
