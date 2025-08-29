@@ -155,40 +155,48 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
 	end
 end
 
-function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
+function Thievery_LegolandoBagTrackerMixin:ClearBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	bagTable[bagID] = {}
+	self.callbacks:Fire("Lego-BagCleared", bagID)
+end
+
+function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
+	if not containerFrame then return end
+    local bagID = containerFrame:GetID()
+	self:ClearBag(containerFrame)
     for i, itemButton in containerFrame:EnumerateValidItems() do
 		self:InvestigateItemSlot(itemButton)
 	end
-	self.callbacks:Fire("Lego-BagScanDone", bagTable[bagID])
+	self.callbacks:Fire("Lego-BagScanDone", bagID, bagTable[bagID])
 end
 
 local bagsToUpdate = {}
-local function bagEventHandler(self, event, unit, ...)
-	if event == "BAG_UPDATE" then
-		if unit then
-			table.insert(bagsToUpdate, unit)
-			DevTools_Dump(bagsToUpdate)
-		end
-		self:SetScript("OnUpdate", function()
-			for i, v in pairs(bagsToUpdate) do
-				print("Updating bag ", v)
-				self:InvestigateBag(self:GetContainerFrame(v))
-			end
-			bagsToUpdate = {}
-			self:SetScript("OnUpdate", nil)
-		end)
+local function bagEventHandler(self, ...)
+	local bagID = ...
+	if bagID then
+		table.insert(bagsToUpdate, bagID)
+		DevTools_Dump(bagsToUpdate)
 	end
+	self:SetScript("OnUpdate", function()
+		for i, v in pairs(bagsToUpdate) do
+			print("Updating bag ", v)
+			self:InvestigateBag(self:GetContainerFrame(v))
+		end
+		bagsToUpdate = {}
+		self:SetScript("OnUpdate", nil)
+	end)
 end
 
 function Thievery_LegolandoBagTrackerMixin:OnLoad()
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
 		self:InvestigateBag(containerFrame)
 	end)
-	self:RegisterEvent("BAG_UPDATE")
-	self:SetScript("OnEvent", bagEventHandler)
+	EventRegistry:RegisterCallback("ContainerFrame.CloseBag", function(_, containerFrame)
+		self:ClearBag(containerFrame)
+	end)
+	EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
 end
 
 -- local itemID = C_Container.GetContainerItemID(bagID, itemButton:GetID())
