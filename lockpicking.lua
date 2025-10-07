@@ -49,7 +49,6 @@ SlashCmdList["THIEVERYBITEM"] = function()
     lockpickOverlay:SetAttribute("macrotext", line1 .. "\n" .. line2)
 end
 
-
 local function pool_clear(framePool, frame)
     frame:SetScript("OnUpdate", nil)
     frame:SetScript("OnEvent", nil)

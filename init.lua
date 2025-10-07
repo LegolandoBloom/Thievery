@@ -107,6 +107,10 @@ function Thievery_OnLoad(self)
     self:RegisterEvent("ADDON_LOADED")
     self:SetScript("OnEvent", Thievery_EventLoader)
     Thievery_SetupConfigPanel(self)
+    local playerClass = UnitClassBase("player")
+    if playerClass ~= "ROGUE" then
+        return
+    end
     self.pickpocketButton:RegisterForClicks("AnyUp", "AnyDown")
     self.pickpocketButton:RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED")
     self.pickpocketButton:RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED")

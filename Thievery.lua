@@ -228,7 +228,6 @@ local function checkAndHandleStealth(self)
 end
 function Thievery_Events(self, event, unit)
     if event == "PLAYER_SOFT_INTERACT_CHANGED" or event == "PLAYER_SOFT_ENEMY_CHANGED" or event == "PLAYER_TARGET_CHANGED" then
-        
         PPMode = false
         sapMode = false
         clearTable(target)
