@@ -38,7 +38,7 @@ local function getIDFromGUID(guid)
         starto, endo = string.find(guid, "(%d+)", endo + 1)
         if not endo then
             print("Thievery: Faulty GUID, please contact addon author.")
-            return
+            return false
         end
     end
     local npcID = string.sub(guid, starto, endo)
@@ -237,7 +237,8 @@ function Thievery_Events(self, event, unit)
         if checkTargetValidity() == true then
             validTarget = true
             target.guid = UnitGUID("target")
-            target.npcID = tonumber(getIDFromGUID(target.guid))
+            local npcID = getIDFromGUID(target.guid)
+            target.npcID = tonumber(npcID)
             target.name = UnitName("target")
             local _
             _, target.creatureType = UnitCreatureType("target")
