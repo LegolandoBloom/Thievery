@@ -2,5 +2,7 @@
 ..\FrameXML\UI.xsd">
 
     <Include file="Legolando_BagTrackerTemplate\Legolando_BagTrackerTemplate.xml"/>
+
+    <Include file="Legolando_MoveAndPlaceFrameTemplate\Legolando_MoveAndPlaceFrameTemplate.xml"/>
         
 </Ui>

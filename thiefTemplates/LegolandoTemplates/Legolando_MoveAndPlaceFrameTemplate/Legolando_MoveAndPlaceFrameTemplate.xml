@@ -1,0 +1,151 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="Legolando_MoveAndPlaceFrameTemplate.lua"/>
+
+    <Button name="Legolando_MoveFrameTemplate_Thievery" mixin="Legolando_MoveFrameMixin_Thievery" inherits="SquareIconButtonTemplate" virtual="true">
+        <KeyValues>
+            <KeyValue key="icon" value="Interface\CURSOR\UI-Cursor-Move"/>
+        </KeyValues>
+        <Scripts>
+            <OnClick>
+                if not self.savedVarTable then
+                    print("no saved variable table linked to keybind frame")
+                    return
+                end
+                if not self.savedVarKey then
+                    print("no reference key for the saved var table")
+                    return
+                end
+                self.moveAndPlaceFrame:ResetPosition()
+                self.moveAndPlaceFrame:Show()
+            </OnClick>
+            <OnEnter>
+                if not self.tooltipTitle or not self.tooltipBody then return end
+                GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", -35, 0)
+                GameTooltip:AddLine(self.tooltipBody, 1, 1, 1, true)
+                GameTooltip:Show()
+            </OnEnter>
+            <OnLeave>
+                if not self.tooltipTitle or not self.tooltipBody then return end
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Title" parentKey="title" text="Title Text" inherits= "GameFontNormalMed2Outline">
+                    <Anchors>
+                        <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT" y="0"/>
+                    </Anchors>
+                    <Scripts>
+                        <OnEnter>
+                            local parent = self:GetParent()
+                            if not parent.tooltipTitle or not parent.tooltipBody then return end
+                            GameTooltip:SetOwner(parent, "ANCHOR_BOTTOMRIGHT", -35, 0)
+                            GameTooltip:AddLine(parent.tooltipBody, 1, 1, 1, true)
+                            GameTooltip:Show()
+                        </OnEnter>
+                        <OnLeave>
+                            local parent = self:GetParent()
+                            if not parent.tooltipTitle or not parent.tooltipBody then return end
+                            GameTooltip:Hide()
+                        </OnLeave>
+                    </Scripts>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="$parent_MoveAndPlaceFrame" mixin="Legolando_MoveAndPlaceMixin_Thievery" parentKey="moveAndPlaceFrame" hidden="true">
+                <Size x="192" y="96"/>
+                <Scripts>
+                    <OnLoad>
+                        self:SetMovable(true)
+                        self:RegisterForDrag("LeftButton")
+                        self:RegisterEvent("PLAYER_ENTERING_WORLD")
+                    </OnLoad>
+                    <OnEvent>
+                        if event == "PLAYER_ENTERING_WORLD" then
+                            local parent = self:GetParent()
+                            local teeburu = parent.savedVarTable
+                            local key = parent.savedVarKey
+                            if not teeburu or not key then 
+                                print("no saved var table or key") 
+                                return 
+                            end
+                            local scale = 1
+                            if teeburu[key].scale then scale = teeburu[key].scale end
+                            self.scaleSlider.ValueBox:SetNumericFullRange()
+                            local colorYello = CreateColor(1.0, 0.82, 0)
+                            self.scaleSlider:SetupSlider(1, 20, scale*10, 1, colorYello:WrapTextInColorCode(Thievery_Translate["Visual Scale"]))
+                            self.scaleSlider:SetCallback(function(value, isUserInput)
+                                self:UpdatePosition(not isUserInput, value/10)
+                            end)
+                        end
+                    </OnEvent>
+                    <OnMouseDown>
+                        self:Raise()
+                    </OnMouseDown>
+                    <OnDragStart>
+                        self:StartMoving()
+                    </OnDragStart>
+                    <OnDragStop>
+                        self:StopMovingOrSizing()
+                        self:UpdatePosition(false, nil)
+                    </OnDragStop>
+                    <OnHide>
+                        self:Hide()
+                    </OnHide>
+                </Scripts>
+                <Frames>
+                    <Button name="$parent_OkayButton" parentKey="okayButton" text="Okay" inherits="UIPanelButtonTemplate">
+                        <Size x="72" y="24"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-15" y="5"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                self:GetParent():Hide()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
+                    <Frame name= "$parent_ScaleSlider" parentKey="scaleSlider" inherits="SliderAndEditControlTemplate">
+                        <Anchors>
+                            <Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                        </Anchors>
+                    </Frame>
+                    <Button name="$parent_ResetButton" parentKey="resetButton" text="Reset" inherits="RefreshButtonTemplate">
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                self:GetParent():ResetPosition()
+                            </OnClick>
+                            <OnEnter>
+                                if not self.tooltip then return end
+                                GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", 0)
+                                GameTooltip:AddLine(self.tooltip)
+                                GameTooltip:Show()
+                            </OnEnter>
+                            <OnLeave>
+                                if not self.tooltip then return end
+                                GameTooltip:Hide()
+                            </OnLeave>
+                        </Scripts>
+                    </Button>
+                </Frames>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="$parent_PlaceholderTexture" parentKey="placeholderTexture">
+                            <Size x="192" y="96"/>
+                            <Anchors>
+                                <Anchor point="BOTTOM" relativeKey="$parent.scaleSlider" relativePoint="TOP"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+    </Button>
+
+</Ui>

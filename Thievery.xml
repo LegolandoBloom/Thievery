@@ -144,7 +144,7 @@
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="25" y="-55"/>
                         </Anchors>
                     </Button>
-                    <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate">
+                    <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate_Thievery">
                         <Anchors>
                             <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-8" y="5"/>
                         </Anchors>
