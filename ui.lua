@@ -46,7 +46,7 @@ function Thievery_UpdateVisualPosition()
         visual:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", teeburu.left + 12, teeburu.top - 10)
         visual:SetScale(teeburu.scale)
     else
-        visual:SetPoint("TOPLEFT", UIParent, "CENTER", -100, 30)
+        visual:SetPoint("TOPLEFT", UIParent, "CENTER", 50, 30)
         visual:SetScale(1)
     end
 end

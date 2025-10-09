@@ -70,10 +70,11 @@
                                 print("no saved var table or key") 
                                 return 
                             end
-                            if not teeburu[key].scale then teeburu[key].scale = 1 end
+                            local scale = 1
+                            if teeburu[key].scale then scale = teeburu[key].scale end
                             self.scaleSlider.ValueBox:SetNumericFullRange()
                             local colorYello = CreateColor(1.0, 0.82, 0)
-                            self.scaleSlider:SetupSlider(1, 20, teeburu[key].scale*10, 1, colorYello:WrapTextInColorCode(Thievery_Translate["Visual Scale"]))
+                            self.scaleSlider:SetupSlider(1, 20, scale*10, 1, colorYello:WrapTextInColorCode(Thievery_Translate["Visual Scale"]))
                             self.scaleSlider:SetCallback(function(value, isUserInput)
                                 self:UpdatePosition(false, value/10)
                             end)
