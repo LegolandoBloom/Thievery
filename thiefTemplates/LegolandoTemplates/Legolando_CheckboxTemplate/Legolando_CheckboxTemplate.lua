@@ -39,6 +39,9 @@ function Legolando_CheckboxMixin_Thievery:OnClick()
     elseif self:GetChecked() == false then
         teeburu[self.reference] = false
     end
+    if self.onClickCallback then
+        self.onClickCallback()
+    end
 end
 
 Legolando_CheckboxesMixin_Thievery = {}

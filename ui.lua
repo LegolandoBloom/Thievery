@@ -73,7 +73,7 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
 
     checkboxes.speedyMode.text:SetText(T["Speedy Mode"])
-    checkboxes.speedyMode.onClickFunction = speedyOnClick
+    checkboxes.speedyMode.onClickCallback = speedyOnClick
     checkboxes.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
     checkboxes.speedyMode:reposition()
 
