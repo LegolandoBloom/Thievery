@@ -52,8 +52,8 @@ local function speedyOnClick()
     end
 end
 
-function Thievery_SetupConfigPanel(parent)
-    local configPanel = parent.configPanel
+function Thievery_SetupConfigPanel_PreSavedVars(self)
+    local configPanel = self.configPanel
     local checkboxes = configPanel.checkboxes
     local keybindFrame = configPanel.keybindFrame
     local moveFrame = configPanel.moveFrame
@@ -76,21 +76,40 @@ function Thievery_SetupConfigPanel(parent)
     checkboxes.speedyMode.onClickFunction = speedyOnClick
     checkboxes.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
     checkboxes.speedyMode:reposition()
-    checkboxes.speedyMode.reference = "speedyMode"
+
 
     checkboxes.playSound.text:SetText(T["Play Sound Effect"])
     checkboxes.playSound.text.tooltip = T["When checked, plays a sound effect when the pickpocket key is pressed"]
     checkboxes.playSound:reposition()
-    checkboxes.playSound.reference = "playSound"
+
     
     checkboxes.enableSap.text:SetText(T["Enable Sap"])
     checkboxes.enableSap.text.tooltip = T["Cast sap before pick pocket, with the same keybind."]
     checkboxes.enableSap:reposition()
-    checkboxes.enableSap.reference = "enableSap"
+
 
     checkboxes.debugMode.text:SetText(T["Debug Mode"])
     checkboxes.debugMode:reposition()
-    checkboxes.debugMode.reference = "debugMode"
 
 end
 
+
+function Thievery_SetupConfigPanel_PostSavedVars(self)
+    local configPanel = self.configPanel
+    local checkboxes = configPanel.checkboxes
+    local keybindFrame = configPanel.keybindFrame
+    local moveFrame = configPanel.moveFrame
+
+    checkboxes.savedVarTable = Thievery_Config.Checkboxes
+    checkboxes.speedyMode.reference = "speedyMode"
+    checkboxes.playSound.reference = "playSound"
+    checkboxes.enableSap.reference = "enableSap"
+    checkboxes.debugMode.reference = "debugMode"
+    checkboxes:Update()
+    keybindFrame.savedVarTable = Thievery_Config
+    keybindFrame.keybindRef = "ppKey"
+    keybindFrame.baseRef = "ppKeyBase"
+    Thievery_KeybindFrame_OnBind()
+    moveFrame.savedVarTable = Thievery_UI
+    moveFrame.savedVarKey = "VisualLocation"
+end

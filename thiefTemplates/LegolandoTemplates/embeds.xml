@@ -6,5 +6,7 @@
     <Include file="Legolando_MoveAndPlaceFrameTemplate\Legolando_MoveAndPlaceFrameTemplate.xml"/>
 
     <Include file="Legolando_KeybindButtonTemplate\Legolando_KeybindButtonTemplate.xml"/>
+
+    <Include file="Legolando_CheckboxTemplate\Legolando_CheckboxTemplate.xml"/>
         
 </Ui>

@@ -149,19 +149,19 @@
                             <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-8" y="5"/>
                         </Anchors>
                     </Button>
-                    <Frame name="$parent_CheckboxesFrame" inherits="Legolando_CheckboxesFrameTemplate" parentKey="checkboxes">
+                    <Frame name="$parent_CheckboxesFrame" inherits="Legolando_CheckboxesTemplate_Thievery" parentKey="checkboxes">
                         <Size x="200" y="180"/>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-105"/>
                         </Anchors>
                         <Frames>
-                            <CheckButton parentKey="speedyMode" inherits="Legolando_CheckboxTemplate">
+                            <CheckButton parentKey="speedyMode" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
                                 </Anchors>
                             </CheckButton>
-                            <CheckButton parentKey="playSound" inherits="Legolando_CheckboxTemplate">
+                            <CheckButton parentKey="playSound" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
@@ -174,13 +174,13 @@
                                     </PostClick>
                                 </Scripts>
                             </CheckButton>
-                            <CheckButton parentKey="enableSap" inherits="Legolando_CheckboxTemplate">
+                            <CheckButton parentKey="enableSap" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-50"/>
                                 </Anchors>
                             </CheckButton>
-                            <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate">
+                            <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-90"/>
@@ -192,8 +192,5 @@
             </Frame>
         </Frames>
     </Frame>
-
-
-
    
 </Ui>

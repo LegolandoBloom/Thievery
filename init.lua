@@ -106,7 +106,7 @@ function Thievery_OnLoad(self)
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("ADDON_LOADED")
     self:SetScript("OnEvent", Thievery_EventLoader)
-    Thievery_SetupConfigPanel(self)
+    Thievery_SetupConfigPanel_PreSavedVars(self)
     local playerClass = UnitClassBase("player")
     if playerClass ~= "ROGUE" then
         return
@@ -128,13 +128,7 @@ function Thievery_EventLoader(self, event, unit, ...)
     local arg4, arg5 = ...
     if event == "ADDON_LOADED" and unit == "Thievery" then
         Thievery_SavedVariables()
-        Thievery_ConfigPanel.checkboxes.savedVarTable = Thievery_Config.Checkboxes
-        Thievery_KeybindFrame.savedVarTable = Thievery_Config
-        Thievery_KeybindFrame.keybindRef = "ppKey"
-        Thievery_KeybindFrame.baseRef = "ppKeyBase"
-        Thievery_KeybindFrame_OnBind()
-        Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
-        Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"
+        Thievery_SetupConfigPanel_PostSavedVars(self)
         Thievery_UpdateVisualPosition()
     elseif event == "PLAYER_ENTERING_WORLD" then
         if unit == false and arg4 == false then return end
