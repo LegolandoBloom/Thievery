@@ -130,7 +130,8 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_SavedVariables()
         Thievery_ConfigPanel.checkboxes.savedVarTable = Thievery_Config.Checkboxes
         Thievery_KeybindFrame.savedVarTable = Thievery_Config
-        Thievery_KeybindFrame.savedVarKey = "ppKey"
+        Thievery_KeybindFrame.keybindRef = "ppKey"
+        Thievery_KeybindFrame.baseRef = "ppKeyBase"
         Thievery_KeybindFrame_OnBind()
         Thievery_ConfigPanel.moveFrame.savedVarTable = Thievery_UI
         Thievery_ConfigPanel.moveFrame.savedVarKey = "VisualLocation"

@@ -29,11 +29,6 @@ function Thievery_KeybindFrame_OnBind()
     
     sizeX, sizeY = visual.keybindFrameBGRight:GetSize()
     visual.keybindFrameBGRight:SetSize(sizeX, height + (width*0.05))
-
-
-
-
-
     -- visual.keybindFrameBG:SetSize((width * 1.25) + 8, height + (width*0.05))
     Thievery_UpdateState(Thievery.pickpocketButton, true)
 end

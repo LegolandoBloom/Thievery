@@ -139,7 +139,7 @@
                     </OnDragStop>
                 </Scripts>
                 <Frames>
-                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Thievery_LegolandoKeybindFrameTemplate">
+                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindButtonTemplate_Thievery">
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="25" y="-55"/>
                         </Anchors>
