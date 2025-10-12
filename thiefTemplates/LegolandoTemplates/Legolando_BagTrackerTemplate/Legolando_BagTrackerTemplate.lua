@@ -21,7 +21,7 @@ end
 
 
 
-Thievery_LegolandoBagTrackerMixin = {}
+Legolando_BagTrackerMixin_Thievery = {}
 
 local bagTable = {}
 bagTable[0] = {}
@@ -32,9 +32,9 @@ bagTable[4] = {}
 bagTable[5] = {}
 bagTable[6] = {}
 
-Thievery_LegolandoBagTrackerMixin.callbacks = Thievery_LegolandoBagTrackerMixin.callbacks or LibStub("CallbackHandler-1.0"):New(Thievery_LegolandoBagTrackerMixin)
+Legolando_BagTrackerMixin_Thievery.callbacks = Legolando_BagTrackerMixin_Thievery.callbacks or LibStub("CallbackHandler-1.0"):New(Legolando_BagTrackerMixin_Thievery)
 
-function Thievery_LegolandoBagTrackerMixin:GetContainerFrame(bagID)
+function Legolando_BagTrackerMixin_Thievery:GetContainerFrame(bagID)
 	if bagID == 0 then
 		return ContainerFrame1
 	elseif bagID == 1 then
@@ -111,7 +111,7 @@ local function checkTables(teeburu, info)
 	end
 	return false
 end
-function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
+function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(itemButton)
 	if not itemButton then return end
 	local slotID, bagID = itemButton:GetSlotAndBagID()
 	local info = C_Container.GetContainerItemInfo(bagID, slotID);
@@ -155,14 +155,14 @@ function Thievery_LegolandoBagTrackerMixin:InvestigateItemSlot(itemButton)
 	end
 end
 
-function Thievery_LegolandoBagTrackerMixin:ClearBag(containerFrame)
+function Legolando_BagTrackerMixin_Thievery:ClearBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	bagTable[bagID] = {}
 	self.callbacks:Fire("Lego-BagCleared", bagID)
 end
 
-function Thievery_LegolandoBagTrackerMixin:InvestigateBag(containerFrame)
+function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	self:ClearBag(containerFrame)
@@ -189,7 +189,7 @@ local function bagEventHandler(self, ...)
 	end)
 end
 
-function Thievery_LegolandoBagTrackerMixin:OnLoad()
+function Legolando_BagTrackerMixin_Thievery:OnLoad()
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
 		self:InvestigateBag(containerFrame)
 	end)
