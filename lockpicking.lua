@@ -1,8 +1,8 @@
-local bagTrackingFrame = CreateFrame("Frame", "Thiever_BagTracker", UIParent, "Legolando_BagTrackerTemplate_Thievery")
+--____________________________________________________________________________________________ --
+--_____________TRACKING PART (with Overlay Textures & OnClick SecureActionButton)_____________ --
+--____________________________________________________________________________________________ --
 
-local link1= "what"
-local link2= "huh"
-local link3= "duh"
+local bagTrackingFrame = CreateFrame("Frame", "BagTrackerExample_BagTracker", UIParent, "Legolando_BagTrackerTemplate_Thievery")
 	
 bagTrackingFrame.filters ={
     -- stackCount = {operator = '>', number = 1},
@@ -16,43 +16,9 @@ bagTrackingFrame.filters ={
 	-- isBound = true,
 }
 
-
-local lockpickOverlay = CreateFrame("Button", "LockpickOverlay", UIParent, "SecureActionButtonTemplate")
--- lockpickOverlay:SetPropagateMouseClicks(true)
-lockpickOverlay:SetPassThroughButtons("LeftButton", "MiddleButton", "Button4", "Button5")
-lockpickOverlay:EnableMouseMotion(false)
-
-lockpickOverlay:SetFrameStrata("HIGH")
-lockpickOverlay:RegisterForClicks("RightButtonUp")
-lockpickOverlay:SetAttribute("type", "macro")
-local name = C_Spell.GetSpellName(1804)
-local line1 = "/cast " .. name
-lockpickOverlay:SetAttribute("spell", name)
-lockpickOverlay:HookScript("OnClick", function()
-    print("I hath been clicked")
-end)
-
-SLASH_THIEVERYBITEM1 = "/bitem"
-SlashCmdList["THIEVERYBITEM"] = function()
-    local itemButton = GetMouseFoci()[1]
-    if not itemButton then return end
-    if not itemButton:GetSlotAndBagID() then return end
-    local slotID, bagID = itemButton:GetSlotAndBagID()
-    DevTools_Dump(C_Container.GetContainerItemInfo(itemButton:GetBagID(), itemButton:GetID()))
-    local tooltipData = C_TooltipInfo.GetBagItem(itemButton:GetBagID(), itemButton:GetID())
-	DevTools_Dump(tooltipData)
-    lockpickOverlay:ClearAllPoints()
-    lockpickOverlay:SetPoint("CENTER", itemButton, "CENTER")
-    local width, height = itemButton:GetSize()
-    lockpickOverlay:SetSize(width, height)
-    local line2 = "/use " .. " " .. bagID .. " " .. slotID
-    lockpickOverlay:SetAttribute("macrotext", line1 .. "\n" .. line2)
-end
-
 local function pool_clear(framePool, frame)
     frame:SetScript("OnUpdate", nil)
     frame:SetScript("OnEvent", nil)
-    frame:SetScript("OnClick", nil)
     frame:ClearAllPoints()
     frame.texture:ClearAllPoints()
     frame:Hide()
@@ -66,17 +32,11 @@ local function pool_create(frame)
     frame.texture = frame:CreateTexture(nil, "ARTWORK")
     frame.texture:SetColorTexture(1, 0, 0, 0.3)
 end
+-- Make a separate frame pool for each bag slot just in case
 Thievery_LockpickOverlays = {}
 for i=1,6,1 do
     Thievery_LockpickOverlays[i - 1] = CreateFramePool("Button", Thievery_LockpickOverlays[i - 1], "SecureActionButtonTemplate", pool_clear, false, pool_create)
-    print(i - 1)
 end
-
-
-
-
--- local delayFrame = delayFramePool:Acquire()
--- delayFramePool:Release(self)
 
 
 local function handleSlot(itemButton, bagID, slotID)
@@ -84,7 +44,6 @@ local function handleSlot(itemButton, bagID, slotID)
         print("item button is not visible, can't create overlay frame")
         return
     end
-    print(bagID, slotID)
     local overlayButton = Thievery_LockpickOverlays[bagID]:Acquire()
     overlayButton:ClearAllPoints()
     overlayButton:SetPoint("CENTER", itemButton, "CENTER")
@@ -92,34 +51,34 @@ local function handleSlot(itemButton, bagID, slotID)
     overlayButton:SetSize(width, height)
     overlayButton.texture:SetAllPoints(overlayButton)
     overlayButton:Show()
+    local spellName = C_Spell.GetSpellName(1804)
+    local line1 = "/cast " .. spellName
     local line2 = "/use " .. " " .. bagID .. " " .. slotID
     overlayButton:SetAttribute("macrotext", line1 .. "\n" .. line2)
-    overlayButton:SetAttribute("macrotext", line1 .. "\n" .. line2)
-    -- overlayButton:
 end
-local function sayHi(event, bagID, bagContents)
+local function scanDone_Callback(event, bagID, bagContents)
     if InCombatLockdown() then return end
     if not bagID then return end
     local containerFrame = bagTrackingFrame:GetContainerFrame(bagID)
     if not containerFrame or not containerFrame:IsShown() or not containerFrame:IsVisible() then
-        print("event fired, yet containerFrame isn't there")
+        -- If a bag isn't visible, don't take any action
+        -- print("event fired, yet containerFrame isn't there")
         return
     end
-    -- DevTools_Dump(containerFrame.Items)
-    DevTools_Dump(bagContents)
+    -- Iterate through all the valid item slots in bags
     for i, itemButton in containerFrame:EnumerateValidItems() do
         if itemButton then
             local buttonID = itemButton:GetID()
-            -- print("item button: ", buttonID, i)
+            -- If the slot is in the filtered table returned from Legolando_BagTrackerTemplate, call handle function, which will acquire and place the overlays
             if bagContents[buttonID] then
-                print("yay")
                 handleSlot(itemButton, bagID, buttonID)
             end
         end
 	end
 end
-bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone", sayHi)
+bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone-YourAddon", scanDone_Callback)
 
+-- Clear the overlay secureaction buttons and textures when BagCleared event is fired from template
 local function clearOverlays(event, bagID)
     if InCombatLockdown() then return end
     if not bagID then return end
@@ -130,4 +89,5 @@ local function clearOverlays(event, bagID)
     end
     Thievery_LockpickOverlays[bagID]:ReleaseAll()
 end
-bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared", clearOverlays)
+bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-YourAddon", clearOverlays)
+
