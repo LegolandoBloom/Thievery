@@ -129,7 +129,7 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(itemButton)
 		-- DevTools_Dump(filters)
 		local isValid = true
 		for i, v in pairs(filters) do
-			if not info[i] then 
+			if info[i] == nil then 
 				print("Item:" , info.hyperlink, " doesn't have any info about the desired filter: ")
 				isValid = false
 			elseif i == "stackCount" then
@@ -159,7 +159,7 @@ function Legolando_BagTrackerMixin_Thievery:ClearBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	bagTable[bagID] = {}
-	self.callbacks:Fire("Lego-BagCleared", bagID)
+	self.callbacks:Fire("Lego-BagCleared-YourAddon", bagID)
 end
 
 function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
@@ -169,7 +169,7 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
     for i, itemButton in containerFrame:EnumerateValidItems() do
 		self:InvestigateItemSlot(itemButton)
 	end
-	self.callbacks:Fire("Lego-BagScanDone", bagID, bagTable[bagID])
+	self.callbacks:Fire("Lego-BagScanDone-YourAddon", bagID, bagTable[bagID])
 end
 
 local bagsToUpdate = {}
@@ -177,16 +177,21 @@ local function bagEventHandler(self, ...)
 	local bagID = ...
 	if bagID then
 		table.insert(bagsToUpdate, bagID)
-		DevTools_Dump(bagsToUpdate)
 	end
 	self:SetScript("OnUpdate", function()
 		for i, v in pairs(bagsToUpdate) do
-			print("Updating bag ", v)
+			-- print("Updating bag ", v)
 			self:InvestigateBag(self:GetContainerFrame(v))
 		end
 		bagsToUpdate = {}
 		self:SetScript("OnUpdate", nil)
 	end)
+end
+
+function Legolando_BagTrackerMixin_Thievery:UpdateAll()
+	for i=1,6 do
+		self:InvestigateBag(self:GetContainerFrame(i-1))
+	end
 end
 
 function Legolando_BagTrackerMixin_Thievery:OnLoad()
@@ -210,13 +215,13 @@ end
 -- end
 
 
-SLASH_THIEVERYZZZ1 = "/zzz"
-SlashCmdList["THIEVERYZZZ"] = function() 
-	print("Filtered items: ")
-	for i, v in pairs(bagTable) do
-		for a, b in pairs(v) do
-			print(b.hyperlink, "in bag ", i, "slot ", a)
-		end
-	end
-	-- print(tableToString(bagTable))
-end
+-- SLASH_ThieveryZZZ1 = "/zzz"
+-- SlashCmdList["THIEVERYZZZ"] = function() 
+-- 	print("Filtered items: ")
+-- 	for i, v in pairs(bagTable) do
+-- 		for a, b in pairs(v) do
+-- 			print(b.hyperlink, "in bag ", i, "slot ", a)
+-- 		end
+-- 	end
+-- 	-- print(tableToString(bagTable))
+-- end
