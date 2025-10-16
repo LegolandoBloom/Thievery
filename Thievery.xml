@@ -180,6 +180,12 @@
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-50"/>
                                 </Anchors>
                             </CheckButton>
+                            <CheckButton parentKey="lockpicking" inherits="Legolando_CheckboxTemplate_Thievery">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="120" y="0"/>
+                                </Anchors>
+                            </CheckButton>
                             <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>

@@ -49,3 +49,6 @@ T["Sap"] = "Sap"
 
 -- Full Release Additions
 T["Visual Scale"] = "Visual Scale"
+
+T["Right-Click Lockpicking"] = "Right-Click Lockpicking"
+T["Right-Click Lockboxes in your inventory to unlock them!"] = "Right-Click Lockboxes in your inventory to unlock them!"

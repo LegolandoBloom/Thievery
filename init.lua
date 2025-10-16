@@ -41,6 +41,9 @@ function Thievery_SavedVariables()
     if Thievery_Config.Checkboxes.enableSap == nil then
         Thievery_Config.Checkboxes.enableSap = false
     end
+    if Thievery_Config.Checkboxes.lockpicking == nil then
+        Thievery_Config.Checkboxes.lockpicking = true
+    end
     if Thievery_Config.Checkboxes.debugMode == nil then
         Thievery_Config.Checkboxes.debugMode = false
     end
@@ -130,6 +133,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_SavedVariables()
         Thievery_SetupConfigPanel_PostSavedVars(self)
         Thievery_UpdateVisualPosition()
+        Thievery_ActivateLockpicking(Thievery_Config.Checkboxes.lockpicking)
     elseif event == "PLAYER_ENTERING_WORLD" then
         if unit == false and arg4 == false then return end
         Thievery_ToggleSpeedy(false)

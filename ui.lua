@@ -52,6 +52,10 @@ local function speedyOnClick()
     end
 end
 
+local function lockpickOnClick()
+    if InCombatLockdown() then return end
+    Thievery_ActivateLockpicking(Thievery_Config.Checkboxes.lockpicking)
+end
 function Thievery_SetupConfigPanel_PreSavedVars(self)
     local configPanel = self.configPanel
     local checkboxes = configPanel.checkboxes
@@ -73,9 +77,9 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
 
     checkboxes.speedyMode.text:SetText(T["Speedy Mode"])
-    checkboxes.speedyMode.onClickCallback = speedyOnClick
     checkboxes.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
     checkboxes.speedyMode:reposition()
+    checkboxes.speedyMode.onClickCallback = speedyOnClick
 
 
     checkboxes.playSound.text:SetText(T["Play Sound Effect"])
@@ -87,6 +91,10 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     checkboxes.enableSap.text.tooltip = T["Cast sap before pick pocket, with the same keybind."]
     checkboxes.enableSap:reposition()
 
+    checkboxes.lockpicking.text:SetText(T["Right-Click Lockpicking"])
+    checkboxes.lockpicking.text.tooltip = T["Right-Click Lockboxes in your inventory to unlock them!"]
+    checkboxes.lockpicking:reposition()
+    checkboxes.lockpicking.onClickCallback = lockpickOnClick
 
     checkboxes.debugMode.text:SetText(T["Debug Mode"])
     checkboxes.debugMode:reposition()
@@ -104,6 +112,7 @@ function Thievery_SetupConfigPanel_PostSavedVars(self)
     checkboxes.speedyMode.reference = "speedyMode"
     checkboxes.playSound.reference = "playSound"
     checkboxes.enableSap.reference = "enableSap"
+    checkboxes.lockpicking.reference = "lockpicking"
     checkboxes.debugMode.reference = "debugMode"
     checkboxes:Update()
     keybindFrame.savedVarTable = Thievery_Config

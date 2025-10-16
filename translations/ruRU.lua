@@ -46,3 +46,12 @@ T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first
 
 T["Pickpocket"] = "Pickpocket"
 T["Sap"] = "Sap"
+
+
+
+-- full release additions
+
+T["Visual Scale"] = "Visual Scale"
+
+T["Right-Click Lockpicking"] = "Right-Click Lockpicking"
+T["Right-Click Lockboxes in your inventory to unlock them!"] = "Right-Click Lockboxes in your inventory to unlock them!"

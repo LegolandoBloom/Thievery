@@ -257,8 +257,10 @@ function Thievery_Events(self, event, unit)
         Thievery_UpdateState(self)
     elseif event == "PLAYER_REGEN_DISABLED" then
         Thievery_Deactivate(self)
+        Thievery.configPanel.checkboxes.lockpicking:Disable()
     elseif event == "PLAYER_REGEN_ENABLED" then
         Thievery_UpdateState(self)
+        Thievery.configPanel.checkboxes.lockpicking:Enable()
     end
 end
 
