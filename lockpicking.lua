@@ -142,7 +142,7 @@ local function lockpicking_Events(self, event, unit, ...)
         bagTrackingFrame:UpdateAll()
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
-        Thievery_SingleDelayer(0.3, 0, 0.1, bagTrackingFrame, nil, function()
+        Thievery_SingleDelayer(0.5, 0, 0.1, bagTrackingFrame, nil, function()
             if not InCombatLockdown() then 
                 bagTrackingFrame:UpdateAll()
                 Thievery_BetaPrint("Lockpick successful!")
