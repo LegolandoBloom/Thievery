@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110205
 ## Title: Thievery
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft
 ## Version: 0.2
