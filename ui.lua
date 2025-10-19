@@ -46,15 +46,27 @@ function Thievery_UpdateVisualPosition()
     end
 end
 
-local function speedyOnClick()
+local function speedyOnClick(self, isChecked)
     if Thievery_Config.Checkboxes[1].speedyMode == false then
         Thievery_ToggleSpeedy(false)
     end
 end
 
-local function lockpickOnClick()
+local function lockpickOnClick(self, isChecked)
     if InCombatLockdown() then return end
     Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+    local checkboxes2 = self:GetParent()
+    if isChecked == true then 
+        checkboxes2.lockpickAnim:Enable()
+        checkboxes2.lockpickAnim.text:SetTextColor(1.0, 0.82, 0.0)
+        checkboxes2.lockpickSound:Enable()
+        checkboxes2.lockpickSound.text:SetTextColor(1.0, 0.82, 0.0)
+    elseif isChecked == false then
+        checkboxes2.lockpickAnim:Disable()
+        checkboxes2.lockpickAnim.text:SetTextColor(0.9, 0.9, 0.9)
+        checkboxes2.lockpickSound:Disable()
+        checkboxes2.lockpickSound.text:SetTextColor(0.9, 0.9, 0.9)
+    end
 end
 function Thievery_SetupConfigPanel_PreSavedVars(self)
     local configPanel = self.configPanel
@@ -133,13 +145,13 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     checkboxes2.lockpicking.text.tooltip = T["Right-Click Lockboxes in your inventory to unlock them!"]
     checkboxes2.lockpicking:reposition()
     checkboxes2.lockpicking.onClickCallback = lockpickOnClick
-
+    
     checkboxes2.lockpickAnim.text:SetText(T["Play Animation"])
     checkboxes2.lockpickAnim.text.tooltip = T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."]
     checkboxes2.lockpickAnim:reposition()
     
     checkboxes2.lockpickSound.text:SetText(T["Sound Effect"])
-    checkboxes2.lockpickSound.text.tooltip = T["Plays a lockpicking sound effect when casting \'Pick Lock\'."]
+    checkboxes2.lockpickSound.text.tooltip = T["Plays a lockpicking sound effect when you successfully unlock a lockbox."]
     checkboxes2.lockpickSound:reposition()
     
 end
@@ -151,7 +163,7 @@ function Thievery_SetupConfigPanel_PostSavedVars(self)
     local keybindFrame = configPanel.keybindFrame
     local moveFrame = configPanel.moveFrame
     local checkboxes2 = configPanel.checkboxes2
-
+    
     checkboxes1.savedVarTable = Thievery_Config.Checkboxes[1]
     checkboxes1.speedyMode.reference = "speedyMode"
     checkboxes1.playSound.reference = "playSound"
@@ -160,6 +172,7 @@ function Thievery_SetupConfigPanel_PostSavedVars(self)
     checkboxes1:Update()
     checkboxes2.savedVarTable = Thievery_Config.Checkboxes[2]
     checkboxes2.lockpicking.reference = "lockpicking"
+    lockpickOnClick(checkboxes2.lockpicking, Thievery_Config.Checkboxes[2].lockpicking)
     checkboxes2.lockpickAnim.reference = "lockpickAnim"
     checkboxes2.lockpickSound.reference = "lockpickSound"
     checkboxes2:Update()

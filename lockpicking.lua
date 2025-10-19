@@ -157,7 +157,6 @@ animationFrame:SetFrameStrata("HIGH")
 animationFrame:SetPoint("CENTER", UIParent, "CENTER")
 animationFrame:Hide()
 
-local soundHandle
 local function lockpicking_Events(self, event, unit, ...)
     local arg4, arg5 = ...
     if event == "PLAYER_REGEN_DISABLED" then
@@ -180,21 +179,10 @@ local function lockpicking_Events(self, event, unit, ...)
             animationFrame:SetPoint(currentAnimationAnchor[1], overlayFrame, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
             animationFrame:Show()
         end
-        if Thievery_Config.Checkboxes[2].lockpickSound == true then
-            local _
-            PlaySoundFile("Interface/Addons/Thievery/sounds/lockpicksoundeffect.mp3")
-            Thievery_SingleDelayer(1.8, 0, 0.6, animationFrame, nil, function()
-                soundHandle = nil
-            end)
-        end
     elseif (event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
         -- stop animation, clear anchor
         animationFrame:ClearAllPoints()
         animationFrame:Hide()
-        if soundHandle then
-            StopSound(soundHandle)
-            soundHandle = nil
-        end
         currentAnimationAnchor = nil
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
@@ -204,6 +192,9 @@ local function lockpicking_Events(self, event, unit, ...)
                 Thievery_BetaPrint("Lockpick successful!")
             end
         end)
+        if Thievery_Config.Checkboxes[2].lockpickSound == true then
+            PlaySoundFile("Interface/Addons/Thievery/sounds/wooden-trunk-latch-1-floraphonic-pixabay.mp3", "SFX")
+        end
     elseif event == "BAG_UPDATE_COOLDOWN" then
         -- Triggers right after UNIT_SPELLCAST_SUCCEEDED with pick lock, but still before the tooltip info is updated
     end
