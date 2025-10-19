@@ -14,6 +14,7 @@ translations\translations.xml
 
 thiefTemplates\embeds.xml
 
+animations.xml
 init.lua
 ui.lua
 lockpicking.lua

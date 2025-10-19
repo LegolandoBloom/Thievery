@@ -32,20 +32,35 @@ function Thievery_SavedVariables()
     if not Thievery_Config.Checkboxes then
         Thievery_Config.Checkboxes = {}
     end
-    if Thievery_Config.Checkboxes.speedyMode == nil then
-        Thievery_Config.Checkboxes.speedyMode = false
+    if not Thievery_Config.Checkboxes[1] then
+        Thievery_Config.Checkboxes[1] = {}
     end
-    if Thievery_Config.Checkboxes.playSound == nil then
-        Thievery_Config.Checkboxes.playSound = true
+    if Thievery_Config.Checkboxes[1].speedyMode == nil then
+        Thievery_Config.Checkboxes[1].speedyMode = false
     end
-    if Thievery_Config.Checkboxes.enableSap == nil then
-        Thievery_Config.Checkboxes.enableSap = false
+    if Thievery_Config.Checkboxes[1].playSound == nil then
+        Thievery_Config.Checkboxes[1].playSound = true
     end
-    if Thievery_Config.Checkboxes.lockpicking == nil then
-        Thievery_Config.Checkboxes.lockpicking = true
+    if Thievery_Config.Checkboxes[1].enableSap == nil then
+        Thievery_Config.Checkboxes[1].enableSap = false
     end
-    if Thievery_Config.Checkboxes.debugMode == nil then
-        Thievery_Config.Checkboxes.debugMode = false
+    if Thievery_Config.Checkboxes[1].lockpicking == nil then
+        Thievery_Config.Checkboxes[1].lockpicking = true
+    end
+    if Thievery_Config.Checkboxes[1].debugMode == nil then
+        Thievery_Config.Checkboxes[1].debugMode = false
+    end
+    if not Thievery_Config.Checkboxes[2] then
+        Thievery_Config.Checkboxes[2] = {}
+    end
+    if Thievery_Config.Checkboxes[2].lockpicking == nil then
+        Thievery_Config.Checkboxes[2].lockpicking = true
+    end
+    if Thievery_Config.Checkboxes[2].lockpickAnim == nil then
+        Thievery_Config.Checkboxes[2].lockpickAnim = true
+    end
+    if Thievery_Config.Checkboxes[2].lockpickSound == nil then
+        Thievery_Config.Checkboxes[2].lockpickSound = true
     end
 
     if not Thievery_SavedCVars then
@@ -83,19 +98,19 @@ function Thievery_SingleDelayer(delay, timeElapsed, elapsedThreshhold, delayFram
 end
 
 function Thievery_BetaPrint(text, ...)
-    if Thievery_Config.Checkboxes.debugMode == true then
+    if Thievery_Config.Checkboxes[1].debugMode == true then
         print(text, ...)
     end
 end
 
 function Thievery_BetaDump(dump)
-    if Thievery_Config.Checkboxes.debugMode == true then
+    if Thievery_Config.Checkboxes[1].debugMode == true then
         DevTools_Dump(dump)
     end
 end
 
 function Thievery_BetaTableToString(tbl)
-    if Thievery_Config.Checkboxes.debugMode == true then
+    if Thievery_Config.Checkboxes[1].debugMode == true then
         local tableToString = ""
         for i, v in pairs(tbl) do
             local element = "[" .. tostring(i) .. ":" .. tostring(v) .. "]"
@@ -133,7 +148,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_SavedVariables()
         Thievery_SetupConfigPanel_PostSavedVars(self)
         Thievery_UpdateVisualPosition()
-        Thievery_ActivateLockpicking(Thievery_Config.Checkboxes.lockpicking)
+        Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
     elseif event == "PLAYER_ENTERING_WORLD" then
         if unit == false and arg4 == false then return end
         Thievery_ToggleSpeedy(false)

@@ -13,7 +13,7 @@ local colorOrange = CreateColor(1, 0.47, 0)
 local colorPink = CreateColor(1, 0, 0.6)
 
 T["Play Sound Effect"] = "Play Sound Effect"
-T["When checked, plays a sound effect when the pickpocket key is pressed"] = "When checked, plays a sound effect when the pickpocket key is pressed"
+T["When checked, plays a sound effect when the pickpocket key is pressed."] = "When checked, plays a sound effect when the pickpocket key is pressed."
 T["Enable Sap"] = "Enable Sap"
 T["Cast sap before pick pocket, with the same keybind."] = "Cast sap before pick pocket, with the same keybind."
 T["Debug Mode"] = "Debug Mode"
@@ -52,3 +52,9 @@ T["Visual Scale"] = "Visual Scale"
 
 T["Right-Click Lockpicking"] = "Right-Click Lockpicking"
 T["Right-Click Lockboxes in your inventory to unlock them!"] = "Right-Click Lockboxes in your inventory to unlock them!"
+
+T["Play Animation"] = "Play Animation"
+T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."] = "Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."
+
+T["Sound Effect"] = "Sound Effect"
+T["Plays a lockpicking sound effect when casting \'Pick Lock\'."] = "Plays a lockpicking sound effect when casting \'Pick Lock\'."

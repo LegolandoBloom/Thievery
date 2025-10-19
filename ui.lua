@@ -47,20 +47,54 @@ function Thievery_UpdateVisualPosition()
 end
 
 local function speedyOnClick()
-    if Thievery_Config.Checkboxes.speedyMode == false then
+    if Thievery_Config.Checkboxes[1].speedyMode == false then
         Thievery_ToggleSpeedy(false)
     end
 end
 
 local function lockpickOnClick()
     if InCombatLockdown() then return end
-    Thievery_ActivateLockpicking(Thievery_Config.Checkboxes.lockpicking)
+    Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
 end
 function Thievery_SetupConfigPanel_PreSavedVars(self)
     local configPanel = self.configPanel
-    local checkboxes = configPanel.checkboxes
+    local checkboxes1 = configPanel.checkboxes1
     local keybindFrame = configPanel.keybindFrame
     local moveFrame = configPanel.moveFrame
+    local checkboxes2 = configPanel.checkboxes2
+    
+    local tabs = configPanel.tabs
+    local tabNames = {
+        [1] = "Pickpocketing",
+        [2] = "Lockpicking"
+    }
+    tabs.isTabOnTop = true
+    for i, name in ipairs(tabNames) do
+        tabs:AddTab(name)
+    end
+    local function tabSelectedCallback(tabID)
+        local children = {configPanel:GetChildren()}
+        for i, v in pairs(children) do
+            local id = v:GetID()
+            if id and id ~= 0 then
+                if id == tabID then
+                    v:Show()
+                else
+                    v:Hide()
+                end
+            end
+        end
+        -- if tabID == 1 then
+        --     print("this is tab 1")
+        -- elseif tabID == 2 then
+        --     print("this is tab 2")
+        -- elseif tabID == 3 then
+        --     print("this is tab 3")
+        -- end
+    end
+    tabs:SetTabSelectedCallback(tabSelectedCallback)
+    tabs:SetTab(1)
+
 
     moveFrame.title:SetText(T["Change Visual Location"] .. ":")
     moveFrame.tooltipTitle = T["Change Visual Location"]
@@ -76,45 +110,59 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
     keybindFrame.disclaimerTextModified = T["Awaiting additional key press. Modifier key down: "]
 
-    checkboxes.speedyMode.text:SetText(T["Speedy Mode"])
-    checkboxes.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
-    checkboxes.speedyMode:reposition()
-    checkboxes.speedyMode.onClickCallback = speedyOnClick
+    checkboxes1.speedyMode.text:SetText(T["Speedy Mode"])
+    checkboxes1.speedyMode.text.tooltip = T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first pick-pocket, then keeps it on as long as you are stealthed. Zip from pocket to pocket!"]
+    checkboxes1.speedyMode:reposition()
+    checkboxes1.speedyMode.onClickCallback = speedyOnClick
 
 
-    checkboxes.playSound.text:SetText(T["Play Sound Effect"])
-    checkboxes.playSound.text.tooltip = T["When checked, plays a sound effect when the pickpocket key is pressed"]
-    checkboxes.playSound:reposition()
+    checkboxes1.playSound.text:SetText(T["Play Sound Effect"])
+    checkboxes1.playSound.text.tooltip = T["When checked, plays a sound effect when the pickpocket key is pressed."]
+    checkboxes1.playSound:reposition()
 
     
-    checkboxes.enableSap.text:SetText(T["Enable Sap"])
-    checkboxes.enableSap.text.tooltip = T["Cast sap before pick pocket, with the same keybind."]
-    checkboxes.enableSap:reposition()
+    checkboxes1.enableSap.text:SetText(T["Enable Sap"])
+    checkboxes1.enableSap.text.tooltip = T["Cast sap before pick pocket, with the same keybind."]
+    checkboxes1.enableSap:reposition()
 
-    checkboxes.lockpicking.text:SetText(T["Right-Click Lockpicking"])
-    checkboxes.lockpicking.text.tooltip = T["Right-Click Lockboxes in your inventory to unlock them!"]
-    checkboxes.lockpicking:reposition()
-    checkboxes.lockpicking.onClickCallback = lockpickOnClick
+    checkboxes1.debugMode.text:SetText(T["Debug Mode"])
+    checkboxes1.debugMode:reposition()
 
-    checkboxes.debugMode.text:SetText(T["Debug Mode"])
-    checkboxes.debugMode:reposition()
+    
+    checkboxes2.lockpicking.text:SetText(T["Right-Click Lockpicking"])
+    checkboxes2.lockpicking.text.tooltip = T["Right-Click Lockboxes in your inventory to unlock them!"]
+    checkboxes2.lockpicking:reposition()
+    checkboxes2.lockpicking.onClickCallback = lockpickOnClick
 
+    checkboxes2.lockpickAnim.text:SetText(T["Play Animation"])
+    checkboxes2.lockpickAnim.text.tooltip = T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."]
+    checkboxes2.lockpickAnim:reposition()
+    
+    checkboxes2.lockpickSound.text:SetText(T["Sound Effect"])
+    checkboxes2.lockpickSound.text.tooltip = T["Plays a lockpicking sound effect when casting \'Pick Lock\'."]
+    checkboxes2.lockpickSound:reposition()
+    
 end
 
 
 function Thievery_SetupConfigPanel_PostSavedVars(self)
     local configPanel = self.configPanel
-    local checkboxes = configPanel.checkboxes
+    local checkboxes1 = configPanel.checkboxes1
     local keybindFrame = configPanel.keybindFrame
     local moveFrame = configPanel.moveFrame
+    local checkboxes2 = configPanel.checkboxes2
 
-    checkboxes.savedVarTable = Thievery_Config.Checkboxes
-    checkboxes.speedyMode.reference = "speedyMode"
-    checkboxes.playSound.reference = "playSound"
-    checkboxes.enableSap.reference = "enableSap"
-    checkboxes.lockpicking.reference = "lockpicking"
-    checkboxes.debugMode.reference = "debugMode"
-    checkboxes:Update()
+    checkboxes1.savedVarTable = Thievery_Config.Checkboxes[1]
+    checkboxes1.speedyMode.reference = "speedyMode"
+    checkboxes1.playSound.reference = "playSound"
+    checkboxes1.enableSap.reference = "enableSap"
+    checkboxes1.debugMode.reference = "debugMode"
+    checkboxes1:Update()
+    checkboxes2.savedVarTable = Thievery_Config.Checkboxes[2]
+    checkboxes2.lockpicking.reference = "lockpicking"
+    checkboxes2.lockpickAnim.reference = "lockpickAnim"
+    checkboxes2.lockpickSound.reference = "lockpickSound"
+    checkboxes2:Update()
     keybindFrame.savedVarTable = Thievery_Config
     keybindFrame.keybindRef = "ppKey"
     keybindFrame.baseRef = "ppKeyBase"

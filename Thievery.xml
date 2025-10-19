@@ -139,17 +139,26 @@
                     </OnDragStop>
                 </Scripts>
                 <Frames>
-                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindButtonTemplate_Thievery">
+                    <Frame name="$parent_Tabs" parentKey="tabs" inherits="Legolando_PortedTabSystemTemplate_Thievery">    
+                        <Size x="1" y="1"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="-2" y="0"/>
+                        </Anchors>
+                        <KeyValues>
+                            <KeyValue key="spacing" value="-5" type="number"/>
+                        </KeyValues>
+                    </Frame>
+                    <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindButtonTemplate_Thievery" id="1">
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="25" y="-55"/>
                         </Anchors>
                     </Button>
-                    <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate_Thievery">
+                    <Button name="Thievery_MoveFrame" parentKey="moveFrame" inherits="Legolando_MoveFrameTemplate_Thievery" id="1">
                         <Anchors>
                             <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-8" y="5"/>
                         </Anchors>
                     </Button>
-                    <Frame name="$parent_CheckboxesFrame" inherits="Legolando_CheckboxesTemplate_Thievery" parentKey="checkboxes">
+                    <Frame name="$parent_Checkboxes1" inherits="Legolando_CheckboxesTemplate_Thievery" parentKey="checkboxes1" id="1">
                         <Size x="200" y="180"/>
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-105"/>
@@ -180,16 +189,36 @@
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-50"/>
                                 </Anchors>
                             </CheckButton>
-                            <CheckButton parentKey="lockpicking" inherits="Legolando_CheckboxTemplate_Thievery">
-                                <Size x="26" y="26"/>
-                                <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="120" y="0"/>
-                                </Anchors>
-                            </CheckButton>
                             <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-90"/>
+                                </Anchors>
+                            </CheckButton>
+                        </Frames>
+                    </Frame>
+                    <Frame name="$parent_Checkboxes2" inherits="Legolando_CheckboxesTemplate_Thievery" parentKey="checkboxes2" id="2">
+                        <Size x="200" y="180"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-32"/>
+                        </Anchors>
+                        <Frames>
+                            <CheckButton parentKey="lockpicking" inherits="Legolando_CheckboxTemplate_Thievery">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
+                                </Anchors>
+                            </CheckButton>
+                            <CheckButton parentKey="lockpickAnim" inherits="Legolando_CheckboxTemplate_Thievery">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-25"/>
+                                </Anchors>
+                            </CheckButton>
+                            <CheckButton parentKey="lockpickSound" inherits="Legolando_CheckboxTemplate_Thievery">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-50"/>
                                 </Anchors>
                             </CheckButton>
                         </Frames>

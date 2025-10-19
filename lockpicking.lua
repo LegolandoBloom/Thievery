@@ -16,13 +16,23 @@ bagTrackingFrame.filters ={
 	-- isBound = true,
 }
 
+
 local imageFrame = CreateFrame("Frame")
 imageFrame:SetFrameStrata("HIGH")
-imageFrame:SetSize(32,32)
+imageFrame:SetSize(30, 30)
 imageFrame.texture = imageFrame:CreateTexture("ayoawhrf", "OVERLAY")
 imageFrame.texture:SetAllPoints()
-imageFrame.texture:SetSize(32, 32)
-imageFrame.texture:SetTexture("Interface/AddOns/Thievery/images/lockpickcursor.png")
+imageFrame.texture:SetTexture("Interface/AddOns/Thievery/images/lockpick-preanim.png")
+imageFrame.texture:SetAlpha(0.8)
+
+local currentAnimationAnchor = nil
+local function pool_object_Events(self, event, unit, ...)
+    arg4, arg5, arg6 = ...
+    if event == "UNIT_SPELLCAST_SENT" and arg6 == 1804 then
+        currentAnimationAnchor = {self:GetPoint()}
+        self:SetScript("OnEvent", nil)
+    end
+end
 local function pool_clear(framePool, frame)
     frame:SetScript("OnUpdate", nil)
     frame:SetScript("OnEvent", nil)
@@ -34,6 +44,7 @@ end
 local function pool_create(frame)
     frame:SetFrameStrata("HIGH")
     frame:RegisterForClicks("RightButtonUp")
+    frame:RegisterEvent("UNIT_SPELLCAST_SENT")
     frame:SetAttribute("type", "macro")
     frame:SetScript("OnEnter", function(self)
         imageFrame:ClearAllPoints()
@@ -43,6 +54,16 @@ local function pool_create(frame)
     frame:SetScript("OnLeave", function(self)
         imageFrame:ClearAllPoints()
         imageFrame:Hide()
+    end)
+    frame:HookScript("OnClick", function(self)
+        currentAnimationAnchor = {self:GetPoint()}
+        print("clicked")
+        DevTools_Dump(currentAnimationAnchor)
+        self:SetScript("OnEvent", pool_object_Events)
+        Thievery_SingleDelayer(0.3, 0, 0.1, self, nil, function()
+            currentAnimationAnchor = nil
+            self:SetScript("OnEvent", nil)
+        end)
     end)
     frame:SetPassThroughButtons("LeftButton", "MiddleButton", "Button4", "Button5")
     -- frame:EnableMouseMotion(false)
@@ -82,6 +103,7 @@ local function handleSlot(itemButton, bagID, slotID)
     overlayButton:ClearAllPoints()
     overlayButton:SetPoint("CENTER", itemButton, "CENTER")
     local width, height = itemButton.IconBorder:GetSize()
+    print(width, height)
     local scale = itemButton.IconBorder:GetScale()
     overlayButton:SetSize(width*scale*0.8, height*scale*0.8)
     -- Only show the red overlay texture if debug mode is on
@@ -130,8 +152,12 @@ local function clearOverlays(event, bagID)
 end
 
 
+animationFrame = CreateFrame("Frame", "Thievery_LockpickAnim", UIParent, "Thievery_LockpickAnimTemplate")
+animationFrame:SetFrameStrata("HIGH")
+animationFrame:SetPoint("CENTER", UIParent, "CENTER")
+animationFrame:Hide()
 
-
+local soundHandle
 local function lockpicking_Events(self, event, unit, ...)
     local arg4, arg5 = ...
     if event == "PLAYER_REGEN_DISABLED" then
@@ -140,6 +166,36 @@ local function lockpicking_Events(self, event, unit, ...)
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
         bagTrackingFrame:UpdateAll()
+    elseif event == "UNIT_SPELLCAST_START" and unit == "player" and arg5 == 1804 then
+        -- start animation if you can
+        print("SPELLCAST_START")
+        if Thievery_Config.Checkboxes[2].lockpickAnim == true and currentAnimationAnchor then
+            local overlayFrame = currentAnimationAnchor[2]
+            if not overlayFrame or not overlayFrame:IsShown() or not overlayFrame:IsVisible() then 
+                Thievery_BetaPrint("Lockpick animation couldn't be started, item overlay frame doesn't exist or isn't visible")
+                return 
+            end
+            local overlayFrame_Width, overlayFrameHeight = overlayFrame:GetSize()
+            animationFrame:ClearAllPoints()
+            animationFrame:SetPoint(currentAnimationAnchor[1], overlayFrame, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
+            animationFrame:Show()
+        end
+        if Thievery_Config.Checkboxes[2].lockpickSound == true then
+            local _
+            PlaySoundFile("Interface/Addons/Thievery/sounds/lockpicksoundeffect.mp3")
+            Thievery_SingleDelayer(1.8, 0, 0.6, animationFrame, nil, function()
+                soundHandle = nil
+            end)
+        end
+    elseif (event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
+        -- stop animation, clear anchor
+        animationFrame:ClearAllPoints()
+        animationFrame:Hide()
+        if soundHandle then
+            StopSound(soundHandle)
+            soundHandle = nil
+        end
+        currentAnimationAnchor = nil
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
         Thievery_SingleDelayer(0.5, 0, 0.1, bagTrackingFrame, nil, function()
@@ -153,6 +209,10 @@ local function lockpicking_Events(self, event, unit, ...)
     end
 end
 bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_START")
+bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_STOP")
+bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
+bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_FAILED")
 bagTrackingFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 bagTrackingFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 bagTrackingFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
