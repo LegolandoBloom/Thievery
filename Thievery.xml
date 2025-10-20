@@ -117,7 +117,7 @@
                 </Frames>
             </Frame>
             <Frame name="Thievery_ConfigPanel" parentKey="configPanel" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" scale="0.8" hidden="true">
-                <Size x="310" y="250"/>
+                <Size x="260" y="270"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
@@ -147,6 +147,22 @@
                         <KeyValues>
                             <KeyValue key="spacing" value="-5" type="number"/>
                         </KeyValues>
+                    </Frame>
+                    <Frame name="Thievery_DecorFrameTab1" parentKey="decorFrame1" id="1">
+                        <Size x="64" y="256"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-8" y="35"/>
+                        </Anchors>
+                        <Layers>
+                            <Layer level="OVERLAY">
+                                <Texture name="$parent_DecorationTab1" parentKey="decoration1" file="Interface/AddOns/Thievery/images/decoration1.png" alpha="0.5">
+                                    <Size x="64" y="256"/>
+                                    <Anchors>
+                                        <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" x="0" y="0"/>
+                                    </Anchors>
+                                </Texture>
+                            </Layer>
+                        </Layers>
                     </Frame>
                     <Button name="Thievery_KeybindFrame" parentKey="keybindFrame" inherits="Legolando_KeybindButtonTemplate_Thievery" id="1">
                         <Anchors>
@@ -192,10 +208,44 @@
                             <CheckButton parentKey="debugMode" inherits="Legolando_CheckboxTemplate_Thievery">
                                 <Size x="26" y="26"/>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-90"/>
+                                    <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="-80"/>
                                 </Anchors>
                             </CheckButton>
                         </Frames>
+                    </Frame>
+                    <Frame name="Thievery_DecorFrameTab2" parentKey="decorFrame2" inherits="Thievery_LockpickAnimTemplate" id="2">
+                        <Size x="90" y="100"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-15" y="-10"/>
+                        </Anchors>
+                        <Layers>
+                            <Layer level="ARTWORK">
+                                <Texture name="$parent_DecorationTab2" parentKey="decoration2" file="Interface/AddOns/Thievery/images/decoration2.png" alpha="0.8">
+                                    <Size x="128" y="85"/>
+                                    <Anchors>
+                                        <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="2" y="22"/>
+                                    </Anchors>
+                                </Texture>
+                            </Layer>
+                        </Layers>
+                        <Scripts>
+                            <OnLoad>
+                                self.texture:SetSize(48, 48)
+                                self.texture:SetAlpha(1)
+                                self.anim:SetAnimationSpeedMultiplier(0.1)
+                            </OnLoad>
+                            <OnEnter>
+                                self.anim:Play()
+                            </OnEnter>
+                            <OnLeave>
+                                self.anim:Restart()
+                                self.anim:Stop()
+                            </OnLeave>
+                            <OnShow>
+                                self.anim:Play()
+                                self.anim:Stop()
+                            </OnShow>
+                        </Scripts>
                     </Frame>
                     <Frame name="$parent_Checkboxes2" inherits="Legolando_CheckboxesTemplate_Thievery" parentKey="checkboxes2" id="2">
                         <Size x="200" y="180"/>

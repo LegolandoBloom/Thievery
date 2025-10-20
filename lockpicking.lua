@@ -93,21 +93,30 @@ local function handleSlot(itemButton, bagID, slotID)
     if InCombatLockdown() then return end
     if not checkLocked(bagID, slotID) then 
         -- lockbox is already unlocked
-        return 
+        return
     end
     if not itemButton:IsShown() or not itemButton:IsVisible() then
         print("item button is not visible, can't create overlay frame")
         return
     end
+    
+    local debugInfo = {}
+    debugInfo["Debug Name"] = itemButton:GetDebugName()
+    local point = {itemButton:GetPoint()}
+    debugInfo["Point"] = {point[1], point[2]:GetDebugName(), point[3], point[4], point[5]}
+    debugInfo["Size"] = itemButton:GetSize()
+    local _, _, width, height = itemButton:GetScaledRect()
+    debugInfo["Real Size"] = {width, height}
+    local borderScale = itemButton.IconBorder:GetScale()
+    debugInfo["IconBorder Scale:"] = {borderScale}
+    Thievery_BetaDump(debugInfo)
+
     local overlayButton = Thievery_LockpickOverlays[bagID]:Acquire()
     overlayButton:ClearAllPoints()
     overlayButton:SetPoint("CENTER", itemButton, "CENTER")
-    local width, height = itemButton.IconBorder:GetSize()
-    print(width, height)
-    local scale = itemButton.IconBorder:GetScale()
-    overlayButton:SetSize(width*scale*0.8, height*scale*0.8)
+    overlayButton:SetSize(width*borderScale, height*borderScale)
     -- Only show the red overlay texture if debug mode is on
-    if Thievery_Config.Checkboxes.debugMode == true then
+    if Thievery_Config.Checkboxes[1].debugMode == true then
         overlayButton.texture:SetAllPoints(overlayButton)
         overlayButton.texture:Show()
     end
@@ -135,7 +144,7 @@ local function scanDone_Callback(event, bagID, bagContents)
                 handleSlot(itemButton, bagID, buttonID)
             end
         end
-	end
+    end
 end
 
 

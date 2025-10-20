@@ -127,7 +127,6 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     checkboxes1.speedyMode:reposition()
     checkboxes1.speedyMode.onClickCallback = speedyOnClick
 
-
     checkboxes1.playSound.text:SetText(T["Play Sound Effect"])
     checkboxes1.playSound.text.tooltip = T["When checked, plays a sound effect when the pickpocket key is pressed."]
     checkboxes1.playSound:reposition()

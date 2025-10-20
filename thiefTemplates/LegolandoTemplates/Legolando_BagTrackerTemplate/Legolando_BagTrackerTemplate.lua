@@ -194,9 +194,20 @@ function Legolando_BagTrackerMixin_Thievery:UpdateAll()
 	end
 end
 
+-- Each containerFrame 1-6 has it's own OnUpdate Delayer for ContainerFrame.OpenBag
+local containerDelayFrames = {}
+for i=1,6,1 do
+	containerDelayFrames[i - 1] = CreateFrame("Frame")
+end
+
 function Legolando_BagTrackerMixin_Thievery:OnLoad()
+	-- Need to call InvestigateBag on the next 'OnUpdate', otherwise containerFrame and itemButtons won't have anchors, and return empty when GetPoint() or GetScaledRect() is called.
+	-- Each containerFrame 1-6 has it's own OnUpdate Delayer, as created above ↑↑↑
     EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
-		self:InvestigateBag(containerFrame)
+		containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
+			self:InvestigateBag(containerFrame)
+			delayerFrame:SetScript("OnUpdate", nil)
+		end)
 	end)
 	EventRegistry:RegisterCallback("ContainerFrame.CloseBag", function(_, containerFrame)
 		self:ClearBag(containerFrame)
