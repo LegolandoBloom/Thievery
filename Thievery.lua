@@ -56,6 +56,7 @@ SLASH_THIEVERYTARGETINFO1 = "/teeftarget"
 SlashCmdList["THIEVERYTARGETINFO"] = printTargetInfo
 
 local lastPrint
+local ppName = C_Spell.GetSpellName(921)
 local function setPPMode(self)
     local remaining = Thievery_UpdatePPTimers(target.guid)
     if remaining then
@@ -71,7 +72,7 @@ local function setPPMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("spell", 921)
+        self:SetAttribute("macrotext", "/cast " .. ppName)
         SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
         PPMode = true
         sapMode = false
@@ -89,6 +90,7 @@ local function setPPMode(self)
         end
     end
 end
+local sapName = C_Spell.GetSpellName(6770)
 local function setSapMode(self)
     if not sapMode then 
         local parent = self:GetParent()
@@ -96,7 +98,7 @@ local function setSapMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("spell", 6770)
+        self:SetAttribute("macrotext", "/cast " .. sapName)
         SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
         PPMode = true
         parent.visual:Show()
@@ -120,7 +122,7 @@ function Thievery_Activate(self)
             sapped = true
         end
     end)
-    if Thievery_Config.Checkboxes.enableSap == true then
+    if Thievery_Config.Checkboxes[1].enableSap == true then
         if sapped == false then
             setSapMode(self)
         else

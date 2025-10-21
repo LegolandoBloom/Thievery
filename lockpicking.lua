@@ -221,19 +221,26 @@ local function lockpicking_Events(self, event, unit, ...)
             animationFrame:Show()
             imageFrame:Hide()
         end
-    elseif (event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
+    elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
         -- stop animation, clear anchor
         animationFrame:ClearAllPoints()
         animationFrame:Hide()
         currentAnimationAnchor = nil
+        Thievery_BetaPrint("Lockpick Interrupted/Failed")
+    elseif event == "UNIT_SPELLCAST_STOP" then
+        -- print("stopped")
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
         Thievery_SingleDelayer(0.5, 0, 0.1, bagTrackingFrame, nil, function()
             if not InCombatLockdown() then 
                 bagTrackingFrame:UpdateAll()
                 Thievery_BetaPrint("Lockpick successful!")
+                animationFrame:ClearAllPoints()
+                animationFrame:Hide()
+                currentAnimationAnchor = nil
             end
         end)
+        Thievery_BetaPrint("Lockpick cast succeeded")
         if Thievery_Config.Checkboxes[2].lockpickSound == true then
             PlaySoundFile("Interface/Addons/Thievery/sounds/wooden-trunk-latch-1-floraphonic-pixabay.mp3", "SFX")
         end

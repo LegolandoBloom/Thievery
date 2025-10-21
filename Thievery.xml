@@ -11,7 +11,7 @@
             <Button parent="Thievery" name="Thievery_PickpocketButton" parentKey="pickpocketButton" inherits="SecureActionButtonTemplate" hidden="false">
                 <Scripts>
                     <PreClick>
-                        if Thievery_Config.Checkboxes.playSound == true then
+                        if Thievery_Config.Checkboxes[1].playSound == true then
                             PlaySound(835)
                         end
                     </PreClick>
@@ -193,7 +193,7 @@
                                 </Anchors>
                                 <Scripts>
                                     <PostClick>
-                                        if Thievery_Config.Checkboxes.playSound == true then
+                                        if Thievery_Config.Checkboxes[1].playSound == true then
                                             PlaySound(835)
                                         end
                                     </PostClick>

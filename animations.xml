@@ -16,8 +16,8 @@
             </Layer>
         </Layers>
         <Animations>
-            <AnimationGroup parentKey="anim" looping="REPEAT" setToFinalAlpha="true">
-                <FlipBook smoothing="NONE" childKey="texture" duration="1.2" order="1" flipBookRows="1" flipBookColumns="10" flipBookFrames="10" flipBookFrameWidth="64" flipBookFrameHeight="64"/>
+            <AnimationGroup parentKey="anim" setToFinalAlpha="true">
+                <FlipBook smoothing="NONE" childKey="texture" duration="1.6" order="1" flipBookRows="1" flipBookColumns="10" flipBookFrames="10" flipBookFrameWidth="64" flipBookFrameHeight="64"/>
             </AnimationGroup>
         </Animations>
         <Scripts>

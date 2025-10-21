@@ -40,7 +40,7 @@ end
 function Thievery_SpeedyEvents(self, event, unit, ...)
     local arg4, arg5 = ...
     if event == "UNIT_SPELLCAST_SUCCEEDED" and arg5 == 921 then
-        if Thievery_Config.Checkboxes.speedyMode == true and speedyActive == false and IsStealthed() then
+        if Thievery_Config.Checkboxes[1].speedyMode == true and speedyActive == false and IsStealthed() then
             Thievery_ToggleSpeedy(true)
         end
     elseif event == "UPDATE_STEALTH" then
