@@ -1,3 +1,5 @@
+local ANIMATION_SIZE_MULTIPLIER = 1.4
+
 --____________________________________________________________________________________________ --
 --_____________TRACKING PART (with Overlay Textures & OnClick SecureActionButton)_____________ --
 --____________________________________________________________________________________________ --
@@ -48,7 +50,13 @@ local function pool_create(frame)
     frame:SetAttribute("type", "macro")
     frame:SetScript("OnEnter", function(self)
         imageFrame:ClearAllPoints()
-        imageFrame:SetPoint("CENTER", self, "CENTER")
+        local currentAnchor = {self:GetPoint()}
+        local width, height = currentAnchor[2]:GetSize()
+        imageFrame:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
+        print("Set image frame size to: ", width*ANIMATION_SIZE_MULTIPLIER)
+        imageFrame:SetPoint(currentAnchor[1], currentAnchor[2], currentAnchor[3], currentAnchor[4], currentAnchor[5])
+        -- imageFrame.texture:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
+        -- imageFrame.texture:SetAllPoints()
         imageFrame:Show()
     end)
     frame:SetScript("OnLeave", function(self)
@@ -58,7 +66,7 @@ local function pool_create(frame)
     frame:HookScript("OnClick", function(self)
         currentAnimationAnchor = {self:GetPoint()}
         print("clicked")
-        DevTools_Dump(currentAnimationAnchor)
+        DevTools_Dump(currentAnimationAnchor[2]:GetDebugName())
         self:SetScript("OnEvent", pool_object_Events)
         Thievery_SingleDelayer(0.3, 0, 0.1, self, nil, function()
             currentAnimationAnchor = nil
@@ -178,14 +186,18 @@ local function lockpicking_Events(self, event, unit, ...)
         -- start animation if you can
         print("SPELLCAST_START")
         if Thievery_Config.Checkboxes[2].lockpickAnim == true and currentAnimationAnchor then
-            local overlayFrame = currentAnimationAnchor[2]
-            if not overlayFrame or not overlayFrame:IsShown() or not overlayFrame:IsVisible() then 
+            local itemButton = currentAnimationAnchor[2]
+            if not itemButton or not itemButton:IsShown() or not itemButton:IsVisible() then 
                 Thievery_BetaPrint("Lockpick animation couldn't be started, item overlay frame doesn't exist or isn't visible")
-                return 
+                return
             end
-            local overlayFrame_Width, overlayFrameHeight = overlayFrame:GetSize()
+            local itemButton_Width, itemButtonHeight = itemButton:GetSize()
+            print("Item button size(from events): ", itemButton_Width, itemButtonHeight)
             animationFrame:ClearAllPoints()
-            animationFrame:SetPoint(currentAnimationAnchor[1], overlayFrame, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
+            animationFrame:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
+            animationFrame.texture:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
+            print("Set animation frame texture size to: ", itemButton_Width*ANIMATION_SIZE_MULTIPLIER)
+            animationFrame:SetPoint(currentAnimationAnchor[1], itemButton, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
             animationFrame:Show()
         end
     elseif (event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
