@@ -7,7 +7,7 @@
         </KeyValues>
         <Layers>
             <Layer level="OVERLAY">
-                <Texture name="$parent_Texture" parentKey="texture" alpha="0.8" file="Interface/AddOns/Thievery/images/animations/lockpick-animation.png">
+                <Texture name="$parent_Texture" parentKey="texture" alpha="1" file="Interface/AddOns/Thievery/images/animations/lockpick-animation.png">
                     <Size x="38" y="38"/>
                     <Anchors>
                         <Anchor point="CENTER"/>

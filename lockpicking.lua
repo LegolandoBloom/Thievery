@@ -19,13 +19,46 @@ bagTrackingFrame.filters ={
 }
 
 
-local imageFrame = CreateFrame("Frame")
+local imageFrame = CreateFrame("Frame", nil, UIParent)
 imageFrame:SetFrameStrata("HIGH")
 imageFrame:SetSize(30, 30)
 imageFrame.texture = imageFrame:CreateTexture("ayoawhrf", "OVERLAY")
 imageFrame.texture:SetAllPoints()
 imageFrame.texture:SetTexture("Interface/AddOns/Thievery/images/lockpick-preanim.png")
 imageFrame.texture:SetAlpha(0.8)
+imageFrame:SetIgnoreParentScale(true) 
+imageFrame.currentAnchor = nil
+
+local function relocateImageFrame(point)
+    imageFrame:ClearAllPoints()
+    local currentAnchor = point
+    if not currentAnchor or not currentAnchor[2] or not currentAnchor[2]:IsShown() or not currentAnchor[2]:IsVisible() then return end
+    local _, _, width, height = currentAnchor[2]:GetScaledRect()
+    imageFrame:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
+    imageFrame:SetPoint(currentAnchor[1], currentAnchor[2], currentAnchor[3], currentAnchor[4], currentAnchor[5])
+    imageFrame.texture:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
+    local _, _, realWidth = imageFrame:GetScaledRect()
+    Thievery_BetaPrint("Image frame REAL size: ", realWidth)
+    local _, _, realWidth = imageFrame.texture:GetScaledRect()
+    Thievery_BetaPrint("Image frame texture REAL size: ", realWidth)
+    -- imageFrame.texture:SetAllPoints()
+    imageFrame:Show()
+    imageFrame.currentAnchor = currentAnchor
+end
+
+local animationFrame = CreateFrame("Frame", "Thievery_LockpickAnim", UIParent, "Thievery_LockpickAnimTemplate")
+animationFrame:SetFrameStrata("HIGH")
+animationFrame:SetPoint("CENTER", UIParent, "CENTER")
+animationFrame:SetIgnoreParentScale(true) 
+animationFrame.anim:SetScript("OnStop", function(self)
+    local currentAnchor = imageFrame.currentAnchor
+    if currentAnchor then
+        if currentAnchor[2]:IsMouseOver() then
+            imageFrame:Show()
+        end
+    end
+end)
+animationFrame:Hide()
 
 local currentAnimationAnchor = nil
 local function pool_object_Events(self, event, unit, ...)
@@ -49,24 +82,16 @@ local function pool_create(frame)
     frame:RegisterEvent("UNIT_SPELLCAST_SENT")
     frame:SetAttribute("type", "macro")
     frame:SetScript("OnEnter", function(self)
-        imageFrame:ClearAllPoints()
-        local currentAnchor = {self:GetPoint()}
-        local width, height = currentAnchor[2]:GetSize()
-        imageFrame:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
-        print("Set image frame size to: ", width*ANIMATION_SIZE_MULTIPLIER)
-        imageFrame:SetPoint(currentAnchor[1], currentAnchor[2], currentAnchor[3], currentAnchor[4], currentAnchor[5])
-        -- imageFrame.texture:SetSize(width*ANIMATION_SIZE_MULTIPLIER, height*ANIMATION_SIZE_MULTIPLIER)
-        -- imageFrame.texture:SetAllPoints()
-        imageFrame:Show()
+        if animationFrame.anim:IsPlaying() then return end
+        relocateImageFrame({self:GetPoint()})
     end)
     frame:SetScript("OnLeave", function(self)
         imageFrame:ClearAllPoints()
+        imageFrame.currentAnchor = nil
         imageFrame:Hide()
     end)
     frame:HookScript("OnClick", function(self)
         currentAnimationAnchor = {self:GetPoint()}
-        print("clicked")
-        DevTools_Dump(currentAnimationAnchor[2]:GetDebugName())
         self:SetScript("OnEvent", pool_object_Events)
         Thievery_SingleDelayer(0.3, 0, 0.1, self, nil, function()
             currentAnimationAnchor = nil
@@ -169,10 +194,6 @@ local function clearOverlays(event, bagID)
 end
 
 
-animationFrame = CreateFrame("Frame", "Thievery_LockpickAnim", UIParent, "Thievery_LockpickAnimTemplate")
-animationFrame:SetFrameStrata("HIGH")
-animationFrame:SetPoint("CENTER", UIParent, "CENTER")
-animationFrame:Hide()
 
 local function lockpicking_Events(self, event, unit, ...)
     local arg4, arg5 = ...
@@ -184,21 +205,21 @@ local function lockpicking_Events(self, event, unit, ...)
         bagTrackingFrame:UpdateAll()
     elseif event == "UNIT_SPELLCAST_START" and unit == "player" and arg5 == 1804 then
         -- start animation if you can
-        print("SPELLCAST_START")
         if Thievery_Config.Checkboxes[2].lockpickAnim == true and currentAnimationAnchor then
             local itemButton = currentAnimationAnchor[2]
             if not itemButton or not itemButton:IsShown() or not itemButton:IsVisible() then 
                 Thievery_BetaPrint("Lockpick animation couldn't be started, item overlay frame doesn't exist or isn't visible")
                 return
             end
-            local itemButton_Width, itemButtonHeight = itemButton:GetSize()
-            print("Item button size(from events): ", itemButton_Width, itemButtonHeight)
+            local _, _, itemButton_Width, itemButtonHeight = itemButton:GetScaledRect()
             animationFrame:ClearAllPoints()
             animationFrame:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
             animationFrame.texture:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
-            print("Set animation frame texture size to: ", itemButton_Width*ANIMATION_SIZE_MULTIPLIER)
             animationFrame:SetPoint(currentAnimationAnchor[1], itemButton, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
+            local _, _, realWidth = animationFrame.texture:GetScaledRect()
+            Thievery_BetaPrint("Animation frame texture REAL size: ", realWidth)
             animationFrame:Show()
+            imageFrame:Hide()
         end
     elseif (event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
         -- stop animation, clear anchor
