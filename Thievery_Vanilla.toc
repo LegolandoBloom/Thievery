@@ -17,7 +17,7 @@ thiefTemplates\embeds.xml
 animations.xml
 init.lua
 ui.lua
-lockpicking.lua
+# lockpicking.lua
 pocketTables.lua
 speedy.lua
 sessionGUID.lua

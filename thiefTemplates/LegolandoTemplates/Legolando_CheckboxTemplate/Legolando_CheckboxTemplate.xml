@@ -13,7 +13,7 @@
         </Scripts>
 		<Layers>
             <Layer level="ARTWORK">
-                <FontString name="$parent_Text" parentKey="text" hidden="false" inherits="GameFontNormal">
+                <FontString name="$parent_Text" parentKey="text" hidden="false" inherits="Game15Font">
                     <Anchors>
                         <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT"/>
                     </Anchors>
@@ -33,7 +33,7 @@
                         </OnLeave>
                     </Scripts>
                 </FontString>
-                <FontString name="$parent_DisabledText" parentKey="disabledText" justifyH="LEFT" hidden="true" inherits="SystemFont_Shadow_Small">
+                <FontString name="$parent_DisabledText" parentKey="disabledText" justifyH="LEFT" hidden="true" inherits="Game15Font">
                     <Anchors>
                         <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/>
                     </Anchors>

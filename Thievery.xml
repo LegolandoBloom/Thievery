@@ -60,20 +60,20 @@
                                 <Anchor point="LEFT" relativeKey="$parent.keybindFrameBGMid" relativePoint="RIGHT"/>
                             </Anchors>
                         </Texture>
-                        <FontString name="Thievery_Keybind" parentKey="keybind" text="E" inherits="GameFontNormalMed2Outline">
+                        <FontString name="Thievery_Keybind" parentKey="keybind" text="E" inherits="Game15Font">
                             <Anchors>
                                 <Anchor point="CENTER" relativeKey="$parent.keybindFrameBGMid" relativePoint="CENTER" x="0" y="0"/>
                             </Anchors>
                             <Color r="1" g="1" b="1"/>
                         </FontString>
-                        <FontString name="Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="GameFontNormalMed2Outline">
+                        <FontString name="Thievery_PromptText" parentKey="promptText" text="Pickpocket" inherits="Game15Font">
                             <Anchors>
                                 <Anchor point="LEFT" relativeKey="$parent.keybindFrameRight" relativePoint="RIGHT" x="5" y="0"/>
                             </Anchors>
                             <Color r="1" g="0" b="0"/>
                         </FontString>
                         
-                        <FontString name="Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="GameFontNormalMed2Outline">
+                        <FontString name="Thievery_NPCName" parentKey="npcName" text="Some random dude idk" inherits="Game15Font">
                             <Anchors>
                                 <Anchor point="TOPLEFT" relativeKey="$parent.keybindFrameLeft" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
                             </Anchors>

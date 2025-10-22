@@ -33,7 +33,7 @@
         </Scripts>
         <Layers>
             <Layer level="ARTWORK">
-                <FontString name="$parent_Title" parentKey="title" text="Title Text" inherits= "GameFontNormalMed2Outline">
+                <FontString name="$parent_Title" parentKey="title" text="Title Text" inherits= "Game15Font">
                     <Anchors>
                         <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT" y="0"/>
                     </Anchors>

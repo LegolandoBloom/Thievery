@@ -117,11 +117,13 @@ function Thievery_Activate(self)
     end
     UIActive = true
     local sapped = false
-    AuraUtil.ForEachAura("target", "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
-        if spellID == 6770 then
+    AuraUtil.FindAura(
+    function(criteria, _,_,_,_,_,_,_,_,_,_,_,spellID) 
+        if criteria == spellID then
             sapped = true
         end
-    end)
+    end,
+    "target", "HARMFUL", 6770)
     if Thievery_Config.Checkboxes[1].enableSap == true then
         if sapped == false then
             setSapMode(self)
@@ -169,7 +171,7 @@ function Thievery_UpdateState(self, resetMode)
         sapMode = false
         ClearOverrideBindings(self)
     end
-    local inRange = C_Spell.IsSpellInRange(921)
+    local inRange = C_Spell.IsSpellInRange(2098)
     if stealthed and validTarget and inRange then
         if Thievery_CheckTargetLocal(target) then
             Thievery_Activate(self)
@@ -234,6 +236,7 @@ function Thievery_Events(self, event, unit)
         sapMode = false
         clearTable(target)
         Thievery_PPCooldownFrame:Clear()
+        print("Target changed")
         if InCombatLockdown() then return end
         if checkTargetValidity() == true then
             validTarget = true
@@ -246,6 +249,7 @@ function Thievery_Events(self, event, unit)
             target.classification = UnitClassification("target")
             -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
             target.reaction = UnitReaction("player", "target")
+            DevTools_Dump(target)
         else
             validTarget = false
         end
