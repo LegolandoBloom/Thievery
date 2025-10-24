@@ -18,7 +18,7 @@ bagTrackingFrame.filters ={
 	-- hyperlink = {link1, link2, link3},
 	-- isFiltered = false,
 	-- hasNoValue = false,
-	itemID = {5523, 16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333}
+	itemID = {5503, 16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333}
 	-- isBound = true,
 }
 
@@ -97,10 +97,11 @@ local function pool_create(frame)
     frame:HookScript("OnClick", function(self)
         currentAnimationAnchor = {self:GetPoint()}
         self:SetScript("OnEvent", pool_object_Events)
-        Thievery_SingleDelayer(0.3, 0, 0.1, self, nil, function()
-            currentAnimationAnchor = nil
-            self:SetScript("OnEvent", nil)
-        end)
+        print("clicked")
+        -- Thievery_SingleDelayer(0.3, 0, 0.1, self, nil, function()
+        --     currentAnimationAnchor = nil
+        --     self:SetScript("OnEvent", nil)
+        -- end)
     end)
     frame:SetPassThroughButtons("LeftButton", "MiddleButton", "Button4", "Button5")
     -- frame:EnableMouseMotion(false)
@@ -213,15 +214,16 @@ end
 
 
 local function lockpicking_Events(self, event, unit, ...)
-    local arg4, arg5 = ...
+    local arg4, arg5, arg6 = ...
     if event == "PLAYER_REGEN_DISABLED" then
         for i=1,6,1 do 
             clearOverlays(nil, i-1)
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
         bagTrackingFrame:UpdateAll()
-    elseif event == "UNIT_SPELLCAST_START" and unit == "player" and arg5 == 1804 then
+    elseif event == "UNIT_SPELLCAST_SENT" and unit == "player" and arg6 == 1784 then
         -- start animation if you can
+        print("spellcast started")
         if Thievery_Config.Checkboxes[2].lockpickAnim == true and currentAnimationAnchor then
             local itemButton = currentAnimationAnchor[2]
             if not itemButton or not itemButton:IsShown() or not itemButton:IsVisible() then 
@@ -238,7 +240,7 @@ local function lockpicking_Events(self, event, unit, ...)
             animationFrame:Show()
             imageFrame:Hide()
         end
-    elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
+    elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1784 then
         -- stop animation, clear anchor
         animationFrame:ClearAllPoints()
         animationFrame:Hide()
@@ -246,9 +248,9 @@ local function lockpicking_Events(self, event, unit, ...)
         Thievery_BetaPrint("Lockpick Interrupted/Failed")
     elseif event == "UNIT_SPELLCAST_STOP" then
         -- print("stopped")
-    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
+    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1784 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
-        Thievery_SingleDelayer(0.5, 0, 0.1, bagTrackingFrame, nil, function()
+        Thievery_SingleDelayer(2, 0, 0.5, bagTrackingFrame, nil, function()
             if not InCombatLockdown() then 
                 bagTrackingFrame:UpdateAll()
                 Thievery_BetaPrint("Lockpick successful!")
@@ -266,7 +268,7 @@ local function lockpicking_Events(self, event, unit, ...)
     end
 end
 bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
-bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_START")
+bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_STOP")
 bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
 bagTrackingFrame:RegisterEvent("UNIT_SPELLCAST_FAILED")
