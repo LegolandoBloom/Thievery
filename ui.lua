@@ -54,7 +54,7 @@ end
 
 local function lockpickOnClick(self, isChecked)
     if InCombatLockdown() then return end
-    -- Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+    Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
     local checkboxes2 = self:GetParent()
     if isChecked == true then 
         checkboxes2.lockpickAnim:Enable()

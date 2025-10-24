@@ -4,9 +4,9 @@ local ANIMATION_SIZE_MULTIPLIER = 1.4
 --_____________TRACKING PART (with Overlay Textures & OnClick SecureActionButton)_____________ --
 --____________________________________________________________________________________________ --
 
-hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton)
-    print(itemButton:GetDebugName())
-end)
+-- hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton)
+--     print(itemButton:GetDebugName())
+-- end)
 
 local bagTrackingFrame = CreateFrame("Frame", "BagTrackerExample_BagTracker", UIParent, "Legolando_BagTrackerTemplate_Thievery")
 	
@@ -18,7 +18,7 @@ bagTrackingFrame.filters ={
 	-- hyperlink = {link1, link2, link3},
 	-- isFiltered = false,
 	-- hasNoValue = false,
-	itemID = {16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333}
+	itemID = {5523, 16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333}
 	-- isBound = true,
 }
 
@@ -116,15 +116,16 @@ for i=1,6,1 do
 end
 
 function checkLocked(bagID, slotID)
-    local locked = false
-    local lines = C_TooltipInfo.GetBagItem(bagID, slotID).lines
-    for i, line in pairs(lines) do
-        -- LOCKED -> from GlobalStrings.lua. Defaults to "Locked" for English clients.
-        if line.leftText == LOCKED then
-            locked = true
-        end
-    end
-    return locked
+    return true
+    -- local locked = false
+    -- local lines = C_TooltipInfo.GetBagItem(bagID, slotID).lines
+    -- for i, line in pairs(lines) do
+    --     -- LOCKED -> from GlobalStrings.lua. Defaults to "Locked" for English clients.
+    --     if line.leftText == LOCKED then
+    --         locked = true
+    --     end
+    -- end
+    -- return locked
 end
 local function handleSlot(itemButton, bagID, slotID)
     if InCombatLockdown() then return end
@@ -174,9 +175,9 @@ local function scanDone_Callback(event, bagID, bagContents, containerFrame)
     if not containerFrame or not containerFrame:IsShown() or not containerFrame:IsVisible() then
         -- If a bag isn't visible, don't take any action
         -- print("event fired, yet containerFrame isn't there")
-        return
+        -- return
     end
-    print("callback on isle: ", bagID)
+    -- print("callback on isle: ", bagID)
     -- Iterate through all the valid item slots in bags - Can't use EnumerateValidItems on Classic
     local numSlots = C_Container.GetContainerNumSlots(bagID)
 	for buttonID = 1, numSlots do
@@ -187,7 +188,7 @@ local function scanDone_Callback(event, bagID, bagContents, containerFrame)
             local itemButton = _G[containerFrame:GetDebugName() .. "Item" .. numSlots - buttonID + 1]
             -- to check if the itemButton frame exists and is valid(has a name)
             if itemButton and itemButton:GetDebugName() then
-                print(itemButton:GetDebugName())
+                -- print(itemButton:GetDebugName())
                 handleSlot(itemButton, bagID, buttonID)
             end
 		end

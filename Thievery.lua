@@ -236,7 +236,7 @@ function Thievery_Events(self, event, unit)
         sapMode = false
         clearTable(target)
         Thievery_PPCooldownFrame:Clear()
-        print("Target changed")
+        -- print("Target changed")
         if InCombatLockdown() then return end
         if checkTargetValidity() == true then
             validTarget = true
@@ -249,7 +249,7 @@ function Thievery_Events(self, event, unit)
             target.classification = UnitClassification("target")
             -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
             target.reaction = UnitReaction("player", "target")
-            DevTools_Dump(target)
+            -- DevTools_Dump(target)
         else
             validTarget = false
         end
