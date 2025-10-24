@@ -49,6 +49,21 @@ function Legolando_BagTrackerMixin_Thievery:GetContainerFrame(bagID)
 		return ContainerFrame6
 	end
 end
+function Legolando_BagTrackerMixin_Thievery:GetBagID(containerFrameName)
+	if containerFrameName == "ContainerFrame1" then
+		return 0
+	elseif containerFrameName == "ContainerFrame2" then
+		return 1
+	elseif containerFrameName == "ContainerFrame3" then
+		return 2
+	elseif containerFrameName == "ContainerFrame4" then
+		return 3
+	elseif containerFrameName == "ContainerFrame5" then
+		return 4
+	elseif containerFrameName == "ContainerFrame6" then
+		return 5
+	end
+end
 
 -- EACH VALID SLOT HAS A TABLE WITH THESE VALUES
 -- slot.iconFileID | slot.stackCount | slot.isLocked | slot.quality | slot.IsReadable
@@ -111,9 +126,7 @@ local function checkTables(teeburu, info)
 	end
 	return false
 end
-function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(itemButton)
-	if not itemButton then return end
-	local slotID, bagID = itemButton:GetSlotAndBagID()
+function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
 	local info = C_Container.GetContainerItemInfo(bagID, slotID);
 	if not bagTable[bagID] then 
 		print("Bag ID not initialized in table," , bagID)
@@ -158,18 +171,34 @@ end
 function Legolando_BagTrackerMixin_Thievery:ClearBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
+	if bagID > 5 or bagID < 0 then
+		return
+	end
 	bagTable[bagID] = {}
-	self.callbacks:Fire("Lego-BagCleared-YourAddon", bagID)
+	--_____________________________________________________________________________________________________________________________
+	-- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
+	-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
+	-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
+	--_____________________________________________________________________________________________________________________________
+	self.callbacks:Fire("Lego-BagCleared-Thievery", bagID, containerFrame)
 end
 
 function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
 	if not containerFrame then return end
     local bagID = containerFrame:GetID()
 	self:ClearBag(containerFrame)
-    for i, itemButton in containerFrame:EnumerateValidItems() do
-		self:InvestigateItemSlot(itemButton)
+	for slotID = 1, C_Container.GetContainerNumSlots(bagID) do
+		local id = C_Container.GetContainerItemID(bagID, slotID);
+		if id then
+			self:InvestigateItemSlot(slotID, bagID)
+		end
 	end
-	self.callbacks:Fire("Lego-BagScanDone-YourAddon", bagID, bagTable[bagID])
+	--_____________________________________________________________________________________________________________________________
+	-- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
+	-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
+	-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
+	--_____________________________________________________________________________________________________________________________
+	self.callbacks:Fire("Lego-BagScanDone-Thievery", bagID, bagTable[bagID], containerFrame)
 end
 
 local bagsToUpdate = {}
@@ -203,13 +232,13 @@ end
 function Legolando_BagTrackerMixin_Thievery:OnLoad()
 	-- Need to call InvestigateBag on the next 'OnUpdate', otherwise containerFrame and itemButtons won't have anchors, and return empty when GetPoint() or GetScaledRect() is called.
 	-- Each containerFrame 1-6 has it's own OnUpdate Delayer, as created above ↑↑↑
-    EventRegistry:RegisterCallback("ContainerFrame.OpenBag", function(_, containerFrame)
+    hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
 		containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
 			self:InvestigateBag(containerFrame)
 			delayerFrame:SetScript("OnUpdate", nil)
 		end)
 	end)
-	EventRegistry:RegisterCallback("ContainerFrame.CloseBag", function(_, containerFrame)
+    hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
 		self:ClearBag(containerFrame)
 	end)
 	EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
@@ -236,3 +265,5 @@ end
 -- 	end
 -- 	-- print(tableToString(bagTable))
 -- end
+
+

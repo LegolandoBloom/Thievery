@@ -13,12 +13,12 @@ Parity-Fonts.xml
 
 translations\translations.xml
 
-thiefTemplates\embeds.xml
+thiefTemplates\embeds-classic.xml
 
 animations.xml
 init.lua
 ui.lua
-# lockpicking.lua
+lockpicking.lua
 pocketTables.lua
 speedy.lua
 sessionGUID.lua

@@ -4,6 +4,10 @@ local ANIMATION_SIZE_MULTIPLIER = 1.4
 --_____________TRACKING PART (with Overlay Textures & OnClick SecureActionButton)_____________ --
 --____________________________________________________________________________________________ --
 
+hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton)
+    print(itemButton:GetDebugName())
+end)
+
 local bagTrackingFrame = CreateFrame("Frame", "BagTrackerExample_BagTracker", UIParent, "Legolando_BagTrackerTemplate_Thievery")
 	
 bagTrackingFrame.filters ={
@@ -159,33 +163,45 @@ local function handleSlot(itemButton, bagID, slotID)
     local line2 = "/use " .. " " .. bagID .. " " .. slotID
     overlayButton:SetAttribute("macrotext", line1 .. "\n" .. line2)
 end
-local function scanDone_Callback(event, bagID, bagContents)
+--_____________________________________________________________________________________________________________________________
+-- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
+-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
+-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
+--_____________________________________________________________________________________________________________________________
+local function scanDone_Callback(event, bagID, bagContents, containerFrame)
     if InCombatLockdown() then return end
     if not bagID then return end
-    local containerFrame = bagTrackingFrame:GetContainerFrame(bagID)
     if not containerFrame or not containerFrame:IsShown() or not containerFrame:IsVisible() then
         -- If a bag isn't visible, don't take any action
         -- print("event fired, yet containerFrame isn't there")
         return
     end
-    -- Iterate through all the valid item slots in bags
-    for i, itemButton in containerFrame:EnumerateValidItems() do
-        if itemButton then
-            local buttonID = itemButton:GetID()
-            -- If the slot is in the filtered table returned from Legolando_BagTrackerTemplate, call handle function, which will acquire and place the overlays
-            if bagContents[buttonID] then
+    print("callback on isle: ", bagID)
+    -- Iterate through all the valid item slots in bags - Can't use EnumerateValidItems on Classic
+    local numSlots = C_Container.GetContainerNumSlots(bagID)
+	for buttonID = 1, numSlots do
+		local id = C_Container.GetContainerItemID(bagID, buttonID);
+        -- to check if slot is empty
+		if id and bagContents[buttonID] then
+            -- FOR SOME REASON IN CLASSIC THE ITEM BUTTONS ARE ORDERED BACKWARDS SO WE NEED TO EXTRACT FROM NUMSLOTS AND +1 - WHY? WHY IS THIS THE CASE? WHY...
+            local itemButton = _G[containerFrame:GetDebugName() .. "Item" .. numSlots - buttonID + 1]
+            -- to check if the itemButton frame exists and is valid(has a name)
+            if itemButton and itemButton:GetDebugName() then
+                print(itemButton:GetDebugName())
                 handleSlot(itemButton, bagID, buttonID)
             end
-        end
-    end
+		end
+	end
 end
 
-
--- Clear the overlay secureaction buttons and textures when BagCleared event is fired from template
-local function clearOverlays(event, bagID)
+--_____________________________________________________________________________________________________________________________
+-- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
+-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
+-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
+--_____________________________________________________________________________________________________________________________
+local function clearOverlays(event, bagID, containerFrame)
     if InCombatLockdown() then return end
     if not bagID then return end
-    local containerFrame = bagTrackingFrame:GetContainerFrame(bagID)
     if not containerFrame then
         print("bag clear event fired, yet containerFrame isn't there")
         return
@@ -260,15 +276,15 @@ bagTrackingFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 function Thievery_ActivateLockpicking(enable)
     if enable == true then
         bagTrackingFrame:SetScript("OnEvent", lockpicking_Events)
-        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone-YourAddon", scanDone_Callback)
-        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-YourAddon", clearOverlays)
+        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone-Thievery", scanDone_Callback)
+        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", clearOverlays)
         bagTrackingFrame:UpdateAll()
     elseif enable == false then
         for i=1,6,1 do 
             clearOverlays(nil, i-1)
         end
         bagTrackingFrame:SetScript("OnEvent", nil)
-        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagScanDone-YourAddon", scanDone_Callback)
-        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagCleared-YourAddon", clearOverlays)
+        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagScanDone-Thievery", scanDone_Callback)
+        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", clearOverlays)
     end
 end

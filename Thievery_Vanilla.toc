@@ -13,7 +13,7 @@ Parity-Fonts.xml
 
 translations\translations.xml
 
-thiefTemplates\embeds.xml
+thiefTemplates\embeds-classic.xml
 
 animations.xml
 init.lua
