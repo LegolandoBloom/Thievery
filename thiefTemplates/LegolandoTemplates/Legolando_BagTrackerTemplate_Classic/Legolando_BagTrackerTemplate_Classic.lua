@@ -20,7 +20,6 @@ local function tableToString(tbl, recursiveCall)
 end
 
 
-
 Legolando_BagTrackerMixin_Thievery = {}
 
 local bagTable = {}
@@ -229,18 +228,42 @@ for i=1,6,1 do
 	containerDelayFrames[i - 1] = CreateFrame("Frame")
 end
 
-function Legolando_BagTrackerMixin_Thievery:OnLoad()
+-- reScanEveryOpenBag
+-- clearOnClose
+local scannedOnce = {
+	[0] = false,
+	[1] = false,
+	[2] = false,
+	[3] = false,
+	[4] = false,
+	[5] = false,
+}
+function Legolando_BagTrackerMixin_Thievery:Init()
 	-- Need to call InvestigateBag on the next 'OnUpdate', otherwise containerFrame and itemButtons won't have anchors, and return empty when GetPoint() or GetScaledRect() is called.
 	-- Each containerFrame 1-6 has it's own OnUpdate Delayer, as created above ↑↑↑
-    hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
-		containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
-			self:InvestigateBag(containerFrame)
-			delayerFrame:SetScript("OnUpdate", nil)
+	if self.reScanEveryOpenBag == true then
+		hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
+			containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
+				self:InvestigateBag(containerFrame)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
 		end)
-	end)
-    hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
-		self:ClearBag(containerFrame)
-	end)
+		if self.clearOnClose then
+			hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
+				self:ClearBag(containerFrame)
+			end)
+		end
+	else
+		hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
+			local id = containerFrame:GetID()
+			if scannedOnce[id] then return end
+			containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
+				self:InvestigateBag(containerFrame)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
+			scannedOnce[id] = true
+		end)
+	end
 	EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
 end
 

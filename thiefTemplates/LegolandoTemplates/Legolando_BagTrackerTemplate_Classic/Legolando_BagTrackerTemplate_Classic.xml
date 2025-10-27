@@ -5,7 +5,6 @@
 
     <Frame name="Legolando_BagTrackerTemplate_Thievery" mixin="Legolando_BagTrackerMixin_Thievery" virtual="true">
         <Scripts>
-            <OnLoad method="OnLoad"/>
         </Scripts>
     </Frame>
 
