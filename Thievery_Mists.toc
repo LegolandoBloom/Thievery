@@ -19,7 +19,7 @@ animations.xml
 init.lua
 ui.lua
 lockpicking.lua
-pocketTables.lua
+pocketTables_Mists.lua
 speedy.lua
 sessionGUID.lua
 Thievery.lua
