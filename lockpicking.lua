@@ -84,7 +84,14 @@ lockpickOverlayButton.debugTexture:SetColorTexture(1, 0, 0, 0.3)
 lockpickOverlayButton.debugTexture:Hide()
 
 lockpickOverlayButton.lockpickTexture = lockpickOverlayButton:CreateTexture("Thievery_LockpickOverlayTexture", "OVERLAY")
-lockpickOverlayButton.lockpickTexture:SetAllPoints()
+--________________________________________________________________________________
+-- Both lockpickTexture and animationFrame use a 64x64 texture, but animation frame
+-- is not parented to lockpickOverlay, so lockpickTexture must ignore parent scale 
+-- and use 'Real Size' from GetScaledRect() for easy parity with the animation
+-- to change both their scale at the same time, use ANIMATION_SIZE_MULTIPLIER
+--________________________________________________________________________________
+lockpickOverlayButton.lockpickTexture:SetIgnoreParentScale(true)
+lockpickOverlayButton.lockpickTexture:SetPoint("CENTER")
 lockpickOverlayButton.lockpickTexture:SetTexture("Interface/AddOns/Thievery/images/lockpick-preanim.png")
 lockpickOverlayButton.lockpickTexture:SetAlpha(0.8)
 lockpickOverlayButton.currentAnchor = nil
@@ -126,7 +133,16 @@ function LP.relocateOverlayButton(itemButton, bagID, slotID)
         lockpickOverlayButton.debugTexture:SetAllPoints(lockpickOverlayButton)
         lockpickOverlayButton.debugTexture:Show()
     end
+
+    --________________________________________________________________________________
+    -- Both lockpickTexture and animationFrame use a 64x64 texture, but animation frame
+    -- is not parented to lockpickOverlay, so lockpickTexture must ignore parent scale 
+    -- and use 'Real Size' from GetScaledRect() for easy parity with the animation
+    -- to change both their scale at the same time, use ANIMATION_SIZE_MULTIPLIER
+    --________________________________________________________________________________
+    lockpickOverlayButton.lockpickTexture:SetSize(realWidth*ANIMATION_SIZE_MULTIPLIER, realHeight*ANIMATION_SIZE_MULTIPLIER)
     lockpickOverlayButton:Show()
+
     local spellName = C_Spell.GetSpellName(1804)
     local line1 = "/cast " .. spellName
     local line2 = "/use " .. " " .. bagID .. " " .. slotID
@@ -153,28 +169,23 @@ local function checkLockedTooltip()
 end
 
 hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
+    if InCombatLockdown() then return end
     if not itemButton then return end
     local slotID = itemButton:GetID()
     local bagID = itemButton:GetParent():GetID()
     if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
     if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
     if checkLockedTooltip() == false then return end
-    print("ahoy")
     -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
     -- if animationFrame.anim:IsPlaying() then return end
     LP.relocateOverlayButton(itemButton, bagID, slotID)
 end)
 hooksecurefunc("ContainerFrameItemButton_OnLeave", function(itemButton, ...)
+    if InCombatLockdown() then return end
     if lockpickOverlayButton:IsShown() then
-        lockpickOverlayButton:ClearAllPoints()
-        lockpickOverlayButton:Hide()
+        LP.clearOverlayButton()
     end
-    if not itemButton then return end
-    local slotID = itemButton:GetID()
-    local bagID = itemButton:GetParent():GetID()
-    if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
 end)
-
 
 
 local function lockpicking_Events(self, event, unit, ...)
@@ -192,13 +203,13 @@ local function lockpicking_Events(self, event, unit, ...)
                 Thievery_BetaPrint("Lockpick animation couldn't be started, item overlay frame doesn't exist or isn't visible")
                 return
             end
-            local _, _, itemButton_Width, itemButtonHeight = itemButton:GetScaledRect()
+            local _, _, realWidth, realHeight = itemButton:GetScaledRect()
             animationFrame:ClearAllPoints()
-            animationFrame:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
-            animationFrame.texture:SetSize(itemButton_Width*ANIMATION_SIZE_MULTIPLIER, itemButtonHeight*ANIMATION_SIZE_MULTIPLIER)
+            animationFrame:SetSize(realWidth*ANIMATION_SIZE_MULTIPLIER, realHeight*ANIMATION_SIZE_MULTIPLIER)
+            animationFrame.texture:SetSize(realWidth*ANIMATION_SIZE_MULTIPLIER, realHeight*ANIMATION_SIZE_MULTIPLIER)
             animationFrame:SetPoint(currentAnimationAnchor[1], itemButton, currentAnimationAnchor[3], currentAnimationAnchor[4], currentAnimationAnchor[5])
-            local _, _, realWidth = animationFrame.texture:GetScaledRect()
-            Thievery_BetaPrint("Animation frame texture REAL size: ", realWidth)
+            local _, _, animationRealWidth = animationFrame.texture:GetScaledRect()
+            Thievery_BetaPrint("Animation frame texture REAL size: ", animationRealWidth)
             animationFrame:Show()
         end
     elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1784 then
@@ -244,9 +255,7 @@ function Thievery_ActivateLockpicking(enable)
         bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", LP.bagCleared_Callback)
         bagTrackingFrame:UpdateAll()
     elseif enable == false then
-        for i=1,6,1 do 
-            clearOverlays(nil, i-1)
-        end
+        LP.clearOverlayButton()
         bagTrackingFrame:SetScript("OnEvent", nil)
         bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagScanDone-Thievery", LP.scanDone_Callback)
         bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", LP.bagCleared_Callback)

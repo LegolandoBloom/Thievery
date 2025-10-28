@@ -72,8 +72,15 @@ local function setPPMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("macrotext", "/cast " .. ppName)
-        SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+
+        --____________________________________________________________________________
+        --     Bugs out in CLASSIC, use SetOverrideBindingSpell directly instead
+        --____________________________________________________________________________
+        -- self:SetAttribute("spell", 921)
+        -- SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+        
+        SetOverrideBindingSpell(self, true, assignKey, ppname)
+
         PPMode = true
         sapMode = false
         parent.visual:Show()
@@ -92,14 +99,21 @@ local function setPPMode(self)
 end
 local sapName = C_Spell.GetSpellName(6770)
 local function setSapMode(self)
-    if not sapMode then 
+    if not sapMode then
         local parent = self:GetParent()
         local assignKey = "E"
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("macrotext", "/cast " .. sapName)
-        SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+
+        --____________________________________________________________________________
+        --     Bugs out in CLASSIC, use SetOverrideBindingSpell directly instead
+        --____________________________________________________________________________
+        -- self:SetAttribute("spell", 6770)
+        -- SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+
+        SetOverrideBindingSpell(self, true, assignKey, sapName)
+
         PPMode = true
         parent.visual:Show()
         parent.visual.promptText:SetText(T["Sap"])

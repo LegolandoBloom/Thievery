@@ -137,9 +137,13 @@ function Thievery_OnLoad(self)
     self.pickpocketButton:RegisterEvent("PLAYER_REGEN_DISABLED")
     self.pickpocketButton:RegisterEvent("PLAYER_REGEN_ENABLED")
     self.pickpocketButton:SetScript("OnEvent", Thievery_Events)
-    self.pickpocketButton:SetAttribute("type", "macro")
-    local spellName = C_Spell.GetSpellName(921)
-    self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
+
+    --____________________________________________________________________________
+    --     Bugs out in CLASSIC, use SetOverrideBindingSpell directly instead
+    --____________________________________________________________________________
+    -- self.pickpocketButton:SetAttribute("type", "spell")
+    -- local spellName = C_Spell.GetSpellName(921)
+    -- self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
 end
 
 function Thievery_EventLoader(self, event, unit, ...)
