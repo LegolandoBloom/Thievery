@@ -1,0 +1,23 @@
+Temporarily change pocketTalbes.lua's language mode(bottom corner) to 'Plain Text', then
+
+REGEX GUIDE:
+
+COPY/PASTE NPC IDs from Wowhead into temp.lua, they should look like this: 234939, 234938, 237554, 237552, 233623
+
+Open up 'Search & Replace' with CTRL+F, activate "use regular expression"
+
+In the 'Find' box type: (\d+)
+
+In the 'Replace' box type: [$1] = true
+
+Click 'Replace All'
+
+They will now look like this: [234939] = true, [234938] = true, [237554] = true, [237552] = true, [233623] = true
+
+Dont forget to add a , (comma) to the end of the line
+
+Transfer the now ready IDs to pocketTables then clear temp.lua
+
+
+
+After you are done, change pocketTables.lua's language mode(bottom corner) back to Lua
