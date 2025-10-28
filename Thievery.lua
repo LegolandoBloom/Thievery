@@ -72,14 +72,13 @@ local function setPPMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-
         --____________________________________________________________________________
         --     Bugs out in CLASSIC, use SetOverrideBindingSpell directly instead
         --____________________________________________________________________________
         -- self:SetAttribute("spell", 921)
         -- SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
         
-        SetOverrideBindingSpell(self, true, assignKey, ppname)
+        SetOverrideBindingSpell(self, true, assignKey, ppName)
 
         PPMode = true
         sapMode = false
@@ -105,7 +104,6 @@ local function setSapMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-
         --____________________________________________________________________________
         --     Bugs out in CLASSIC, use SetOverrideBindingSpell directly instead
         --____________________________________________________________________________
