@@ -70,20 +70,20 @@ local PP_Undead_Hostile_ALL ={
 -- Horde Friend/Hostile/Non-
 local PP_Humanoids_ALLIANCE_Neutral = {
     -- Horde Non-
-
+    [44163] = true, [16521] = true, [724] = true, [707] = true,
     -- Horde Friendly
-
+        -- there are none
     -- Horde Hostile
-
+    [40062] = true, [3942] = true, [3940] = true,
 }
 -- Alliance Friend/Hostile/Non-
 local PP_Humanoids_HORDE_Neutral = {
     -- Alliance Non-
-
+    [38359] = true, [2120] = true, [1915] = true, [38360] = true, [2415] = true,
     -- Alliance Friendly
-    
+    [2271] = true, [2358] = true, [1888] = true, [2628] = true, [1914] = true, [27676] = true, [2272] = true, [1889] = true, [3577] = true, [1912] = true, [1867] = true, [1913] = true,
     -- Alliance Hostile
-    
+    [40063] = true,
 }
 -- Neutral - Neutral (NO 'Non-'!)
 local PP_Humanoids_BOTH_Neutral_Normal = {
