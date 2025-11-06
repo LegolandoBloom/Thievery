@@ -25,7 +25,7 @@ bagTrackingFrame.filters ={
 
 local currentAnimationAnchor = nil
 
-trackedItems = {}
+local trackedItems = {}
 --_____________________________________________________________________________________________________________________________
 -- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
 -- _G["ContainerFrame" .. bagID] --> Does NOT always work 
