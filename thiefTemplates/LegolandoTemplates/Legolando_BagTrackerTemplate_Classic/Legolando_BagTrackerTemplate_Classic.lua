@@ -373,13 +373,13 @@ end
 --_______ USE THIS TO LIST FILTERED ITEMS NEATLY _________
 --          ( keep commented when not in use )
 --________________________________________________________
-SLASH_ThieveryZZZ1 = "/zzz"
-SlashCmdList["ThieveryZZZ"] = function() 
-	print("Filtered items: ")
-	for i, v in pairs(bagTable) do
-		for a, b in pairs(v) do
-			print(b.hyperlink, "in bag ", i, "slot ", a)
-		end
-	end
-	-- print(tableToString(bagTable))
-end
+-- SLASH_ThieveryZZZ1 = "/zzz"
+-- SlashCmdList["ThieveryZZZ"] = function() 
+-- 	print("Filtered items: ")
+-- 	for i, v in pairs(bagTable) do
+-- 		for a, b in pairs(v) do
+-- 			print(b.hyperlink, "in bag ", i, "slot ", a)
+-- 		end
+-- 	end
+-- 	-- print(tableToString(bagTable))
+-- end
