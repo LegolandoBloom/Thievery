@@ -305,62 +305,62 @@ function Legolando_BagTrackerMixin_Thievery:Init()
 	-- Need to call InvestigateBag on the next 'OnUpdate', otherwise containerFrame and itemButtons won't have anchors, and return empty when GetPoint() or GetScaledRect() is called.
 	-- Each containerFrame 1-6 has it's own OnUpdate Delayer, as created above ↑↑↑
   	hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
-		-- print("ContainerFrame_OnShow", GetTime())
+		print("ContainerFrame_OnShow", GetTime())
 		self:Scan_Hook(containerFrame:GetID(), "ContainerFrame_OnShow")
 	end)
 
 	hooksecurefunc("OpenBackpack", function()
-		-- print("OpenBackpack  time: ", GetTime())
+		print("OpenBackpack  time: ", GetTime())
 		self:Scan_Hook(0, "OpenBackpack")
 	end)
 	hooksecurefunc("ToggleBackpack", function()
-		-- print("ToggleBackpack  time: ", GetTime())
+		print("ToggleBackpack  time: ", GetTime())
 		self:Scan_Hook(0, "ToggleBackpack")
 	end)
 	
 	hooksecurefunc("OpenBag", function(id)
-	  	-- print("OpenBag id: ", id, GetTime())
+	  	print("OpenBag id: ", id, GetTime())
 		self:Scan_Hook(id, "OpenBag")
 	end)
 	hooksecurefunc("ToggleBag", function(id)
-		-- print("ToggleBag id: ", id, "  time: ",  GetTime())
+		print("ToggleBag id: ", id, "  time: ",  GetTime())
 		self:Scan_Hook(id, "ToggleBag")
 	end)
 
 	hooksecurefunc("OpenAllBags", function()
-		-- print("OpenAllBags  time: ", GetTime())
+		print("OpenAllBags  time: ", GetTime())
 		for i=1,6,1 do
 			self:Scan_Hook(i, "OpenAllBags")
 		end
 	end)
 	hooksecurefunc("ToggleAllBags", function()
-		-- print("ToggleAllBags  time: ", GetTime())
+		print("ToggleAllBags  time: ", GetTime())
 		for i=1,6,1 do
 			self:Scan_Hook(i, "ToggleAllBags")
 		end
 	end)
 
 	hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
-		-- print("ContainerFrame_OnHide", GetTime())
+		print("ContainerFrame_OnHide", GetTime())
 		self:Clear_Hook(containerFrame:GetID())
 	end)
 
   	hooksecurefunc("CloseBackpack", function()
-		-- print("CloseBackpack  time: ", GetTime())
+		print("CloseBackpack  time: ", GetTime())
 		self:Clear_Hook(0)
 	end)
   	hooksecurefunc("CloseBag", function(id)
-		-- print("CloseBag id: ", id, "  time: ",  GetTime())
+		print("CloseBag id: ", id, "  time: ",  GetTime())
 		self:Clear_Hook(id)
 	end)
   	hooksecurefunc("CloseAllBags", function()
-		-- print("CloseAllBags  time: ", GetTime())
+		print("CloseAllBags  time: ", GetTime())
 		for i=1,6,1 do
 			self:Clear_Hook(i)
 		end
 	end)
 
-	EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
+	-- EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
 end
                                                                                          
                                                                                                                    

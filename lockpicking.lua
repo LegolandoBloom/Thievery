@@ -25,7 +25,7 @@ bagTrackingFrame.filters ={
 
 local currentAnimationAnchor = nil
 
-local trackedItems = {}
+trackedItems = {}
 --_____________________________________________________________________________________________________________________________
 -- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
 -- _G["ContainerFrame" .. bagID] --> Does NOT always work 
@@ -34,7 +34,7 @@ local trackedItems = {}
 function LP.scanDone_Callback(event, bagID, bagContents)
     if not bagID then return end
     trackedItems[bagID] = bagContents
-    -- DevTools_Dump(trackedItems)
+    DevTools_Dump(trackedItems[bagID])
 end
 
 --_____________________________________________________________________________________________________________________________
@@ -43,7 +43,6 @@ end
 -- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 --_____________________________________________________________________________________________________________________________
 function LP.bagCleared_Callback(event, bagID)
-
     trackedItems = {}
     if not InCombatLockdown() then 
         LP.clearOverlayButton()
