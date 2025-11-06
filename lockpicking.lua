@@ -33,6 +33,7 @@ trackedItems = {}
 --_____________________________________________________________________________________________________________________________
 function LP.scanDone_Callback(event, bagID, bagContents)
     if not bagID then return end
+    print("I've got a new complaint", bagID)
     trackedItems[bagID] = bagContents
     DevTools_Dump(trackedItems[bagID])
 end
@@ -44,6 +45,7 @@ end
 --_____________________________________________________________________________________________________________________________
 function LP.bagCleared_Callback(event, bagID)
     trackedItems = {}
+    print("clear")
     if not InCombatLockdown() then 
         LP.clearOverlayButton()
     end
@@ -167,6 +169,7 @@ local function checkLockedTooltip()
 end
 
 hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
+    print("hey")
     if InCombatLockdown() then return end
     if not itemButton then return end
     local slotID = itemButton:GetID()
@@ -176,6 +179,7 @@ hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
     if checkLockedTooltip() == false then return end
     -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
     -- if animationFrame.anim:IsPlaying() then return end
+    print("wait")
     LP.relocateOverlayButton(itemButton, bagID, slotID)
 end)
 hooksecurefunc("ContainerFrameItemButton_OnLeave", function(itemButton, ...)
