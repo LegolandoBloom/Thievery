@@ -6,6 +6,7 @@ local LP = {}
 --____________________________________________________________________________________________ --
 
 local bagTrackingFrame = CreateFrame("Frame", "BagTrackerExample_BagTracker", UIParent, "Legolando_BagTrackerTemplate_Thievery")
+bagTrackingFrame.scanBagsSeparately = false
 bagTrackingFrame.reScanEveryOpenBag = false
 bagTrackingFrame.clearOnClose = false
 bagTrackingFrame:Init()
@@ -30,9 +31,10 @@ local trackedItems = {}
 -- _G["ContainerFrame" .. bagID] --> Does NOT always work 
 -- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 --_____________________________________________________________________________________________________________________________
-function LP.scanDone_Callback(event, bagID, bagContents, containerFrame)
+function LP.scanDone_Callback(event, bagID, bagContents)
     if not bagID then return end
     trackedItems[bagID] = bagContents
+    -- DevTools_Dump(trackedItems)
 end
 
 --_____________________________________________________________________________________________________________________________
@@ -40,11 +42,8 @@ end
 -- _G["ContainerFrame" .. bagID] --> Does NOT always work 
 -- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 --_____________________________________________________________________________________________________________________________
-function LP.bagCleared_Callback(event, bagID, containerFrame)
-    if not containerFrame then
-        print("bag clear event fired, yet containerFrame isn't there")
-        return
-    end
+function LP.bagCleared_Callback(event, bagID)
+
     trackedItems = {}
     if not InCombatLockdown() then 
         LP.clearOverlayButton()

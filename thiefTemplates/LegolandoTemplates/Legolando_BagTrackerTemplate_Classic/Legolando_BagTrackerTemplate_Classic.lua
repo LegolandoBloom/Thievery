@@ -33,20 +33,21 @@ bagTable[6] = {}
 
 Legolando_BagTrackerMixin_Thievery.callbacks = Legolando_BagTrackerMixin_Thievery.callbacks or LibStub("CallbackHandler-1.0"):New(Legolando_BagTrackerMixin_Thievery)
 
-function Legolando_BagTrackerMixin_Thievery:GetContainerFrame(bagID)
-	if bagID == 0 then
+function Legolando_BagTrackerMixin_Thievery:GetContainerFrame(containerID)
+	if containerID == 1 then
 		return ContainerFrame1
-	elseif bagID == 1 then
+	elseif containerID == 2 then
 		return ContainerFrame2
-	elseif bagID == 2 then
+	elseif containerID == 3 then
 		return ContainerFrame3
-	elseif bagID == 3 then
+	elseif containerID == 4 then
 		return ContainerFrame4
-	elseif bagID == 4 then
+	elseif containerID == 5 then
 		return ContainerFrame5
-	elseif bagID == 5 then
+	elseif containerID == 6 then
 		return ContainerFrame6
 	end
+	return nil
 end
 function Legolando_BagTrackerMixin_Thievery:GetBagID(containerFrameName)
 	if containerFrameName == "ContainerFrame1" then
@@ -128,7 +129,7 @@ end
 function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
 	local info = C_Container.GetContainerItemInfo(bagID, slotID);
 	if not bagTable[bagID] then 
-		print("Bag ID not initialized in table," , bagID)
+		-- print("Bag ID not initialized in table," , bagID)
 		return
 	end
 	if not info then
@@ -167,9 +168,7 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
 	end
 end
 
-function Legolando_BagTrackerMixin_Thievery:ClearBag(containerFrame)
-	if not containerFrame then return end
-    local bagID = containerFrame:GetID()
+function Legolando_BagTrackerMixin_Thievery:ClearBag(bagID)
 	if bagID > 5 or bagID < 0 then
 		return
 	end
@@ -179,13 +178,12 @@ function Legolando_BagTrackerMixin_Thievery:ClearBag(containerFrame)
 	-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
 	-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 	--_____________________________________________________________________________________________________________________________
-	self.callbacks:Fire("Lego-BagCleared-Thievery", bagID, containerFrame)
+	self.callbacks:Fire("Lego-BagCleared-Thievery", bagID)
 end
 
-function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
-	if not containerFrame then return end
-    local bagID = containerFrame:GetID()
-	self:ClearBag(containerFrame)
+function Legolando_BagTrackerMixin_Thievery:InvestigateBag(bagID)
+	local correspondingContainerID = IsBagOpen(bagID)
+	self:ClearBag(bagID)
 	for slotID = 1, C_Container.GetContainerNumSlots(bagID) do
 		local id = C_Container.GetContainerItemID(bagID, slotID);
 		if id then
@@ -197,19 +195,25 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateBag(containerFrame)
 	-- _G["ContainerFrame" .. bagID] --> Does NOT always work 
 	-- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 	--_____________________________________________________________________________________________________________________________
-	self.callbacks:Fire("Lego-BagScanDone-Thievery", bagID, bagTable[bagID], containerFrame)
+	-- print("Did bag: ", bagID)
+	-- for i, v in pairs(bagTable[bagID]) do
+	-- 	print(v.itemName)
+	-- end
+	self.callbacks:Fire("Lego-BagScanDone-Thievery", bagID, bagTable[bagID], self:GetContainerFrame(correspondingContainerID))
 end
 
 local bagsToUpdate = {}
 local function bagEventHandler(self, ...)
 	local bagID = ...
 	if bagID then
-		table.insert(bagsToUpdate, bagID)
+		bagsToUpdate[bagID] = bagID
 	end
+	-- print("Will update bags:")
+	-- DevTools_Dump(bagsToUpdate)
 	self:SetScript("OnUpdate", function()
 		for i, v in pairs(bagsToUpdate) do
 			-- print("Updating bag ", v)
-			self:InvestigateBag(self:GetContainerFrame(v))
+			self:InvestigateBag(v)
 		end
 		bagsToUpdate = {}
 		self:SetScript("OnUpdate", nil)
@@ -218,7 +222,7 @@ end
 
 function Legolando_BagTrackerMixin_Thievery:UpdateAll()
 	for i=1,6 do
-		self:InvestigateBag(self:GetContainerFrame(i-1))
+		self:InvestigateBag(i - 1)
 	end
 end
 
@@ -228,6 +232,7 @@ for i=1,6,1 do
 	containerDelayFrames[i - 1] = CreateFrame("Frame")
 end
 
+-- scanPlayerEntering
 -- reScanEveryOpenBag
 -- clearOnClose
 local scannedOnce = {
@@ -238,48 +243,138 @@ local scannedOnce = {
 	[4] = false,
 	[5] = false,
 }
+function Legolando_BagTrackerMixin_Thievery:Scan_Hook(bagID, caller)
+	if bagID < 0 or bagID > 5 then return end
+	if self.scanBagsSeparately == true then
+		if self.reScanEveryOpenBag == true then
+			containerDelayFrames[bagID]:SetScript("OnUpdate", function(delayerFrame, ...)
+				-- print("Scan Every Time, Bag: ", bagID, "caller: ", caller)
+				self:InvestigateBag(bagID)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
+		else
+			if scannedOnce[bagID] then return end
+			containerDelayFrames[bagID]:SetScript("OnUpdate", function(delayerFrame, ...)
+				-- print("Scan Once, Bag: ", bagID, "caller: ", caller)
+				self:InvestigateBag(bagID)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
+			scannedOnce[bagID] = true
+		end
+	else
+		if self.reScanEveryOpenBag == true then
+			containerDelayFrames[0]:SetScript("OnUpdate", function(delayerFrame, ...)
+				local printTable = {}
+				for c=1,6,1 do
+					printTable[c] = c
+					self:InvestigateBag(c - 1)
+				end
+				-- print("Scan(All) Every, Bags Below: ", "caller: ", caller)
+				-- DevTools_Dump(printTable)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
+		else
+			if scannedOnce[0] then return end
+			containerDelayFrames[0]:SetScript("OnUpdate", function(delayerFrame, ...)
+				local printTable = {}
+				for c=1,6,1 do
+					printTable[c] = c
+					self:InvestigateBag(c - 1)
+				end
+				-- print("Scan(All) Once, Bags Below: ", "caller: ", caller)
+				-- DevTools_Dump(printTable)
+				delayerFrame:SetScript("OnUpdate", nil)
+			end)
+			scannedOnce[0] = true
+		end
+	end
+end
+function Legolando_BagTrackerMixin_Thievery:Clear_Hook(bagID)
+	if not self.reScanEveryOpenBag then return end
+	if not self.clearOnClose then return end
+	if self.scanBagsSeparately == true then
+		self:ClearBag(bagID)
+	else
+		for c=1,6,1 do
+			self:ClearBag(c - 1)
+		end
+	end
+end
+
 function Legolando_BagTrackerMixin_Thievery:Init()
 	-- Need to call InvestigateBag on the next 'OnUpdate', otherwise containerFrame and itemButtons won't have anchors, and return empty when GetPoint() or GetScaledRect() is called.
 	-- Each containerFrame 1-6 has it's own OnUpdate Delayer, as created above ↑↑↑
-	if self.reScanEveryOpenBag == true then
-		hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
-			containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
-				self:InvestigateBag(containerFrame)
-				delayerFrame:SetScript("OnUpdate", nil)
-			end)
-		end)
-		if self.clearOnClose then
-			hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
-				self:ClearBag(containerFrame)
-			end)
+  	hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
+		-- print("ContainerFrame_OnShow", GetTime())
+		self:Scan_Hook(containerFrame:GetID(), "ContainerFrame_OnShow")
+	end)
+
+	hooksecurefunc("OpenBackpack", function()
+		-- print("OpenBackpack  time: ", GetTime())
+		self:Scan_Hook(0, "OpenBackpack")
+	end)
+	hooksecurefunc("ToggleBackpack", function()
+		-- print("ToggleBackpack  time: ", GetTime())
+		self:Scan_Hook(0, "ToggleBackpack")
+	end)
+	
+	hooksecurefunc("OpenBag", function(id)
+	  	-- print("OpenBag id: ", id, GetTime())
+		self:Scan_Hook(id, "OpenBag")
+	end)
+	hooksecurefunc("ToggleBag", function(id)
+		-- print("ToggleBag id: ", id, "  time: ",  GetTime())
+		self:Scan_Hook(id, "ToggleBag")
+	end)
+
+	hooksecurefunc("OpenAllBags", function()
+		-- print("OpenAllBags  time: ", GetTime())
+		for i=1,6,1 do
+			self:Scan_Hook(i, "OpenAllBags")
 		end
-	else
-		hooksecurefunc("ContainerFrame_OnShow", function(containerFrame)
-			local id = containerFrame:GetID()
-			if scannedOnce[id] then return end
-			containerDelayFrames[containerFrame:GetID()]:SetScript("OnUpdate", function(delayerFrame, ...)
-				self:InvestigateBag(containerFrame)
-				delayerFrame:SetScript("OnUpdate", nil)
-			end)
-			scannedOnce[id] = true
-		end)
-	end
+	end)
+	hooksecurefunc("ToggleAllBags", function()
+		-- print("ToggleAllBags  time: ", GetTime())
+		for i=1,6,1 do
+			self:Scan_Hook(i, "ToggleAllBags")
+		end
+	end)
+
+	hooksecurefunc("ContainerFrame_OnHide", function(containerFrame)
+		-- print("ContainerFrame_OnHide", GetTime())
+		self:Clear_Hook(containerFrame:GetID())
+	end)
+
+  	hooksecurefunc("CloseBackpack", function()
+		-- print("CloseBackpack  time: ", GetTime())
+		self:Clear_Hook(0)
+	end)
+  	hooksecurefunc("CloseBag", function(id)
+		-- print("CloseBag id: ", id, "  time: ",  GetTime())
+		self:Clear_Hook(id)
+	end)
+  	hooksecurefunc("CloseAllBags", function()
+		-- print("CloseAllBags  time: ", GetTime())
+		for i=1,6,1 do
+			self:Clear_Hook(i)
+		end
+	end)
+
 	EventRegistry:RegisterFrameEventAndCallback("BAG_UPDATE", bagEventHandler, self)
 end
+                                                                                         
+                                                                                                                   
+                                                      
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--						                 DEBUGGING 
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
--- local itemID = C_Container.GetContainerItemID(bagID, itemButton:GetID())
--- local info = itemID and next({C_Item.GetItemInfo(itemID)}) and {C_Item.GetItemInfo(itemID)}
--- local classID = info and info[12]
--- local subclassID = info and info[13]
--- if classID and subclassID and itemID == 29569 then 
---     print(itemLink)
---     print("Class: ", C_Item.GetItemClassInfo(classID))
---     print("Class: ", C_Item.GetItemSubClassInfo(classID, subclassID))
--- end
-
-
+--________________________________________________________
+--_______ USE THIS TO LIST FILTERED ITEMS NEATLY _________
+--          ( keep commented when not in use )
+--________________________________________________________
 -- SLASH_ThieveryZZZ1 = "/zzz"
--- SlashCmdList["THIEVERYZZZ"] = function() 
+-- SlashCmdList["ThieveryZZZ"] = function() 
 -- 	print("Filtered items: ")
 -- 	for i, v in pairs(bagTable) do
 -- 		for a, b in pairs(v) do
@@ -288,5 +383,3 @@ end
 -- 	end
 -- 	-- print(tableToString(bagTable))
 -- end
-
-
