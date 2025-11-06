@@ -33,9 +33,8 @@ trackedItems = {}
 --_____________________________________________________________________________________________________________________________
 function LP.scanDone_Callback(event, bagID, bagContents)
     if not bagID then return end
-    print("I've got a new complaint", bagID)
     trackedItems[bagID] = bagContents
-    DevTools_Dump(trackedItems[bagID])
+    -- DevTools_Dump(trackedItems[bagID])
 end
 
 --_____________________________________________________________________________________________________________________________
@@ -44,12 +43,11 @@ end
 -- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
 --_____________________________________________________________________________________________________________________________
 function LP.bagCleared_Callback(event, bagID)
-    trackedItems = {}
-    print("clear")
+    if not bagID then return end
+    trackedItems[bagID] = {}
     if not InCombatLockdown() then 
         LP.clearOverlayButton()
     end
-    if not bagID then return end
 end
 
 function LP.overlay_Events(self, event, unit, ...)
@@ -62,7 +60,7 @@ end
 
 
 local lockpickOverlayButton = CreateFrame("Button", "Thievery_LockpickOverlayButton", UIParent, "SecureActionButtonTemplate")
-lockpickOverlayButton:SetFrameStrata("HIGH")
+lockpickOverlayButton:SetFrameStrata("DIALOG")
 -- lockpickOverlayButton:SetIgnoreParentScale(true)
 lockpickOverlayButton:RegisterForClicks("RightButtonUp")
 lockpickOverlayButton:RegisterEvent("UNIT_SPELLCAST_SENT")
@@ -169,7 +167,6 @@ local function checkLockedTooltip()
 end
 
 hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
-    print("hey")
     if InCombatLockdown() then return end
     if not itemButton then return end
     local slotID = itemButton:GetID()
@@ -179,7 +176,6 @@ hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
     if checkLockedTooltip() == false then return end
     -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
     -- if animationFrame.anim:IsPlaying() then return end
-    print("wait")
     LP.relocateOverlayButton(itemButton, bagID, slotID)
 end)
 hooksecurefunc("ContainerFrameItemButton_OnLeave", function(itemButton, ...)
