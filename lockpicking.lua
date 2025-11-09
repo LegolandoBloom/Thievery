@@ -260,15 +260,15 @@ bagTrackingFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 function Thievery_ActivateLockpicking(enable)
     if enable == true then
         bagTrackingFrame:SetScript("OnEvent", lockpicking_Events)
-        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone-YourAddon", scanDone_Callback)
-        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-YourAddon", clearOverlays)
+        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagScanDone-Thievery", scanDone_Callback)
+        bagTrackingFrame.RegisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", clearOverlays)
         bagTrackingFrame:UpdateAll()
     elseif enable == false then
         for i=1,6,1 do 
             clearOverlays(nil, i-1)
         end
         bagTrackingFrame:SetScript("OnEvent", nil)
-        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagScanDone-YourAddon", scanDone_Callback)
-        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagCleared-YourAddon", clearOverlays)
+        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagScanDone-Thievery", scanDone_Callback)
+        bagTrackingFrame.UnregisterCallback(bagTrackingFrame, "Lego-BagCleared-Thievery", clearOverlays)
     end
 end
