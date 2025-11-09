@@ -152,8 +152,8 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
 	end
 	if self.filters and next(self.filters) ~= nil then
 		local filters = self.filters
-		self:DebugPrint(3, "Filters: ")
-		self:DebugDump(3, filters)
+		-- self:DebugPrint(3, "Filters: ")
+		-- self:DebugDump(3, filters)
 		local isValid = true
 		for i, v in pairs(filters) do
 			if info[i] == nil then 
