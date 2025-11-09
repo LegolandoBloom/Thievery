@@ -157,6 +157,7 @@ local function checkTables(teeburu, info)
 	return false
 end
 function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
+	if bagID > 5 or bagID < 0 then return end
 	local info = C_Container.GetContainerItemInfo(bagID, slotID);
 	if not bagTable[bagID] then 
 		self:DebugPrint(3, "Bag ID not initialized in table," , bagID)

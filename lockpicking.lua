@@ -25,7 +25,7 @@ bagTrackingFrame:Init()
 
 local currentAnimationAnchor = nil
 
-trackedItems = {}
+local trackedItems = {}
 --_____________________________________________________________________________________________________________________________
 -- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
 -- _G["ContainerFrame" .. bagID] --> Does NOT always work 
@@ -58,7 +58,7 @@ function LP.bagCleared_Callback(event, bagID)
 end
 
 function LP.overlay_Events(self, event, unit, ...)
-    arg4, arg5, arg6 = ...
+    local arg4, arg5, arg6 = ...
     if event == "UNIT_SPELLCAST_SENT" and arg6 == 1804 then
         currentAnimationAnchor = {self:GetPoint()}
         self:SetScript("OnEvent", nil)
@@ -67,7 +67,7 @@ end
 
 
 local lockpickOverlayButton = CreateFrame("Button", "Thievery_LockpickOverlayButton", UIParent, "SecureActionButtonTemplate")
-lockpickOverlayButton:SetFrameStrata("HIGH")
+lockpickOverlayButton:SetFrameStrata("DIALOG")
 -- lockpickOverlayButton:SetIgnoreParentScale(true)
 lockpickOverlayButton:RegisterForClicks("RightButtonUp")
 lockpickOverlayButton:RegisterEvent("UNIT_SPELLCAST_SENT")
