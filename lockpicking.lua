@@ -81,6 +81,11 @@ lockpickOverlayButton:HookScript("OnClick", function(self)
     --     self:SetScript("OnEvent", nil)
     -- end)
 end)
+lockpickOverlayButton:HookScript("OnLeave", function(self)
+    if lockpickOverlayButton:IsShown() then
+        LP.clearOverlayButton()
+    end
+end)
 lockpickOverlayButton:SetPassThroughButtons("LeftButton", "MiddleButton", "Button4", "Button5")
 -- frame:EnableMouseMotion(false)
 lockpickOverlayButton:SetPropagateMouseMotion(true)
@@ -103,7 +108,7 @@ lockpickOverlayButton.currentAnchor = nil
 
 
 local animationFrame = CreateFrame("Frame", "Thievery_LockpickAnim", UIParent, "Thievery_LockpickAnimTemplate")
-animationFrame:SetFrameStrata("HIGH")
+animationFrame:SetFrameStrata("DIALOG")
 animationFrame:SetPoint("CENTER", UIParent, "CENTER")
 animationFrame:SetIgnoreParentScale(true) 
 animationFrame.anim:SetScript("OnStop", function(self)
