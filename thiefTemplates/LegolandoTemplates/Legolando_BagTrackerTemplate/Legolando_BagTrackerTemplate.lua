@@ -351,16 +351,25 @@ function Legolando_BagTrackerMixin_Thievery:Init()
 	--          ( activated when debugLevel > 0 )
 	--________________________________________________________
 	if self.debugLevel and self.debugLevel > 0 then
+		local colorz = {
+			[1] = CreateColor(1, 0.41, 0), -- Orange
+			[2] = CreateColor(0.9, 0.8, 0.5), -- Color Underlight
+			[3] = CreateColor(0.64, 0.3, 0.71), -- Purple
+			[4] = CreateColor(1.0, 0.82, 0.0), -- Yellow
+			[5] = CreateColor(0.67, 0.41, 0), -- Brown
+			[0] = CreateColor(0.85, 0.85, 0.85), -- Grey
+		}
 		SLASH_BAGTRACKERZZZ1 = "/zzz"
 		SlashCmdList["BAGTRACKERZZZ"] = function() 
 			print("Filtered items: ")
 			local printTable = {}
 			for i, v in pairs(bagTable) do
 				for a, b in pairs(v) do
-					table.insert(printTable, b.hyperlink .. " in bag " .. i .. " slot " .. a)
+					table.insert(printTable, b.hyperlink .. colorz[i]:WrapTextInColorCode(" in bag " .. i) .. " slot " .. a)
+					print(b.hyperlink .. colorz[i]:WrapTextInColorCode(" in bag " .. i) .. " slot " .. a)
 				end
 			end
-			print(tableToString(printTable))
+			-- print(tableToString(printTable))
 		end
 	end
 
