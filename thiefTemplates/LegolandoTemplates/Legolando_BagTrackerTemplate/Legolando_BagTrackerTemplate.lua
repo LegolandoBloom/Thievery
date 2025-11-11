@@ -157,7 +157,7 @@ function Legolando_BagTrackerMixin_Thievery:InvestigateItemSlot(slotID, bagID)
 		local isValid = true
 		for i, v in pairs(filters) do
 			if info[i] == nil then 
-				self:DebugPrint("Item:" , info.hyperlink, " doesn't have any info about the desired filter: ")
+				self:DebugPrint(3, "Item:" , info.hyperlink, " doesn't have any info about the desired filter: ")
 				isValid = false
 			elseif i == "stackCount" then
 				if checkStackCount(v, info.stackCount) == false then
