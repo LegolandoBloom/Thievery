@@ -18,8 +18,8 @@ thiefTemplates\embeds-classic.xml
 animations.xml
 init.lua
 ui.lua
-# lockpicking.lua
-pocketTables.lua
+lockpicking.lua
+pocketTables_Mists.lua
 speedy.lua
 sessionGUID.lua
 Thievery.lua
