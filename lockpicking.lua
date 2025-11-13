@@ -1,3 +1,6 @@
+local addonName, tv = ...
+local gameVersion = tv.gameVersion
+
 local ANIMATION_SIZE_MULTIPLIER = 1.4
 
 local LP = {}
@@ -10,7 +13,8 @@ bagTrackingFrame.scanBagsSeparately = false
 bagTrackingFrame.reScanEveryOpenBag = false
 bagTrackingFrame.clearOnClose = false
 -- bagTrackingFrame.debugLevel = 1
-bagTrackingFrame.filters ={
+
+bagTrackingFrame.filters = {
     -- stackCount = {operator = '>', number = 1},
     --isLocked = false,
     -- quality = 4,
@@ -18,9 +22,19 @@ bagTrackingFrame.filters ={
 	-- hyperlink = {link1, link2, link3},
 	-- isFiltered = false,
 	-- hasNoValue = false,
-	itemID = {16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333}
+	-- itemID
 	-- isBound = true,
 }
+if gameVersion == 1 then
+    bagTrackingFrame.filters = {
+    	itemID = {16885, 63349, 220376, 5759, 5758, 4636, 68729, 4638, 4634, 5760, 29569, 203743, 16884, 190954, 116920, 88567, 4632, 43624, 31952, 121331, 16882, 169475, 4637, 4633, 43622, 186161, 43575, 88165, 180533, 186160, 198657, 188787, 7209, 179311, 194037, 45986, 13918, 180522, 12033, 16883, 180532, 141596, 13875, 6354, 6355, 91331, 85118, 91330, 84897, 106895, 120065, 191296, 91799, 84895, 91329, 91334, 115066, 141608, 204307, 91332, 91333},
+    }
+elseif gameVersion == 2 or gameVersion == 3 then
+    bagTrackingFrame.filters = {
+    	itemID = {88567, 88165, 43622, 5758, 16882, 16885, 4634, 12033, 68729, 4632, 45986, 4638, 16884, 5760, 31952, 4637, 7868, 4636, 4633, 63349, 6355, 6354, 43624, 7869, 13875, 5759, 16883, 29569, 7209, 42953, 43575, 39014, 13918},
+    }
+end
+
 bagTrackingFrame:Init()
 
 local currentAnimationAnchor = nil
@@ -156,17 +170,57 @@ function LP.clearOverlayButton()
     lockpickOverlayButton:Hide()
 end
 
-local function checkLockedTooltip(bagID, slotID)
-    local locked = false
-    local lines = C_TooltipInfo.GetBagItem(bagID, slotID).lines
-    for i, line in pairs(lines) do
-        -- LOCKED -> from GlobalStrings.lua. Defaults to "Locked" for English clients.
-        if line.leftText == LOCKED then
-            locked = true
+local checkLockedTooltip
+if gameVersion == 1 then
+    checkLockedTooltip = function(bagID, slotID)
+        local locked = false
+        local lines = C_TooltipInfo.GetBagItem(bagID, slotID).lines
+        for i, line in pairs(lines) do
+            -- LOCKED -> from GlobalStrings.lua. Defaults to "Locked" for English clients.
+            if line.leftText == LOCKED then
+                locked = true
+            end
         end
+        return locked
     end
-    return locked
+    hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
+        if InCombatLockdown() then return end
+        if not itemButton then return end
+        local slotID = itemButton:GetID()
+        local bagID = itemButton:GetParent():GetID()
+        if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
+        if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
+        if checkLockedTooltip(bagID, slotID) == false then return end
+        -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
+        -- if animationFrame.anim:IsPlaying() then return end
+        LP.relocateOverlayButton(itemButton, bagID, slotID)
+    end)
+    -- CAN'T do hooksecurefunc("ContainerFrameItemButton_OnLeave", function()end) on Retail because the function is never called
+elseif gameVersion == 2 or gameVersion == 3 then
+    checkLockedTooltip = function()
+        -- Classic version of the thing
+    end
+    hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
+        if InCombatLockdown() then return end
+        if not itemButton then return end
+        local slotID = itemButton:GetID()
+        local bagID = itemButton:GetParent():GetID()
+        if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
+        if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
+        if checkLockedTooltip() == false then return end
+        -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
+        -- if animationFrame.anim:IsPlaying() then return end
+        LP.relocateOverlayButton(itemButton, bagID, slotID)
+    end)
+    hooksecurefunc("ContainerFrameItemButton_OnLeave", function(itemButton, ...)
+        if InCombatLockdown() then return end
+        if lockpickOverlayButton:IsShown() then
+            LP.clearOverlayButton()
+        end
+    end)
 end
+
+
 
 hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
     if InCombatLockdown() then return end

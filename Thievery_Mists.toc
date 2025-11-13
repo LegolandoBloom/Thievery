@@ -1,4 +1,4 @@
-## Interface: 50501
+## Interface: 50502
 ## Title: Thievery
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft - Now with Right Click Lockpicking!
 ## Version: 1.0
@@ -9,16 +9,17 @@
 ## X-Curse-Project-ID: 1284634
 
 libraries\embeds.xml
+Parity-Fonts.xml
 
 translations\translations.xml
 
-thiefTemplates\embeds.xml
+thiefTemplates\embeds-classic.xml
 
 animations.xml
 init.lua
 ui.lua
 lockpicking.lua
-pocketTables.lua
+pocketTables_Mists.lua
 speedy.lua
 sessionGUID.lua
 Thievery.lua

@@ -9,6 +9,7 @@
 ## X-Curse-Project-ID: 1284634
 
 libraries\embeds.xml
+Parity-Fonts.xml
 
 translations\translations.xml
 
@@ -18,7 +19,7 @@ animations.xml
 init.lua
 ui.lua
 lockpicking.lua
-pocketTables.lua
+pocketTables_Retail.lua
 speedy.lua
 sessionGUID.lua
 Thievery.lua

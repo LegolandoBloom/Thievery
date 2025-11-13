@@ -1,9 +1,30 @@
+-- 'tv' stands for thievery
+local addonName, tv = ...
+
 SLASH_THIEVERYCONFIGSHOW1 = "/thief"
 SLASH_THIEVERYCONFIGSHOW2 = "/thievery"
 SLASH_THIEVERYCONFIGSHOW3 = "/teef"
 SlashCmdList["THIEVERYCONFIGSHOW"] = function() 
     Thievery_ConfigPanel:Show()
 end
+
+function Thievery_CheckVersion()
+
+end
+
+
+
+
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+    tv.gameVersion = 1
+elseif WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC or WOW_PROJECT_ID == 19 then
+    tv.gameVersion = 2
+elseif WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+    tv.gameVersion = 3
+else
+    tv.gameVersion = 0
+end
+
 
 Thievery_UI = {
     VisualLocation = {},
@@ -137,9 +158,20 @@ function Thievery_OnLoad(self)
     self.pickpocketButton:RegisterEvent("PLAYER_REGEN_DISABLED")
     self.pickpocketButton:RegisterEvent("PLAYER_REGEN_ENABLED")
     self.pickpocketButton:SetScript("OnEvent", Thievery_Events)
-    self.pickpocketButton:SetAttribute("type", "macro")
-    local spellName = C_Spell.GetSpellName(921)
-    self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
+    local gameVersion = tv.gameVersion
+    if gameVersion == 1 then
+        self.pickpocketButton:SetAttribute("type", "macro")
+        local spellName = C_Spell.GetSpellName(921)
+        print("Retail")
+        self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
+    elseif gameVersion == 2 or gameVersion == 3 then
+        --____________________________________________________________________________
+        --     Pickpocketing with SecureActionButton bugs out in Classic
+        --            use SetOverrideBindingSpell directly instead
+        --____________________________________________________________________________
+        print("Classic")
+    end
+
 end
 
 function Thievery_EventLoader(self, event, unit, ...)

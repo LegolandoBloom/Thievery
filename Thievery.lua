@@ -1,5 +1,8 @@
 local T = Thievery_Translate
 
+local addonName, tv = ...
+print(addonName, "game version is: ", tv.gameVersion)
+
 local function clearTable(teeburu)
     for i, v in pairs(teeburu) do
         teeburu[i] = nil

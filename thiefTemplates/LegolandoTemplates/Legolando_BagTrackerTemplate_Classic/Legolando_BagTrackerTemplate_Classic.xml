@@ -1,0 +1,11 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    
+    <Script file="Legolando_BagTrackerTemplate_Classic.lua"/>
+
+    <Frame name="Legolando_BagTrackerTemplate_Thievery" mixin="Legolando_BagTrackerMixin_Thievery" virtual="true">
+        <Scripts>
+        </Scripts>
+    </Frame>
+
+</Ui>

@@ -3,12 +3,13 @@
 
     <Script file="GeneralTemplates\GeneralTemplates.lua"/>
     <Include file="GeneralTemplates\GeneralTemplates.xml"/>
-
-    <Include file="LegolandoTemplates\Legolando_BagTrackerTemplate\Legolando_BagTrackerTemplate.xml"/>
+    
+    <Include file="LegolandoTemplates\Legolando_BagTrackerTemplate_Classic\Legolando_BagTrackerTemplate_Classic.xml"/>
 
     <Include file="LegolandoTemplates\Legolando_MoveAndPlaceFrameTemplate\Legolando_MoveAndPlaceFrameTemplate.xml"/>
 
     <Include file="LegolandoTemplates\Legolando_KeybindButtonTemplate\Legolando_KeybindButtonTemplate.xml"/>
 
     <Include file="LegolandoTemplates\Legolando_CheckboxTemplate\Legolando_CheckboxTemplate.xml"/>
+        
 </Ui>
