@@ -168,7 +168,6 @@ function Thievery_OnLoad(self)
         --     Pickpocketing with SecureActionButton bugs out in Classic
         --            use SetOverrideBindingSpell directly instead
         --____________________________________________________________________________
-        print("Classic")
     end
 
 end
