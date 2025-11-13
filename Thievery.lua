@@ -183,7 +183,7 @@ function Thievery_UpdateState(self, resetMode)
         sapMode = false
         ClearOverrideBindings(self)
     end
-    local inRange = C_Spell.IsSpellInRange(2098)
+    local inRange = C_Spell.IsSpellInRange(921)
     if stealthed and validTarget and inRange then
         if Thievery_CheckTargetLocal(target) then
             Thievery_Activate(self)

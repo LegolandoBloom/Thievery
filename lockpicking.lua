@@ -26,11 +26,6 @@ bagTrackingFrame:Init()
 local currentAnimationAnchor = nil
 
 local trackedItems = {}
---_____________________________________________________________________________________________________________________________
--- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
--- _G["ContainerFrame" .. bagID] --> Does NOT always work 
--- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
---_____________________________________________________________________________________________________________________________
 function LP.scanDone_Callback(event, bagID, bagContents, containerFrame)
     if not bagID then
         print("not bag ID") return 
@@ -44,11 +39,6 @@ function LP.scanDone_Callback(event, bagID, bagContents, containerFrame)
     trackedItems[bagID] = bagContents
 end
 
---_____________________________________________________________________________________________________________________________
--- Need to have 'containerFrame' in the Payload IN CLASSIC because there is no way to get the right containerFrame from bagID
--- _G["ContainerFrame" .. bagID] --> Does NOT always work 
--- The frames are not tied to their bagIDs, whichever bag you open first is ContainerFrame1.
---_____________________________________________________________________________________________________________________________
 function LP.bagCleared_Callback(event, bagID)
     if not bagID then return end
     trackedItems[bagID] = {}
