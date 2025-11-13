@@ -1,7 +1,13 @@
 local T = Thievery_Translate
 
 local addonName, tv = ...
-print(addonName, "game version is: ", tv.gameVersion)
+local gameVersion = tv.gameVersion
+
+if gameVersion == 1 then
+
+elseif gameVersion == 2 or gameVersion == 3 then
+
+end
 
 local function clearTable(teeburu)
     for i, v in pairs(teeburu) do
@@ -60,6 +66,53 @@ SlashCmdList["THIEVERYTARGETINFO"] = printTargetInfo
 
 local lastPrint
 local ppName = C_Spell.GetSpellName(921)
+local sapName = C_Spell.GetSpellName(6770)
+local handleKeybind
+local checkSapAura
+--____________________________________________________________________________
+--     Pickpocketing through SecureActionButton + OverrideBindingClick
+--                          bugs out in Classic
+--              use SetOverrideBindingSpell directly instead
+--____________________________________________________________________________
+if gameVersion == 1 then
+    handleKeybind = function(mode, button, assignKey) 
+        if mode == "pp" then
+            button:SetAttribute("macrotext", "/cast " .. ppName)
+            SetOverrideBindingClick(button, true, assignKey, "Thievery_PickpocketButton")
+        elseif mode == "sap" then
+            button:SetAttribute("macrotext", "/cast " .. sapName)
+            SetOverrideBindingClick(button, true, assignKey, "Thievery_PickpocketButton")
+        end
+    end
+    checkSapAura = function()
+        local sapped = false
+        AuraUtil.ForEachAura("target", "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
+            if spellID == 6770 then
+                sapped = true
+            end
+        end)
+        return sapped
+    end
+elseif gameVersion == 2 or gameVersion == 3 then
+    handleKeybind = function(mode, button, assignKey)
+        if mode == "pp" then
+            SetOverrideBindingSpell(button, true, assignKey, ppName)
+        elseif mode == "sap" then
+            SetOverrideBindingSpell(button, true, assignKey, sapName)
+        end
+    end
+    checkSapAura = function()
+        local sapped = false
+        AuraUtil.FindAura(function(criteria, _,_,_,_,_,_,_,_,_,_,_,spellID) 
+            if criteria == spellID then
+                sapped = true
+            end
+        end, "target", "HARMFUL", 6770)
+        return sapped
+    end
+end
+
+
 local function setPPMode(self)
     local remaining = Thievery_UpdatePPTimers(target.guid)
     if remaining then
@@ -75,8 +128,9 @@ local function setPPMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("macrotext", "/cast " .. ppName)
-        SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+
+        handleKeybind("pp", self, assignKey)
+
         PPMode = true
         sapMode = false
         parent.visual:Show()
@@ -93,7 +147,7 @@ local function setPPMode(self)
         end
     end
 end
-local sapName = C_Spell.GetSpellName(6770)
+
 local function setSapMode(self)
     if not sapMode then 
         local parent = self:GetParent()
@@ -101,8 +155,9 @@ local function setSapMode(self)
         if Thievery_Config.ppKey then
             assignKey = Thievery_Config.ppKey
         end
-        self:SetAttribute("macrotext", "/cast " .. sapName)
-        SetOverrideBindingClick(self, true, assignKey, "Thievery_PickpocketButton")
+
+        handleKeybind("sap", self, assignKey)
+
         PPMode = true
         parent.visual:Show()
         parent.visual.promptText:SetText(T["Sap"])
@@ -119,12 +174,9 @@ function Thievery_Activate(self)
         return 
     end
     UIActive = true
-    local sapped = false
-    AuraUtil.ForEachAura("target", "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
-        if spellID == 6770 then
-            sapped = true
-        end
-    end)
+
+    local sapped = checkSapAura()
+
     if Thievery_Config.Checkboxes[1].enableSap == true then
         if sapped == false then
             setSapMode(self)
