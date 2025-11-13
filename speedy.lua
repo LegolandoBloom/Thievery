@@ -7,6 +7,8 @@ function Thievery_ToggleSpeedy(activate)
         Thievery_SavedCVars.SpeedyMode.softEnemy = GetCVar("SoftTargetEnemy")
         SetCVar("SoftTargetEnemy", "3")
         Thievery_SavedCVars.SpeedyMode.softEnemyRange = GetCVar("SoftTargetEnemyRange")
+        -- Maybe add a check for the talent range increase later
+        local ppTalent
         if ppTalent == true then
             SetCVar("SoftTargetEnemyRange", "15")
         else

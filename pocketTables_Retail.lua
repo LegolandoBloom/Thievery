@@ -29,7 +29,7 @@ local PP_Giants_ALL = {
 
 
 local PP_Mechanicals_ALL = {
-    [6235] = true, [182324] = true, [78210] = true, [38650] = true, [94413] = true, [212617] = true, [136139] = true, [181857] = true, [130485] = true, [77559] = true, [137544] = true, [233623] = true, [23394] = true, [237552] = true, [38916] = true, [184419] = true, [237554] = true, [137936] = true,
+    [6235] = true, [182324] = true, [78210] = true, [38650] = true, [94413] = true, [212617] = true, [136139] = true, [181857] = true, [130485] = true, [77559] = true, [137544] = true, [23394] = true, [38916] = true, [184419] = true, [137936] = true,
     -- 11.1.0 -> 11.1.7 (Undermined)
     [234939] = true, [234938] = true, [237554] = true, [237552] = true, [233623] = true,
 }

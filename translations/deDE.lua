@@ -5,4 +5,3 @@ if (GAME_LOCALE or GetLocale()) ~= "deDE" then
 end
 
 local T = Thievery_Translate
-
