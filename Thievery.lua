@@ -3,11 +3,6 @@ local T = Thievery_Translate
 local addonName, tv = ...
 local gameVersion = tv.gameVersion
 
-if gameVersion == 1 then
-
-elseif gameVersion == 2 or gameVersion == 3 then
-
-end
 
 local function clearTable(teeburu)
     for i, v in pairs(teeburu) do

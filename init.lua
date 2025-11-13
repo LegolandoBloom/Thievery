@@ -162,7 +162,6 @@ function Thievery_OnLoad(self)
     if gameVersion == 1 then
         self.pickpocketButton:SetAttribute("type", "macro")
         local spellName = C_Spell.GetSpellName(921)
-        print("Retail")
         self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
     elseif gameVersion == 2 or gameVersion == 3 then
         --____________________________________________________________________________
