@@ -191,14 +191,26 @@ if gameVersion == 1 then
         if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
         if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
         if checkLockedTooltip(bagID, slotID) == false then return end
-        -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
         -- if animationFrame.anim:IsPlaying() then return end
         LP.relocateOverlayButton(itemButton, bagID, slotID)
     end)
     -- CAN'T do hooksecurefunc("ContainerFrameItemButton_OnLeave", function()end) on Retail because the function is never called
 elseif gameVersion == 2 or gameVersion == 3 then
     checkLockedTooltip = function()
-        -- Classic version of the thing
+        local isLocked = false
+        local index = 1
+        local tooltipTextObject = _G["GameTooltipTextLeft" .. index]
+        while tooltipTextObject and tooltipTextObject:GetText() do
+            -- print(tooltipTextObject:GetDebugName())
+            local text = tooltipTextObject:GetText()
+            -- LOCKED -> from GlobalStrings.lua. Defaults to "Locked" for English clients.
+            if text and text == LOCKED then
+                isLocked = true
+            end
+            index = index + 1
+            tooltipTextObject = _G["GameTooltipTextLeft" .. index]
+        end
+        return isLocked
     end
     hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
         if InCombatLockdown() then return end
@@ -207,7 +219,10 @@ elseif gameVersion == 2 or gameVersion == 3 then
         local bagID = itemButton:GetParent():GetID()
         if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
         if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
-        if checkLockedTooltip() == false then return end
+        if checkLockedTooltip() == false then
+            -- print("unlocked lockbox, dont do overlay") 
+            return
+        end
         -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
         -- if animationFrame.anim:IsPlaying() then return end
         LP.relocateOverlayButton(itemButton, bagID, slotID)
