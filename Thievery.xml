@@ -124,7 +124,7 @@
                 <Scripts>
                     <OnLoad>
                         tinsert(UISpecialFrames, self:GetName())
-                        self.TitleText:SetText("Thievery Config (Beta)")
+                        self.TitleText:SetText("Thievery Config")
                         self:SetMovable(true)
                         self:RegisterForDrag("LeftButton")
                     </OnLoad>

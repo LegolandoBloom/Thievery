@@ -48,10 +48,14 @@ T["Pickpocket"] = "Pickpocket"
 T["Sap"] = "Sap"
 
 
-
--- full release additions
-
+-- Full Release Additions
 T["Visual Scale"] = "Visual Scale"
 
 T["Right-Click Lockpicking"] = "Right-Click Lockpicking"
 T["Right-Click Lockboxes in your inventory to unlock them!"] = "Right-Click Lockboxes in your inventory to unlock them!"
+
+T["Play Animation"] = "Play Animation"
+T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."] = "Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."
+
+T["Sound Effect"] = "Sound Effect"
+T["Plays a lockpicking sound effect when you successfully unlock a lockbox."] = "Plays a lockpicking sound effect when you successfully unlock a lockbox."
