@@ -1,5 +1,8 @@
 local T = Thievery_Translate
 
+-- 'tv' stands for thievery
+local addonName, tv = ...
+
 function Thievery_KeybindFrame_OnBind()
     local ppKey = Thievery_Config.ppKey 
     local visual = Thievery_Visual
@@ -53,8 +56,10 @@ local function speedyOnClick(self, isChecked)
 end
 
 local function lockpickOnClick(self, isChecked)
-    if InCombatLockdown() then return end
-    Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+    if InCombatLockdown() then return end  
+    if tv.gameVersion ~= 0 then
+        Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+    end
     local checkboxes2 = self:GetParent()
     if isChecked == true then 
         checkboxes2.lockpickAnim:Enable()
@@ -153,6 +158,17 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     checkboxes2.lockpickSound.text.tooltip = T["Plays a lockpicking sound effect when you successfully unlock a lockbox."]
     checkboxes2.lockpickSound:reposition()
     
+    if tv.gameVersion == 0 then
+        checkboxes2.lockpicking.text.tooltip = "Lockpicking is temporarily disabled in TBC Anniversary"
+        checkboxes2.lockpicking:Disable()
+        
+        checkboxes2.lockpickAnim.text.tooltip = "Lockpicking is temporarily disabled in TBC Anniversary"
+        
+        checkboxes2.lockpickSound.text.tooltip = "Lockpicking is temporarily disabled in TBC Anniversary"
+
+        checkboxes2:DesaturateHierarchy(1)
+        Thievery_DecorFrameTab2:DesaturateHierarchy(1)
+    end
 end
 
 

@@ -178,7 +178,9 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_SavedVariables()
         Thievery_SetupConfigPanel_PostSavedVars(self)
         Thievery_UpdateVisualPosition()
-        Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+        if tv.gameVersion ~= 0 then
+            Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
+        end
     elseif event == "PLAYER_ENTERING_WORLD" then
         if unit == false and arg4 == false then return end
         Thievery_ToggleSpeedy(false)
