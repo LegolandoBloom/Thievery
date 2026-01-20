@@ -235,28 +235,6 @@ elseif gameVersion == 2 or gameVersion == 3 then
     end)
 end
 
-
-
-hooksecurefunc("ContainerFrameItemButton_OnEnter", function(itemButton, ...)
-    if InCombatLockdown() then return end
-    if not itemButton then return end
-    local slotID = itemButton:GetID()
-    local bagID = itemButton:GetParent():GetID()
-    if not trackedItems or not trackedItems[bagID] or not trackedItems[bagID][slotID] then return end
-    if not GameTooltip or not GameTooltip:IsShown() or not GameTooltip:IsVisible() then return end
-    if checkLockedTooltip(bagID, slotID) == false then return end
-    -- print(GameTooltipTextLeft1:GetText(), GameTooltipTextLeft2:GetText(), GameTooltipTextLeft3:GetText(), GameTooltipTextLeft4:GetText()
-    -- if animationFrame.anim:IsPlaying() then return end
-    LP.relocateOverlayButton(itemButton, bagID, slotID)
-end)
--- hooksecurefunc("ContainerFrameItemButton_OnLeave", function(itemButton, ...)
---     if InCombatLockdown() then return end
---     if lockpickOverlayButton:IsShown() then
---         LP.clearOverlayButton()
---     end
--- end)
-
-
 local function lockpicking_Events(self, event, unit, ...)
     local arg4, arg5, arg6 = ...
     if event == "PLAYER_REGEN_DISABLED" then
