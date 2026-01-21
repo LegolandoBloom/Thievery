@@ -63,6 +63,7 @@ end
 
 function LP.overlay_Events(self, event, unit, ...)
     local arg4, arg5, arg6 = ...
+    if issecretvalue(unit) or issecretvalue(arg4) or issecretvalue(arg5) or issecretvalue(arg6) then return end
     if event == "UNIT_SPELLCAST_SENT" and arg6 == 1804 then
         currentAnimationAnchor = {self:GetPoint()}
         self:SetScript("OnEvent", nil)
@@ -241,7 +242,7 @@ local function lockpicking_Events(self, event, unit, ...)
         LP.clearOverlayButton()
     elseif event == "PLAYER_REGEN_ENABLED" then
         -- do nothing
-    elseif event == "UNIT_SPELLCAST_START" and unit == "player" and arg5 == 1804 then
+    elseif event == "UNIT_SPELLCAST_START" and not issecretvalue(unit) and unit == "player" and not issecretvalue(arg5) and arg5 == 1804 then
         -- start animation if you can
         if Thievery_Config.Checkboxes[2].lockpickAnim == true and currentAnimationAnchor then
             local itemButton = currentAnimationAnchor[2]
@@ -258,7 +259,7 @@ local function lockpicking_Events(self, event, unit, ...)
             Thievery_BetaPrint("Animation frame texture REAL size: ", animationRealWidth)
             animationFrame:Show()
         end
-    elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and unit == "player" and arg5 == 1804 then
+    elseif (event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED") and not issecretvalue(unit) and unit == "player" and not issecretvalue(arg5) and arg5 == 1804 then
         -- stop animation, clear anchor
         animationFrame:ClearAllPoints()
         animationFrame:Hide()
@@ -266,7 +267,7 @@ local function lockpicking_Events(self, event, unit, ...)
         Thievery_BetaPrint("Lockpick Interrupted/Failed")
     elseif event == "UNIT_SPELLCAST_STOP" then
         -- print("stopped")
-    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and arg5 == 1804 then
+    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and not issecretvalue(unit) and unit == "player" and not issecretvalue(arg5) and arg5 == 1804 then
         -- Need to delay a little bit for the tooltip info to be properly updated 
         Thievery_SingleDelayer(2, 0, 0.5, bagTrackingFrame, nil, function()
             if not InCombatLockdown() then 
