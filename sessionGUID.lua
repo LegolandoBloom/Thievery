@@ -30,7 +30,7 @@ local awaitingLootFrame = false
 local awaitingClose = false
 local function timerEvents(self, event, unit, ...)
     local arg4, arg5 = ...
-    if event == "UNIT_SPELLCAST_SUCCEEDED" and not issecretvalue(arg5) and arg5 == 921 then
+    if event == "UNIT_SPELLCAST_SUCCEEDED" and not Thievery_IsSecret(arg5) and arg5 == 921 then
         if target.guid then
             ppTarget = target.guid 
         end
