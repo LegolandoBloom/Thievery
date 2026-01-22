@@ -220,9 +220,10 @@ local function bagEventHandler(self, ...)
 	end)
 end
 
+-- Do not call before PLAYER_ENTERING_WORLD, it will spread taint to bankFrame -> bags
 function Legolando_BagTrackerMixin_Thievery:UpdateAll()
 	for i=1,6 do
-		self:InvestigateBag(i - 1)
+		self:Scan_Hook(i - 1, nil, "UpdateAll")
 	end
 end
 
