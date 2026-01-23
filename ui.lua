@@ -57,7 +57,7 @@ end
 
 local function lockpickOnClick(self, isChecked)
     if InCombatLockdown() then return end  
-    if tv.gameVersion ~= 0 then
+    if tv.gameVersion ~= 0 and tv.gameVersion ~= 4 then
         Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
     end
     local checkboxes2 = self:GetParent()
@@ -158,7 +158,7 @@ function Thievery_SetupConfigPanel_PreSavedVars(self)
     checkboxes2.lockpickSound.text.tooltip = T["Plays a lockpicking sound effect when you successfully unlock a lockbox."]
     checkboxes2.lockpickSound:reposition()
     
-    if tv.gameVersion == 0 then
+    if tv.gameVersion == 4 then
         checkboxes2.lockpicking.text.tooltip = "Lockpicking is temporarily disabled in TBC Anniversary"
         checkboxes2.lockpicking:Disable()
         

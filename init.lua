@@ -21,6 +21,8 @@ elseif WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC or WOW_PROJECT_ID == 19 t
     tv.gameVersion = 2
 elseif WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
     tv.gameVersion = 3
+elseif WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
+    tv.gameVersion = 4
 else
     tv.gameVersion = 0
 end
@@ -186,7 +188,7 @@ function Thievery_EventLoader(self, event, unit, ...)
         Thievery_UpdateVisualPosition()
     elseif event == "PLAYER_ENTERING_WORLD" then
         if unit == false and arg4 == false then return end
-        if tv.gameVersion ~= 0 then
+        if tv.gameVersion ~= 0 and tv.gameVersion ~= 4 then
             Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
         end
         Thievery_ToggleSpeedy(false)

@@ -88,7 +88,7 @@ if gameVersion == 1 then
         end)
         return sapped
     end
-elseif gameVersion == 2 or gameVersion == 3 then
+elseif gameVersion == 2 or gameVersion == 3 or gameVersion == 4 then
     handleKeybind = function(mode, button, assignKey)
         if mode == "pp" then
             SetOverrideBindingSpell(button, true, assignKey, ppName)
