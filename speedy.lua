@@ -53,6 +53,10 @@ function Thievery_SpeedyEvents(self, event, unit, ...)
         if speedyActive and IsStealthed() == false then
             Thievery_ToggleSpeedy(false)
         end
+    elseif event == "PLAYER_LOGOUT" then
+        if speedyActive and IsStealthed() == false then
+            Thievery_ToggleSpeedy(false)
+        end
     end
 end
 
@@ -60,6 +64,7 @@ local speedyFrame = CreateFrame("Frame")
 speedyFrame:RegisterEvent("UPDATE_STEALTH")
 speedyFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 speedyFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+speedyFrame:RegisterEvent("PLAYER_LOGOUT")
 speedyFrame:SetScript("OnEvent", Thievery_SpeedyEvents)
 
 --C_Traits.GetSubTreeInfo(C_ClassTalents.GetActiveConfigID(), 51)
