@@ -287,15 +287,18 @@ function Thievery_Events(self, event, unit)
         if InCombatLockdown() then return end
         if checkTargetValidity() == true then
             validTarget = true
-            target.guid = UnitGUID("target")
-            local npcID = getIDFromGUID(target.guid)
-            target.npcID = tonumber(npcID)
-            target.name = UnitName("target")
-            local _
-            _, target.creatureType = UnitCreatureType("target")
-            target.classification = UnitClassification("target")
-            -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
-            target.reaction = UnitReaction("player", "target")
+            local guid = Thievery_ScrubSecret(UnitGUID("target"))
+            if guid then
+                target.guid = guid
+                local npcID = getIDFromGUID(target.guid)
+                target.npcID = tonumber(npcID)
+                target.name = UnitName("target")
+                local _
+                _, target.creatureType = UnitCreatureType("target")
+                target.classification = UnitClassification("target")
+                -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
+                target.reaction = UnitReaction("player", "target")
+            end
         else
             validTarget = false
         end
