@@ -40,8 +40,9 @@ function Thievery_ToggleSpeedy(activate)
     end
 end
 function Thievery_SpeedyEvents(self, event, unit, ...)
-    local arg4, arg5 = ...
-    if event == "UNIT_SPELLCAST_SUCCEEDED" and not Thievery_IsSecret(arg5) and arg5 == 921 then
+    local arg4, arg5, arg6 = ...
+    unit, arg4, arg5, arg6 = Thievery_ScrubSecret(unit, arg4, arg5, arg6)
+    if event == "UNIT_SPELLCAST_SUCCEEDED" and arg5 == 921 then
         if Thievery_Config.Checkboxes[1].speedyMode == true and speedyActive == false and IsStealthed() then
             Thievery_ToggleSpeedy(true)
         end

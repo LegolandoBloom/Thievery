@@ -33,6 +33,12 @@ function Thievery_IsSecret(value)
     end
     return false
 end
+function Thievery_ScrubSecret(...)
+    if tv.gameVersion == 1 then
+        return scrubsecretvalues(...)
+    end
+    return ...
+end
 
 Thievery_UI = {
     VisualLocation = {},
