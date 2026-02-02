@@ -1,3 +1,5 @@
+local PICKPOCKET_SPELLID = 921
+
 local target = Thievery_Target
 
 Thievery_PPTimerTable = {
@@ -31,7 +33,7 @@ local awaitingClose = false
 local function timerEvents(self, event, unit, ...)
     local arg4, arg5, arg6 = ...
     unit, arg4, arg5, arg6 = Thievery_ScrubSecret(unit, arg4, arg5, arg6)
-    if event == "UNIT_SPELLCAST_SUCCEEDED" and arg5 == 921 then
+    if event == "UNIT_SPELLCAST_SUCCEEDED" and arg5 == PICKPOCKET_SPELLID then
         if target.guid then
             ppTarget = target.guid 
         end

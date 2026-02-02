@@ -3,6 +3,8 @@ local T = Thievery_Translate
 local addonName, tv = ...
 local gameVersion = tv.gameVersion
 
+local SAP_SPELLID = 6770
+local PICKPOCKET_SPELLID = 921
 
 local function clearTable(teeburu)
     for i, v in pairs(teeburu) do
@@ -60,10 +62,12 @@ SLASH_THIEVERYTARGETINFO1 = "/teeftarget"
 SlashCmdList["THIEVERYTARGETINFO"] = printTargetInfo
 
 local lastPrint
-local ppName = C_Spell.GetSpellName(921)
-local sapName = C_Spell.GetSpellName(6770)
+local ppName = C_Spell.GetSpellName(PICKPOCKET_SPELLID)
+local sapName = C_Spell.GetSpellName(SAP_SPELLID)
 local handleKeybind
 local checkSapAura
+-- /dump UnitExists("target")
+-- /dump UnitExists("softenemy")
 --____________________________________________________________________________
 --     Pickpocketing through SecureActionButton + OverrideBindingClick
 --                          bugs out in Classic
@@ -81,8 +85,15 @@ if gameVersion == 1 then
     end
     checkSapAura = function()
         local sapped = false
-        AuraUtil.ForEachAura("target", "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
-            if spellID == 6770 then
+        local targetString 
+        if UnitExists("target") then
+            targetString = "target"
+        elseif UnitExists("softenemy") then
+            targetString = "softenemy"
+        end
+        if not targetString then return false end
+        AuraUtil.ForEachAura(targetString, "HARMFUL", nil, function(name, icon, _, _, _, _, _, _, _, spellID, ...)
+            if spellID == SAP_SPELLID then
                 sapped = true
             end
         end)
@@ -102,7 +113,7 @@ elseif gameVersion == 2 or gameVersion == 3 or gameVersion == 4 then
             if criteria == spellID then
                 sapped = true
             end
-        end, "target", "HARMFUL", 6770)
+        end, "target", "HARMFUL", SAP_SPELLID)
         return sapped
     end
 end
@@ -219,7 +230,7 @@ function Thievery_UpdateState(self, resetMode)
         sapMode = false
         ClearOverrideBindings(self)
     end
-    local inRange = C_Spell.IsSpellInRange(921)
+    local inRange = C_Spell.IsSpellInRange(PICKPOCKET_SPELLID)
     if stealthed and validTarget and inRange then
         if Thievery_CheckTargetLocal(target) then
             Thievery_Activate(self)
@@ -234,25 +245,51 @@ function Thievery_UpdateState(self, resetMode)
     end
 end
 
---CheckInteractDistance("target", 3)
-local function checkTargetValidity()
-    if not UnitExists("target") then 
-            --Thievery_BetaPrint("No eligible target")
-            return false
-    end
-    if UnitIsDead("target") or UnitIsCorpse("target") then
+-- --------------------------------------------------------------------------
+local function checkTarget(unitString)
+    if not UnitExists(unitString) then 
+        --Thievery_BetaPrint("No eligible target")
         return false
     end
-    if UnitIsPlayer("target") then
+    if UnitIsDead(unitString) or UnitIsCorpse(unitString) then
+        return false
+    end
+    if UnitIsPlayer(unitString) then
         return false
     end
     -- 1)player 2)target ORDER ON PURPOSE. To avoid checking reputations
-    local reaction = UnitReaction("player", "target")
+    local reaction = UnitReaction("player", unitString)
     if reaction ~= 2 and reaction ~= 4 then
         return false
     end
     return true
 end
+-- ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⠀⠀⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⠀ 
+-- ⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⢸⣿⣿⣿ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀ 
+-- ⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀ ⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀ 
+-- ⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿ 
+-- ⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇
+-- ⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀ 
+-- ⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀ 
+-- ⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀ 
+-- ⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀ 
+-- ⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀ 
+-- ⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⢠⣿⣿⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀ ⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀ 
+-- ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+--                   sus
+local function Thievery_CheckHardOrSoft()
+    if checkTarget("target") == true then return "target" end
+    if checkTarget("softenemy") == true then return "softenemy" end
+    return nil
+end
+-- --------------------------------------------------------------------------
 local function checkAndHandleStealth(self)
     if IsStealthed() then
         stealthed = true
@@ -285,19 +322,20 @@ function Thievery_Events(self, event, unit)
         clearTable(target)
         Thievery_PPCooldownFrame:Clear()
         if InCombatLockdown() then return end
-        if checkTargetValidity() == true then
+        local targetType = Thievery_CheckHardOrSoft()
+        if targetType then
             validTarget = true
-            local guid = Thievery_ScrubSecret(UnitGUID("target"))
+            local guid = Thievery_ScrubSecret(UnitGUID(targetType))
             if guid then
                 target.guid = guid
                 local npcID = getIDFromGUID(target.guid)
                 target.npcID = tonumber(npcID)
-                target.name = UnitName("target")
+                target.name = UnitName(targetType)
                 local _
-                _, target.creatureType = UnitCreatureType("target")
-                target.classification = UnitClassification("target")
+                _, target.creatureType = UnitCreatureType(targetType)
+                target.classification = UnitClassification(targetType)
                 -- 1)player 2)target ORDER ON PURPOSE, to avoid checking reputations
-                target.reaction = UnitReaction("player", "target")
+                target.reaction = UnitReaction("player", targetType)
             end
         else
             validTarget = false
@@ -319,7 +357,7 @@ function Thievery_Events(self, event, unit)
     end
 end
 
--- /dump C_Spell.IsSpellUsable(921)
+-- /dump C_Spell.IsSpellUsable(PICKPOCKET_SPELLID)
 -- /dump SpellCanTargetUnit()
 
 -- /dump SpellCanTargetUnit("target")

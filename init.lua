@@ -1,6 +1,8 @@
 -- 'tv' stands for thievery
 local addonName, tv = ...
 
+local PICKPOCKET_SPELLID = 921
+
 SLASH_THIEVERYCONFIGSHOW1 = "/thief"
 SLASH_THIEVERYCONFIGSHOW2 = "/thievery"
 SLASH_THIEVERYCONFIGSHOW3 = "/teef"
@@ -175,7 +177,7 @@ function Thievery_OnLoad(self)
     local gameVersion = tv.gameVersion
     if gameVersion == 1 then
         self.pickpocketButton:SetAttribute("type", "macro")
-        local spellName = C_Spell.GetSpellName(921)
+        local spellName = C_Spell.GetSpellName(PICKPOCKET_SPELLID)
         self.pickpocketButton:SetAttribute("macrotext", "/cast " .. spellName)
     elseif gameVersion == 2 or gameVersion == 3 then
         --____________________________________________________________________________
