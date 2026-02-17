@@ -160,6 +160,7 @@ end
 function Thievery_OnLoad(self)
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("ADDON_LOADED")
+    self:RegisterEvent("PLAYER_LOGOUT")
     self:SetScript("OnEvent", Thievery_EventLoader)
     Thievery_SetupConfigPanel_PreSavedVars(self)
     local playerClass = UnitClassBase("player")
@@ -188,6 +189,33 @@ function Thievery_OnLoad(self)
 
 end
 
+Thievery_TempCVars = {
+    SoftTargetEnemy = {
+        active = false, cached = nil, setTo = "3", updating = false,
+    },
+    SoftTargetEnemyRange = {
+        active = false, cached = nil, setTo = "15", updating = false,
+    },
+    SoftTargetEnemyArc = {
+        active = false, cached = nil, setTo = "2", updating = false,
+    },
+    autoLootRate = {
+        active = false, cached = nil, setTo = "50", updating = false,
+    },
+    autoLootDefault = {
+        active = false, cached = nil, setTo = "1", updating = false,
+    },
+}
+local ppTalent
+if ppTalent == true then
+    Thievery_TempCVars["SoftTargetEnemyRange"] = 15
+else
+    Thievery_TempCVars["SoftTargetEnemyRange"] = 15
+end
+Thievery_TempCVarHandler = CreateFrame("Frame", "Example_CVarHandler", UIParent, "Legolando_TempCVarHandlerTemplate_Thievery")
+Thievery_TempCVarHandler.tempCVarsTable = Thievery_TempCVars
+Thievery_TempCVarHandler:Init()
+
 function Thievery_EventLoader(self, event, unit, ...)
     local arg4, arg5 = ...
     if event == "ADDON_LOADED" and unit == "Thievery" then
@@ -200,5 +228,7 @@ function Thievery_EventLoader(self, event, unit, ...)
             Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
         end
         Thievery_ToggleSpeedy(false)
+    elseif event == "PLAYER_LOGOUT" then
+        Thievery_TempCVarHandler:ReleaseAll()
     end
 end
