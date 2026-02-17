@@ -208,9 +208,9 @@ Thievery_TempCVars = {
 }
 local ppTalent
 if ppTalent == true then
-    Thievery_TempCVars["SoftTargetEnemyRange"] = 15
+    Thievery_TempCVars["SoftTargetEnemyRange"].setTo = 15
 else
-    Thievery_TempCVars["SoftTargetEnemyRange"] = 15
+    Thievery_TempCVars["SoftTargetEnemyRange"].setTo = 15
 end
 Thievery_TempCVarHandler = CreateFrame("Frame", "Example_CVarHandler", UIParent, "Legolando_TempCVarHandlerTemplate_Thievery")
 Thievery_TempCVarHandler.tempCVarsTable = Thievery_TempCVars
@@ -227,7 +227,6 @@ function Thievery_EventLoader(self, event, unit, ...)
         if tv.gameVersion ~= 0 and tv.gameVersion ~= 4 then
             Thievery_ActivateLockpicking(Thievery_Config.Checkboxes[2].lockpicking)
         end
-        Thievery_ToggleSpeedy(false)
     elseif event == "PLAYER_LOGOUT" then
         Thievery_TempCVarHandler:ReleaseAll()
     end
