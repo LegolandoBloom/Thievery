@@ -1,3 +1,6 @@
+-- LAST UPDATED MIDNIGHT WOWHEAD ENTRIES: 92 (84 Humanoids)
+
+
 local PP_Aberrations_ALL = {
  [110363] = true, [3928] = true, [6559] = true, [48319] = true, [214421] = true, [7093] = true, [48322] = true, [2656] = true, [41145] = true, [212739] = true, [42592] = true, [16901] = true, [4021] = true, [12222] = true, [2655] = true, [4020] = true, [6557] = true, [7092] = true, [214419] = true, [4393] = true, [7086] = true, [8212] = true, [14235] = true, [6219] = true, [48136] = true, [41453] = true, [1032] = true, [5763] = true, [41147] = true, [125957] = true, [219751] = true, [33419] = true, [169900] = true, [4394] = true, [50319] = true, [171251] = true, [14345] = true, [33444] = true, [41644] = true, [14433] = true, [214350] = true, [130274] = true, [172191] = true, [12221] = true, [42051] = true, [170788] = true, [31691] = true, [216328] = true, [6218] = true, [34923] = true, [212403] = true, [148020] = true, [131020] = true, [119070] = true, [157293] = true
 }
@@ -21,8 +24,8 @@ local PP_Dragonkin_ALL = {
 local PP_Elementals_ALL = {
  [18708] = true, [213115] = true, [46997] = true, [215545] = true, [3638] = true, [48768] = true, [211341] = true, [42789] = true, [3640] = true, [221363] = true, [139946] = true, [48315] = true, [66850] = true, [226285] = true, [47537] = true, [221362] = true, [3295] = true, [59967] = true, [207780] = true, [97173] = true, [215538] = true, [184319] = true, [210295] = true, [210423] = true, [39414] = true, [226065] = true, [136555] = true, [40023] = true, [68347] = true, [146367] = true, [85246] = true, [212697] = true, [40273] = true, [212577] = true, [212578] = true, [224742] = true, [212579] = true, [61155] = true, [218423] = true, [210479] = true, [219019] = true, [212736] = true, [212698] = true, [213099] = true,
 
- -- MIDNIGHT - Delete -> Re-Add these later as wowhead database is updated
- [237573] = true, [246780] = true, [246782] = true, [245110] = true, [237574] = true, [246862] = true,
+ -- MIDNIGHT - Delete -> Re-Add these later as wowhead database is updated -- 7 Current
+ [237573] = true, [246782] = true, [246862] = true, [237574] = true, [246780] = true, [246783] = true, [245110] = true,
 }
 
 
@@ -198,8 +201,8 @@ local PP_Humanoids_BOTH_Hostile_Normal = {
     --11.2.0
     [244115] = true, [244111] = true, [244137] = true, [244101] = true,
 
-    -- MIDNIGHT - Delete -> Re-Add these later as wowhead database is updated
-    [239521] = true, [237386] = true, [240388] = true, [241483] = true, [245942] = true, [240892] = true, [247552] = true, [237545] = true, [240389] = true, [236372] = true, [237521] = true, [246023] = true, [237344] = true, [236369] = true, [253992] = true, [239519] = true, [252521] = true, [247551] = true, [237546] = true, [238186] = true, [245707] = true, [251151] = true, [237498] = true, [236374] = true, [237161] = true, [236368] = true, [248653] = true, [237582] = true, [240103] = true, [239547] = true, [237641] = true, [253991] = true, [246282] = true, [237479] = true, [241535] = true, [240457] = true, [237547] = true, [241536] = true, [247966] = true, [237478] = true, [237692] = true, [246290] = true, [240344] = true, [237527] = true, [248505] = true, [237534] = true, [248160] = true, [240656] = true, [248430] = true, [248503] = true, [248158] = true, [243767] = true, [237520] = true,
+    -- MIDNIGHT - Delete -> Re-Add these later as wowhead database is updated -- 67 Current
+    [239549] = true, [237344] = true, [236374] = true, [237428] = true, [239521] = true, [247966] = true, [236616] = true, [236372] = true, [252521] = true, [237386] = true, [239459] = true, [236368] = true, [236369] = true, [240388] = true, [240389] = true, [239519] = true, [237545] = true, [237394] = true, [243767] = true, [245739] = true, [237655] = true, [237547] = true, [253991] = true, [240892] = true, [237546] = true, [251151] = true, [247551] = true, [245942] = true, [239547] = true, [237498] = true, [247552] = true, [237582] = true, [238186] = true, [240103] = true, [237161] = true, [245744] = true, [254263] = true, [245707] = true, [237479] = true, [241536] = true, [241592] = true, [251156] = true, [248503] = true, [236367] = true, [248158] = true, [248430] = true, [241483] = true, [237641] = true, [240342] = true, [237478] = true, [248160] = true, [237521] = true, [240457] = true, [241535] = true, [240344] = true, [248505] = true, [246282] = true, [246290] = true, [237692] = true, [246023] = true, [237642] = true, [248653] = true, [253992] = true, [237520] = true, [240656] = true, [237534] = true, [237527] = true,
 }
 local PP_Humanoids_BOTH_Hostile_Elite = {
     [448] = true, [9019] = true, [14401] = true, [8983] = true, [13996] = true, [1853] = true, [9033] = true, [9537] = true, [15308] = true, [11261] = true, [3975] = true, [9024] = true, [3654] = true, [9056] = true, [7267] = true, [10477] = true, [9041] = true, [10584] = true, [3976] = true, [3671] = true, [10811] = true, [13601] = true, [9237] = true, [9236] = true, [7271] = true, [3974] = true, [10505] = true, [3840] = true, [10997] = true, [8903] = true, [9476] = true, [9441] = true, [7795] = true, [5649] = true, [7291] = true, [9018] = true, [10438] = true, [3983] = true, [11032] = true, [3670] = true, [8898] = true, [9030] = true, [4852] = true, [8127] = true, [9319] = true, [5710] = true, [3669] = true, [8892] = true, [4421] = true, [11120] = true, [11448] = true, [9239] = true, [11445] = true, [5650] = true, [13718] = true, [6212] = true, [9257] = true, [9269] = true, [10472] = true, [9199] = true, [6910] = true, [3673] = true, [6223] = true, [9201] = true, [9028] = true, [11582] = true, [4855] = true, [4853] = true, [9196] = true, [7274] = true, [12159] = true, [9583] = true, [9716] = true, [5648] = true, [10469] = true, [10470] = true, [11323] = true, [9216] = true, [10983] = true, [11043] = true, [9240] = true, [9098] = true, [9268] = true, [9241] = true, [10400] = true, [10076] = true, [7605] = true, [9197] = true, [7275] = true, [8894] = true, [9045] = true, [9260] = true, [11441] = true, [6329] = true, [10471] = true, [7030] = true, [9442] = true, [11444] = true, [10422] = true, [7797] = true, [11450] = true, [11318] = true, [10425] = true, [9097] = true, [7321] = true, [8890] = true, [4850] = true, [8891] = true, [9445] = true, [7246] = true, [11322] = true, [8913] = true, [1731] = true, [10418] = true, [9265] = true, [4368] = true, [7608] = true, [10424] = true, [7320] = true, [11324] = true, [9200] = true, [9692] = true, [11793] = true, [9264] = true, [9267] = true, [6206] = true, [622] = true, [4849] = true, [4848] = true, [4371] = true, [4370] = true, [8893] = true, [5273] = true, [11319] = true, [7247] = true, [9266] = true, [12157] = true, [7013] = true, [11794] = true, [10398] = true, [6211] = true, [9259] = true, [7606] = true, [10426] = true, [10476] = true, [4847] = true, [12459] = true, [8889] = true, [7789] = true, [7290] = true, [8895] = true, [8899] = true, [9198] = true, [8912] = true, [9261] = true, [9262] = true, [4364] = true, [9541] = true, [9693] = true, [10421] = true, [10420] = true, [9717] = true, [11257] = true, [16072] = true, [8914] = true, [4366] = true, [10601] = true, [10602] = true, [9258] = true, [9263] = true, [10419] = true, [10423] = true, [10822] = true,
@@ -218,7 +221,7 @@ local PP_Humanoids_BOTH_Hostile_Elite = {
     --11.2.0
     [244393] = true,
 
-    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated
+    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated -- 9 Current
     [237533] = true, [237532] = true, [237537] = true, [237851] = true, [237526] = true, [237539] = true, [237535] = true, [237542] = true, [237519] = true,
 }
 local PP_Humanoids_BOTH_Hostile_Rare = {
@@ -226,7 +229,7 @@ local PP_Humanoids_BOTH_Hostile_Rare = {
     -- 11.1.0 -> 11.1.7 (Undermined)
     [230951] = true, [231288] = true, [230946] = true, [231012] = true,
     
-    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated
+    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated -- 1 Current
     [250719] = true,
 }
 local PP_Humanoids_BOTH_Hostile_RareElite = {
@@ -234,8 +237,8 @@ local PP_Humanoids_BOTH_Hostile_RareElite = {
     -- 11.1.0 -> 11.1.7 (Undermined)
     [234499] = true, [230800] = true,
     
-    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated
-    [237853] = true, [246559] = true, [246272] = true, [246478] = true,
+    -- MIDNIGHT | Delete -> Re-Add these later as wowhead database is updated -- 8
+    [246462] = true, [237853] = true, [246577] = true, [246343] = true, [246272] = true, [246549] = true, [246559] = true, [246478] = true,
 }
 -- Retail doesn't actually have any pickpocketable bosses, this is just for classic parity
 local PP_Humanoids_BOTH_Hostile_Boss = {
