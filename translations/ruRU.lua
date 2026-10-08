@@ -26,7 +26,7 @@ T["Awaiting additional key press. Modifier key down: "] = "Ожидается д
 T["Thievery Keybind"] = "Привязка клавиши\nThievery"
 
 T["Reset"] = "Сброс"
-T["Change Visual Location"] = "Изменить визуальное расположение"
+T["Change Visual Location"] = "Изменить визуальное\nрасположение"
 
 T["After pressing the button, drag the blue highlighted frame anywhere on your screen and click \'Okay\'."
 .. "\n\nClicking the button again, or clicking the reset icon " 
