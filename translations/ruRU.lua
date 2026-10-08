@@ -44,18 +44,18 @@ T["Turns on soft targetting for enemies(if off) and auto-loot(if off) upon first
 .. colorYello:WrapTextInColorCode("Включает мягкое наведение на врагов") .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "и\n" .. colorYello:WrapTextInColorCode("Автосбор лута") 
 .. colorGrae:WrapTextInColorCode("(если выключено)\n") .. "при первом обшаривании карманов,\nзатем оставляет включённым, пока вы находитесь в " .. colorGrae:WrapTextInColorCode("[режиме скрытности] ") .. ".\n\nМолниеносно перемещайтесь от кармана к карману!"
 
-T["Pickpocket"] = "Pickpocket"
-T["Sap"] = "Sap"
+T["Pickpocket"] = "Обшаривание карманов"
+T["Sap"] = "Ошеломление"
 
 
 -- Full Release Additions
-T["Visual Scale"] = "Visual Scale"
+T["Visual Scale"] = "Визуальный масштаб"
 
-T["Right-Click Lockpicking"] = "Right-Click Lockpicking"
-T["Right-Click Lockboxes in your inventory to unlock them!"] = "Right-Click Lockboxes in your inventory to unlock them!"
+T["Right-Click Lockpicking"] = "Взлом замков по правому клику"
+T["Right-Click Lockboxes in your inventory to unlock them!"] = "Нажимайте ПКМ по сейфам в сумке, чтобы открыть их!"
 
-T["Play Animation"] = "Play Animation"
-T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."] = "Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."
+T["Play Animation"] = "Воспроизводить анимацию"
+T["Plays a hand-drawn lockpicking animation overlayed on the lockboxes when casting \'Pick Lock\'."] = "Воспроизводит нарисованную от руки анимацию взлома поверх сейфов при применении заклинания \'Взлом замка\'."
 
-T["Sound Effect"] = "Sound Effect"
-T["Plays a lockpicking sound effect when you successfully unlock a lockbox."] = "Plays a lockpicking sound effect when you successfully unlock a lockbox."
+T["Sound Effect"] = "Звуковой эффект"
+T["Plays a lockpicking sound effect when you successfully unlock a lockbox."] = "Воспроизводит звуковой эффект взлома при успешном открытии сейфа."
