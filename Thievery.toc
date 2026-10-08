@@ -1,4 +1,4 @@
-## Interface: 120007, 120100
+## Interface: 120105, 120100
 ## Title: Thievery
 ## Notes: Pickpocketing overhaul for Rogues in World of Warcraft - Now with Right Click Lockpicking!
 ## Version: @project-version@
