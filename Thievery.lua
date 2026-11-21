@@ -73,7 +73,8 @@ local checkSapAura
 --                          bugs out in Classic
 --              use SetOverrideBindingSpell directly instead
 --____________________________________________________________________________
-if gameVersion == 1 then
+-- RECHECK FOR FOREVER
+if gameVersion == 1 or gameVersion == 4 then
     handleKeybind = function(mode, button, assignKey) 
         if mode == "pp" then
             button:SetAttribute("macrotext", "/cast " .. ppName)
@@ -99,7 +100,7 @@ if gameVersion == 1 then
         end)
         return sapped
     end
-elseif gameVersion == 2 or gameVersion == 3 or gameVersion == 4 then
+elseif gameVersion == 2 or gameVersion == 3 or gameVersion == 5 then
     handleKeybind = function(mode, button, assignKey)
         if mode == "pp" then
             SetOverrideBindingSpell(button, true, assignKey, ppName)

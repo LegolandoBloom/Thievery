@@ -1,0 +1,26 @@
+## Interface: 16001
+## Title: Thievery
+## Notes: Pickpocketing overhaul for Rogues in World of Warcraft - Now on Forever!
+## Version: @project-version@
+## Author: LegolandoBloom
+## SavedVariables: Thievery_UI, Thievery_Config, Thievery_SavedCVars
+## SavedVariablesPerCharacter:
+## IconTexture: Interface\AddOns\Thievery\images\thievery-miniicon.png
+## X-Curse-Project-ID: 1284634
+
+libraries\embeds.xml
+Parity-Fonts.xml
+
+translations\translations.xml
+
+thiefTemplates\embeds-classic.xml
+
+animations.xml
+init.lua
+ui.lua
+lockpicking.lua
+pocketTables_Forever.lua
+speedy.lua
+sessionGUID.lua
+Thievery.lua
+Thievery.xml

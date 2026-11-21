@@ -29,7 +29,8 @@ if gameVersion == 1 then
     bagTrackingFrame.filters = {
     	itemID = {264475, 16885, 31952, 29569, 5760, 16884, 5759, 4636, 43575, 203743, 4637, 68729, 16883, 4633, 220376, 6355, 16882, 43624, 169475, 179311, 45986, 180533, 88567, 4638, 63349, 194037, 5758, 121331, 186161, 13918, 180532, 88165, 180522, 43622, 116920, 6354, 12033, 4634, 7209, 198657, 13875, 186160, 190954, 106895, 4632, 204307, 191296, 188787},
     }
-elseif gameVersion == 2 or gameVersion == 3 then
+-- RECHECK FOR FOREVER
+elseif gameVersion == 2 or gameVersion == 3 or gameVersion == 4 then
     bagTrackingFrame.filters = {
     	itemID = {88567, 88165, 43622, 5758, 16882, 16885, 4634, 12033, 68729, 4632, 45986, 4638, 16884, 5760, 31952, 4637, 7868, 4636, 4633, 63349, 6355, 6354, 43624, 7869, 13875, 5759, 16883, 29569, 7209, 42953, 43575, 39014, 13918},
     }
@@ -172,7 +173,8 @@ function LP.clearOverlayButton()
 end
 
 local checkLockedTooltip
-if gameVersion == 1 then
+-- RECHECK FOR FOREVER
+if gameVersion == 1 or gameVersion == 4 then
     checkLockedTooltip = function(bagID, slotID)
         local locked = false
         local lines = C_TooltipInfo.GetBagItem(bagID, slotID).lines

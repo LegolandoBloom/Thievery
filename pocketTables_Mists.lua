@@ -96,7 +96,7 @@ local PP_Humanoids_ALLIANCE_Hostile = {
                 -- Need to filter Vanilla further, it has too many
                 -- 'Normal' classification
                 [1236] = true, [6846] = true, [6] = true, [711] = true, [706] = true, [476] = true, [1178] = true, [1183] = true, [1115] = true, [946] = true, [2013] = true, [2009] = true, [1180] = true, [103] = true, [703] = true, [2011] = true, [2007] = true, [473] = true, [1426] = true, [6909] = true, [2180] = true, [1393] = true, [2017] = true, [1222] = true, [1177] = true, [6911] = true, [1124] = true, [7235] = true, [1179] = true, [7318] = true, [881] = true, [2179] = true, [1123] = true, [808] = true, [257] = true, [1175] = true, [6866] = true, [880] = true, [1120] = true, [327] = true, [80] = true, [1174] = true, [1202] = true, [2020] = true, [2206] = true, [1755] = true, [11713] = true, [7056] = true, [1122] = true, [2006] = true, [38] = true, [1205] = true, [1993] = true, [7053] = true, [2019] = true, [7234] = true, [2021] = true, [2012] = true, [7052] = true,
-                -- 'Non Normal' classification
+                -- 'Elite/Rare/RareElite/Boss' classification
                 [486] = true, [1210] = true, [1200] = true, [14429] = true,
             -- TBC
             [17336] = true, [17334] = true, [23590] = true, [17325] = true, [20113] = true, [23620] = true,
